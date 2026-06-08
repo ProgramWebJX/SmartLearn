@@ -1,0 +1,388 @@
+{% extends "base.html" %}
+
+{% block title %}Dokumentacioni | MicroChat 3.0{% endblock %}
+
+{% block head %}
+<style>
+    :root {
+        --doc-primary: #3b82f6;
+        --doc-bg: #ffffff;
+        --doc-sidebar: #f8fafc;
+        --doc-text: #1e293b;
+        --doc-muted: #64748b;
+        --doc-border: #e2e8f0;
+    }
+
+    .doc-layout {
+        display: flex;
+        min-height: calc(100vh - 70px);
+        max-width: 1400px;
+        margin: 0 auto;
+        position: relative;
+    }
+
+    /* Sidebar Navigation */
+    .doc-sidebar {
+        width: 280px;
+        background-color: var(--doc-sidebar);
+        border-right: 1px solid var(--doc-border);
+        padding: 2.5rem 1.5rem;
+        position: sticky;
+        top: 70px;
+        height: calc(100vh - 70px);
+        overflow-y: auto;
+    }
+
+    .doc-sidebar-title {
+        font-size: 0.75rem;
+        font-weight: 700;
+        text-transform: uppercase;
+        letter-spacing: 0.05em;
+        color: var(--doc-muted);
+        margin-bottom: 1.25rem;
+        padding-left: 0.75rem;
+    }
+
+    .doc-nav-list {
+        list-style: none;
+        padding: 0;
+        margin: 0;
+    }
+
+    .doc-nav-item {
+        margin-bottom: 0.25rem;
+    }
+
+    .doc-nav-link {
+        display: block;
+        padding: 0.625rem 0.75rem;
+        border-radius: 8px;
+        color: var(--doc-text);
+        text-decoration: none;
+        font-weight: 500;
+        font-size: 0.95rem;
+        transition: all 0.2s;
+    }
+
+    .doc-nav-link:hover {
+        background-color: #eff6ff;
+        color: var(--doc-primary);
+    }
+
+    .doc-nav-link.active {
+        background-color: #dbeafe;
+        color: var(--doc-primary);
+        font-weight: 600;
+    }
+
+    /* Main Content Area */
+    .doc-content {
+        flex: 1;
+        padding: 4rem 5rem;
+        max-width: 900px;
+        line-height: 1.7;
+    }
+
+    .doc-section {
+        margin-bottom: 5rem;
+        scroll-margin-top: 100px;
+    }
+
+    .doc-section h1 {
+        font-size: 3rem;
+        font-weight: 800;
+        color: #0f172a;
+        margin-bottom: 1.5rem;
+        letter-spacing: -0.025em;
+    }
+
+    .doc-section h2 {
+        font-size: 2rem;
+        font-weight: 700;
+        color: #1e293b;
+        margin-top: 3rem;
+        margin-bottom: 1rem;
+        display: flex;
+        align-items: center;
+        gap: 0.75rem;
+    }
+
+    .doc-section h2 i {
+        color: var(--doc-primary);
+        font-size: 1.5rem;
+    }
+
+    .doc-section p {
+        font-size: 1.125rem;
+        color: var(--doc-muted);
+        margin-bottom: 1.5rem;
+    }
+
+    .feature-card {
+        background: white;
+        border: 1px solid var(--doc-border);
+        border-radius: 16px;
+        padding: 2rem;
+        margin: 1.5rem 0;
+        box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05);
+    }
+
+    .feature-card h3 {
+        font-size: 1.25rem;
+        font-weight: 700;
+        color: #1e293b;
+        margin-bottom: 0.75rem;
+        display: flex;
+        align-items: center;
+        gap: 0.5rem;
+    }
+
+    .feature-card p {
+        font-size: 1rem;
+        margin-bottom: 0;
+    }
+
+    .badge {
+        display: inline-block;
+        padding: 2px 10px;
+        border-radius: 9999px;
+        font-size: 0.75rem;
+        font-weight: 700;
+        background: #e0e7ff;
+        color: #4338ca;
+        margin-bottom: 0.5rem;
+    }
+
+    .step-list {
+        list-style: none;
+        padding: 0;
+        margin: 2rem 0;
+    }
+
+    .step-item {
+        display: flex;
+        gap: 1.5rem;
+        margin-bottom: 2rem;
+    }
+
+    .step-number {
+        flex-shrink: 0;
+        width: 32px;
+        height: 32px;
+        background: var(--doc-primary);
+        color: white;
+        border-radius: 50%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-weight: 800;
+        font-size: 0.875rem;
+    }
+
+    .step-content h4 {
+        margin: 0 0 0.5rem 0;
+        font-size: 1.125rem;
+        font-weight: 700;
+        color: #1e293b;
+    }
+
+    /* Mobile adjustments */
+    @media (max-width: 1024px) {
+        .doc-sidebar {
+            display: none;
+        }
+
+        .doc-content {
+            padding: 3rem 2rem;
+        }
+
+        .doc-section h1 {
+            font-size: 2.25rem;
+        }
+    }
+</style>
+{% endblock %}
+
+{% block content %}
+<div class="doc-layout">
+    <!-- Sidebar -->
+    <aside class="doc-sidebar">
+        <div class="doc-sidebar-title">Fillimi</div>
+        <ul class="doc-nav-list">
+            <li class="doc-nav-item"><a href="#intro" class="doc-nav-link">Hyrje</a></li>
+            <li class="doc-nav-item"><a href="#getting-started" class="doc-nav-link">Si të filloni</a></li>
+        </ul>
+
+        <div class="doc-sidebar-title" style="margin-top: 2rem;">Funksionet</div>
+        <ul class="doc-nav-list">
+            <li class="doc-nav-item"><a href="#ai-chat" class="doc-nav-link">AI Chat Platform</a></li>
+            <li class="doc-nav-item"><a href="#smart-learn" class="doc-nav-link">SmartLearn System</a></li>
+            <li class="doc-nav-item"><a href="#shared-view" class="doc-nav-link">Shared View (Për Nxënësit)</a></li>
+        </ul>
+
+        <div class="doc-sidebar-title" style="margin-top: 2rem;">Llogaria</div>
+        <ul class="doc-nav-list">
+            <li class="doc-nav-item"><a href="#account" class="doc-nav-link">Menaxhimi i Llogarisë</a></li>
+            <li class="doc-nav-item"><a href="#pricing" class="doc-nav-link">Planet & Çmimet</a></li>
+        </ul>
+    </aside>
+
+    <!-- Content -->
+    <main class="doc-content">
+        <!-- Intro -->
+        <section id="intro" class="doc-section animate-fade-in">
+            <span class="badge">Versioni 3.0</span>
+            <h1>Mirësevini në MicroChat 3.0</h1>
+            <p>MicroChat 3.0 është platforma e parë inteligjente në gjuhën shqipe që kombinon fuqinë e Inteligjencës
+                Artificiale me mjetet më të avancuara të studimit për studentët.</p>
+
+            <div class="feature-card">
+                <h3><i class="fas fa-bolt text-yellow-500"></i> Misioni Jonë</h3>
+                <p>Misioni i MicroChat është të demokratizojë aksesin në teknologjitë e fundit të AI për çdo student
+                    shqiptar, duke ofruar një ndihmës personal që mëson dhe evoluon me ju. Me versionin e ri, ne ofrojmë qasje të hapur për vizitorët pa detyrim regjistrimi.</p>
+            </div>
+        </section>
+
+        <!-- Getting Started -->
+        <section id="getting-started" class="doc-section animate-fade-in">
+            <h2><i class="fas fa-rocket"></i> Si të filloni</h2>
+            <p>Hyrja në botën e MicroChat është e thjeshtë dhe e shpejtë. Ndiqni hapat e mëposhtëm:</p>
+
+            <div class="step-list">
+                <div class="step-item">
+                    <div class="step-number">1</div>
+                    <div class="step-content">
+                        <h4>Qasja si Vizitor ose Krijimi i Llogarisë</h4>
+                        <p>Eksploroni platformën pa llogari me Guest Access. Për të ruajtur bisedat dhe historikun, identifikohuni duke përdorur Google, Microsoft, ose me emailin tuaj.</p>
+                    </div>
+                </div>
+                <div class="step-item">
+                    <div class="step-number">2</div>
+                    <div class="step-content">
+                        <h4>Zbuloni Platformën me Welcome Tour</h4>
+                        <p>Ndiqni guidën tonë interaktive (Carousel) e cila ju tregon pikat kyçe si Chatbot, SmartLearn, History, dhe modalitetet Teacher/Student.</p>
+                    </div>
+                </div>
+                <div class="step-item">
+                    <div class="step-number">3</div>
+                    <div class="step-content">
+                        <h4>Filloni Bisedën</h4>
+                        <p>Nisni bisedën e parë te Dashboard duke bërë pyetje, ngarkuar imazhe ose duke kaluar te moduli
+                            SmartLearn për ushtrime të detajuara.</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- AI Chat -->
+        <section id="ai-chat" class="doc-section animate-fade-in">
+            <h2><i class="fas fa-comments"></i> AI Chat Platform</h2>
+            <p>Zemra e MicroChat 3.0 është sistemi i bisedës i cili përdor modelet më të fundit të AI, i optimizuar për përgjigje të shpejta dhe të sakta.</p>
+
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                <div class="feature-card">
+                    <h3><i class="fas fa-eye text-indigo-500"></i> AIVision</h3>
+                    <p>Sistemi ynë vizual AIVision jo vetëm që zgjidh detyrat, por edhe analizon faqet e librit (foto të ngarkuara) për të krijuar materiale studimi të personalizuara.</p>
+                </div>
+                <div class="feature-card">
+                    <h3><i class="fas fa-history text-green-500"></i> Memorja e Bisedës</h3>
+                    <p>MicroChat ruan bisedat tuaja në historik, i qasshëm direkt nga anësoret (sidebar) e platformës, duke bërë që dialogu të ndihet natyral dhe i vazhdueshëm.</p>
+                </div>
+            </div>
+        </section>
+
+        <!-- SmartLearn -->
+        <section id="smart-learn" class="doc-section animate-fade-in">
+            <h2><i class="fas fa-graduation-cap"></i> SmartLearn System</h2>
+            <p>Mjeti kryesor që automatizon studimin tuaj. Ky modul përfshin plot 15 lloje të ndryshme ushtrimesh të krijuara posaçërisht për nxënësit dhe studentët.</p>
+
+            <div class="feature-card">
+                <h3><i class="fas fa-magic text-purple-500"></i> Nga Fotoja te 15 Lloje Ushtrimesh</h3>
+                <p>Sistemi SmartLearn lejon ngarkimin e një faqeje libri ose ngjitjen e një teksti. AI gjeneron automatikisht:</p>
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-x-8 gap-y-2 mt-4 text-doc-muted">
+                    <ul class="space-y-2">
+                        <li><i class="fas fa-check-square text-blue-500 mr-2"></i> Teste me alternativa (MCQ)</li>
+                        <li><i class="fas fa-link text-indigo-500 mr-2"></i> Lidhje termash (Drag & Drop)</li>
+                        <li><i class="fas fa-search text-amber-500 mr-2"></i> Gjetja e gabimeve në tekst</li>
+                        <li><i class="fas fa-check-circle text-green-500 mr-2"></i> Vërtetë apo Gabim</li>
+                        <li><i class="fas fa-pen-nib text-sky-500 mr-2"></i> Mbush Hapësirat</li>
+                        <li><i class="fas fa-align-left text-indigo-500 mr-2"></i> Përmbledhja Kyçe</li>
+                        <li><i class="fas fa-brain text-purple-500 mr-2"></i> Mendim Kritik</li>
+                        <li><i class="fas fa-book text-emerald-500 mr-2"></i> Fjalor & Terma</li>
+                    </ul>
+                    <ul class="space-y-2">
+                        <li><i class="fas fa-balance-scale text-orange-500 mr-2"></i> Analoji Konceptuale</li>
+                        <li><i class="fas fa-sort-numeric-down text-blue-500 mr-2"></i> Renditja Logjike</li>
+                        <li><i class="fas fa-project-diagram text-cyan-500 mr-2"></i> Harta e Koncepteve</li>
+                        <li><i class="fas fa-exchange-alt text-indigo-500 mr-2"></i> Pro & Kundër (Debat)</li>
+                        <li><i class="fas fa-globe text-indigo-600 mr-2"></i> Aplikimi në Jetën Reale</li>
+                        <li><i class="fas fa-stopwatch text-red-500 mr-2"></i> Kuiz final me kohë</li>
+                    </ul>
+                </div>
+            </div>
+
+            <div class="feature-card">
+                <h3><i class="fas fa-chalkboard-teacher text-indigo-600"></i> Modaliteti Mësues dhe Editimi i Avancuar</h3>
+                <p>Në Modalitetin <strong>Teacher (Mësues)</strong>, pasi AI gjeneron materialin mësimor dhe ushtrimet, ju keni një kontroll të plotë mbi tekstin. Platforma ofron mjete profesionale editimi, të ngjashme me Microsoft Word, duke ju lejuar të formatoni, modifikoni dhe përshtatni çdo ushtrim me mjetet e nevojshme para se të gjeneroni linkun Shared View për ta ndarë atë me nxënësit tuaj.</p>
+            </div>
+        </section>
+
+        <!-- Shared View -->
+        <section id="shared-view" class="doc-section animate-fade-in">
+            <h2><i class="fas fa-share-alt"></i> Shared View (Klasat Interaktive)</h2>
+            <p>Një nga risitë më të mëdha të MicroChat 3.0 është mundësia e ndarjes së mësimeve nga mësuesit tek nxënësit përmes një linku të thjeshtë.</p>
+            
+            <div class="feature-card">
+                <h3><i class="fas fa-link text-blue-500"></i> Qasje si Vizitor për Nxënësit</h3>
+                <p>Nxënësit mund t'i qasen materialeve (të krijuara nga Mësuesi) pa pasur nevojë të hapin një llogari. Ata thjesht shkruajnë emrin e tyre, shtypin Enter, dhe fillojnë zgjidhjen e plot 15 llojeve të ushtrimeve pa lejuar editimin e paautorizuar të tekstit.</p>
+            </div>
+            <div class="feature-card">
+                <h3><i class="fas fa-check-circle text-green-500"></i> Vlerësimi Automatik</h3>
+                <p>Në fund të seancës Shared View, pas përfundimit të 14 moduleve të para, nxënësit i nënshtrohen një kuizi final. Përgjigjet e tyre dorëzohen automatikisht dhe vlerësohen në kohë reale.</p>
+            </div>
+        </section>
+
+        <!-- Pricing -->
+        <section id="pricing" class="doc-section animate-fade-in">
+            <h2><i class="fas fa-crown"></i> Planet & Çmimet</h2>
+            <p>MicroChat 3.0 ofron qasje thelbësore falas edhe si Guest, si dhe plane premium për të mbuluar nevojat e përdoruesve të avancuar.</p>
+
+            <div class="feature-card" style="border-left: 4px solid var(--doc-primary);">
+                <h3>Plani Pro / Ultimate</h3>
+                <p>Plan me mesazhe të shtuara, histori të pakufizuar dhe prioritet në procesimin e imazheve dhe kuizeve. Pagesat bëhen në mënyrë të sigurt përmes PayPal.</p>
+            </div>
+        </section>
+    </main>
+</div>
+
+<script>
+    // Smooth scroll for anchors
+    document.querySelectorAll('.doc-nav-link').forEach(anchor => {
+        anchor.addEventListener('click', function (e) {
+            e.preventDefault();
+            const targetId = this.getAttribute('href');
+            document.querySelector(targetId).scrollIntoView({
+                behavior: 'smooth'
+            });
+
+            // Update active state
+            document.querySelectorAll('.doc-nav-link').forEach(l => l.classList.remove('active'));
+            this.classList.add('active');
+        });
+    });
+
+    // Intersection Observer to update active link on scroll
+    const observer = new IntersectionObserver((entries) => {
+        entries.forEach(entry => {
+            if (entry.isIntersecting) {
+                const id = entry.target.getAttribute('id');
+                document.querySelectorAll('.doc-nav-link').forEach(l => {
+                    l.classList.toggle('active', l.getAttribute('href') === `#${id}`);
+                });
+            }
+        });
+    }, { threshold: 0.5 });
+
+    document.querySelectorAll('.doc-section').forEach(section => observer.observe(section));
+</script>
+{% endblock %}

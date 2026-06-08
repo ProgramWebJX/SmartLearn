@@ -1,0 +1,227 @@
+<!-- ============================================================
+     REDESIGNED HERO + UPLOAD (Modern Editorial)
+     All IDs / JS hooks are preserved exactly as before.
+     ============================================================ -->
+<section class="sl-hero" id="hero-section">
+    <div class="sl-hero-copy">
+        <span class="sl-eyebrow"><span class="sl-pulse"></span> SmartLearn · AI Tutor</span>
+        <h1 class="sl-hero-h1">
+            Mëso çdo gjë, <br>
+            nga një foto. <em>Në sekonda.</em>
+        </h1>
+        <p class="sl-hero-sub">
+            Ngarko një faqe libri ose ngjit një tekst. Inteligjenca artificiale e
+            SmartLearn krijon mësimin, pyetjet dhe ushtrimet — të personalizuara
+            për ty ose klasën tënde.
+        </p>
+        <div class="sl-hero-stats">
+            <div class="sl-hero-stat">
+                <div class="sl-num">12+</div>
+                <div class="sl-lab">Lloje ushtrimesh</div>
+            </div>
+            <div class="sl-hero-stat">
+                <div class="sl-num">~15s</div>
+                <div class="sl-lab">Kohë gjenerimi</div>
+            </div>
+            <div class="sl-hero-stat">
+                <div class="sl-num">2</div>
+                <div class="sl-lab">Mode: Student / Mësues</div>
+            </div>
+        </div>
+    </div>
+
+    <div class="sl-hero-visual" aria-hidden="true">
+        <span class="sl-hv-blob b1"></span>
+        <span class="sl-hv-blob b2"></span>
+
+        <div class="sl-hv-card c1">
+            <span class="sl-hv-tag"><i class="fas fa-bolt"></i> Mësim i ri</span>
+            <div class="sl-hv-page-lines">
+                <span></span><span></span><span></span><span></span><span></span><span></span>
+            </div>
+        </div>
+
+        <div class="sl-hv-card c2">
+            <span class="sl-h-meta"><i class="fas fa-circle-check"></i> Gjeneruar</span>
+            <div class="sl-hv-mini-stat">
+                <div class="sl-hv-ic"><i class="fas fa-list-check"></i></div>
+                <div>
+                    <strong>7 ushtrime</strong>
+                    <small>Gati për t'u zgjidhur</small>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<div class="w-full pb-16">
+    <!-- Main Content Container (Centered) -->
+    <div class="max-w-6xl mx-auto px-4">
+        <!-- Step 1: Redesigned Upload Area -->
+        <section id="step-upload" class="sl-section animate-fade-in" style="animation-delay: 0.1s;">
+            <!-- Upload Box -->
+            <div id="step-upload-box" class="sl-upload-shell">
+
+                <input type="file" id="fileInput" class="hidden" accept="image/*" multiple>
+
+                <div id="upload-prompt" class="sl-drop">
+                    <div class="sl-drop-icon">
+                        <i class="fas fa-camera"></i>
+                    </div>
+                    <h3>Shkrep, ngarko, mëso.</h3>
+                    <p>
+                        Zgjidh një faqe nga libri yt ose bëj një foto. Ne kthejmë
+                        çdo tekst në një mësim interaktiv me pyetje dhe ushtrime.
+                    </p>
+
+                    <div class="sl-cta-row">
+                        <label for="fileInput" class="sl-btn sl-btn-primary">
+                            <i class="fas fa-image"></i> Zgjidh Fotot
+                        </label>
+                        <button id="cameraBtn" type="button" class="sl-btn sl-btn-outline">
+                            <i class="fas fa-camera"></i> Bëj një foto
+                        </button>
+                    </div>
+
+                    <div class="sl-trust">
+                        <span class="sl-chip sl-chip-success"><i class="fas fa-circle"></i> Privat &amp; i sigurt</span>
+                        <span class="sl-chip"><i class="fas fa-circle"></i> ~15 sekonda</span>
+                        <span class="sl-chip sl-chip-warn"><i class="fas fa-circle"></i> Pa regjistrim</span>
+                        <span class="sl-chip"><i class="fas fa-circle"></i> AI Gemini</span>
+                    </div>
+                </div>
+
+                <!-- Hidden image element used by JS for preview/session state -->
+                <img id="imgPreview" class="hidden" src="" alt="">
+
+                <div id="preview-container" class="hidden" style="margin-top:1.5rem;">
+                    <div id="image-grid-preview" class="sl-preview-grid">
+                        <!-- Preview images injected here by JS -->
+                    </div>
+                    <button id="analyzeBtn" data-tour="create-lesson"
+                        class="sl-btn sl-btn-primary sl-btn-block sl-btn-lg">
+                        Gjenero Mësimin <i class="fas fa-arrow-right"></i>
+                    </button>
+                </div>
+
+                <!-- Animated Loader -->
+                <div id="loader" class="hidden sl-loader">
+                    <div class="sl-spinner"></div>
+                    <div id="loadingPhrase" style="font-family:'Fraunces',serif; font-size:1.25rem; font-weight:600; color:#1E3A8A;">
+                        Po lexojmë tekstin...
+                    </div>
+                    <p style="color:#64748B; margin-top:.4rem; font-size:.85rem; font-weight:500;">
+                        Zakonisht zgjat 10–15 sekonda
+                    </p>
+                </div>
+            </div>
+        </section>
+
+        <!-- Camera Modal (same logic, restyled wrapper kept intact for JS) -->
+        <div id="cameraModal"
+            class="fixed inset-0 bg-black/90 z-[150] hidden flex flex-col items-center justify-center p-4">
+            <video id="video" class="max-w-full max-h-[70vh] rounded-2xl bg-black" autoplay playsinline></video>
+            <canvas id="canvas" class="hidden"></canvas>
+            <div class="flex gap-6 mt-8">
+                <button id="captureBtn"
+                    class="w-20 h-20 bg-white rounded-full flex items-center justify-center text-slate-900 text-3xl shadow-2xl hover:scale-110 transition-transform">
+                    <i class="fas fa-camera"></i>
+                </button>
+                <button id="closeCameraBtn"
+                    class="w-20 h-20 bg-red-500 rounded-full flex items-center justify-center text-white text-3xl shadow-2xl hover:scale-110 transition-transform">
+                    <i class="fas fa-times"></i>
+                </button>
+            </div>
+        </div>
+
+        <!-- New: Role & Exercise Selection Section -->
+        <section id="role-setup" class="sl-section animate-fade-in hidden" style="animation-delay: 0.1s; margin-top: 2rem;">
+            <div class="sl-config-card">
+                <div class="sl-config-head">
+                    <div>
+                        <h2>Konfiguro studimin</h2>
+                        <p>Zgjidh rolin tënd dhe llojet e ushtrimeve që dëshiron.</p>
+                    </div>
+                    <!-- Role Toggle -->
+                    <div class="sl-role-seg">
+                        <button onclick="setRole('student')" id="btn-role-student" type="button"
+                            class="sl-role-btn active">
+                            <i class="fas fa-user-graduate"></i> Student
+                        </button>
+                        <button onclick="setRole('teacher')" id="btn-role-teacher" data-tour="teacher-mode-toggle" type="button"
+                            class="sl-role-btn">
+                            <i class="fas fa-chalkboard-user"></i> Mësues
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Teacher Text Area (Hidden by default) -->
+                <div id="teacher-input-area" class="hidden animate-fade-in" style="margin-bottom: 2rem;">
+                    <div class="sl-section-label">
+                        <h3>Teksti i mësimit</h3>
+                        <span class="sl-counter-pill"><i class="fas fa-circle-info" style="color:#2563EB"></i> Opsionale me foto</span>
+                    </div>
+                    <textarea id="teacher-text" class="sl-teacher-textarea"
+                        placeholder="Ngjit këtu tekstin e mësimit, pikat kyçe ose shënimet tuaja..."></textarea>
+                    <div style="margin-top: 1.25rem;">
+                        <button onclick="startGeneration()" type="button"
+                            class="sl-btn sl-btn-primary sl-btn-block sl-btn-lg">
+                            Gjenero Mësimin nga Teksti <i class="fas fa-wand-magic-sparkles"></i>
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Exercise Grid -->
+                <div>
+                    <div class="sl-section-label">
+                        <h3>Llojet e ushtrimeve</h3>
+                        <div class="sl-counter-pill">
+                            Zgjedhur: <strong><span id="selected-count">5</span></strong> / <span id="max-selection">7</span>
+                        </div>
+                    </div>
+                    <div id="exercise-grid" class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-3">
+                        <!-- JS will populate these -->
+                    </div>
+                </div>
+
+                <!-- Final Generate Button (visible when configuration is shown) -->
+                <div id="final-generate-container" class="hidden" style="margin-top: 1.5rem;">
+                    <button onclick="startGeneration()" type="button"
+                        class="sl-btn sl-btn-primary sl-btn-block sl-btn-lg">
+                        Përfundo &amp; Gjenero Mësimin <i class="fas fa-wand-magic-sparkles"></i>
+                    </button>
+                </div>
+            </div>
+        </section>
+
+        <!-- History Section -->
+        {% if history %}
+        <div class="sl-history-head">
+            <div>
+                <h2>Mësimet e tua</h2>
+                <p class="sl-history-sub">Vazhdo aty ku e ke lënë ose shiko përgjigjet e nxënësve.</p>
+            </div>
+            <span class="sl-counter-pill"><i class="fas fa-clock-rotate-left" style="color:#2563EB"></i> Ruajtur deri 24h</span>
+        </div>
+        <section id="history-section" class="sl-history-wrap animate-fade-in">
+            <div class="sl-history-grid">
+                {% for item in history %}
+                <article class="sl-history-card">
+                    <span class="sl-h-meta"><i class="fas fa-book-open"></i> Mësim</span>
+                    <h3>{{ item.title }}</h3>
+                    <button onclick="viewSubmissions('{{ item.token }}')" type="button" class="sl-h-btn">
+                        <i class="fas fa-eye"></i> Shiko Përgjigjet
+                    </button>
+                    <div class="sl-h-mini">
+                        <button onclick="loadHistoryLesson('{{ item.token }}')" type="button">
+                            <i class="fas fa-rotate-left"></i> Rifillo
+                        </button>
+                        <button onclick="deleteHistoryLesson('{{ item.token }}')" type="button" class="sl-danger">
+                            <i class="fas fa-trash"></i> Fshij
+                        </button>
+                    </div>
+                </article>
+                {% endfor %}
+            </div>
+        </section>
+        {% endif %}

@@ -1,0 +1,516 @@
+@import url('https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800;900&family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800;900&display=swap');
+
+/* --- PREMIUM ENTERPRISE DESIGN SYSTEM TOKENS --- */
+:root {
+    /* Color Palette - Apple/Notion/Duolingo Hybrid */
+    --sl-bg-main: #FFFFFF;
+    --sl-bg-secondary: #F5F5F7; /* Apple Silver */
+    --sl-bg-tertiary: #EBEBEF;
+    
+    --sl-text-main: #1D1D1F; /* Apple Dark */
+    --sl-text-secondary: #86868B;
+    --sl-text-tertiary: #A1A1A6;
+    
+    --sl-primary: #000000; /* Minimalist Primary */
+    --sl-primary-hover: #1D1D1F;
+    --sl-primary-light: #F2F2F2;
+    
+    --sl-accent: #2997FF; /* Apple Blue */
+    --sl-accent-hover: #147CE5;
+    --sl-accent-glow: rgba(41, 151, 255, 0.15);
+    
+    --sl-success: #58CC02; /* Duolingo Green */
+    --sl-success-hover: #46A302;
+    --sl-success-light: #D7FFB8;
+    --sl-success-border: #58A700;
+
+    --sl-warning: #FFC800; /* Duolingo Gold */
+    --sl-warning-hover: #E5B400;
+    --sl-warning-light: #FFF0B3;
+
+    --sl-danger: #FF4B4B; /* Duolingo Red */
+    --sl-danger-hover: #E54343;
+    --sl-danger-light: #FFD1D1;
+    --sl-danger-border: #EA2B2B;
+
+    --sl-indigo: #5E5CE6; /* Apple Indigo */
+    --sl-indigo-light: #E0E0FF;
+
+    --sl-border-light: rgba(0, 0, 0, 0.06);
+    --sl-border-medium: rgba(0, 0, 0, 0.12);
+    
+    /* Radii */
+    --sl-radius-sm: 8px;
+    --sl-radius-md: 14px;
+    --sl-radius-lg: 20px;
+    --sl-radius-xl: 32px;
+    
+    /* Shadows - Enterprise Grade */
+    --sl-shadow-sm: 0 2px 8px rgba(0, 0, 0, 0.04);
+    --sl-shadow-md: 0 8px 24px rgba(0, 0, 0, 0.05);
+    --sl-shadow-lg: 0 16px 48px rgba(0, 0, 0, 0.06), 0 4px 16px rgba(0, 0, 0, 0.03);
+    --sl-shadow-glow: 0 0 0 4px var(--sl-accent-glow);
+    --sl-shadow-float: 0 20px 40px rgba(0, 0, 0, 0.08);
+    
+    /* Animations */
+    --sl-transition-fast: 0.15s cubic-bezier(0.2, 0.8, 0.2, 1);
+    --sl-transition-spring: 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+}
+
+/* --- BASE STYLES --- */
+body {
+    font-family: 'Plus Jakarta Sans', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+    background-color: var(--sl-bg-main);
+    color: var(--sl-text-main);
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+}
+
+h1, h2, h3, h4, h5, h6, .brand, .hero-title, .font-outfit {
+    font-family: 'Outfit', sans-serif !important;
+    letter-spacing: -0.02em;
+}
+
+/* --- GLASSMORPHISM & CARDS --- */
+.glass-card {
+    background: rgba(255, 255, 255, 0.7);
+    backdrop-filter: blur(24px) saturate(180%);
+    -webkit-backdrop-filter: blur(24px) saturate(180%);
+    border: 1px solid var(--sl-border-light);
+    border-radius: var(--sl-radius-xl);
+    box-shadow: var(--sl-shadow-md);
+    transition: var(--sl-transition-spring);
+}
+
+.exercise-card {
+    background: #FFFFFF;
+    border: 1px solid var(--sl-border-medium);
+    border-radius: var(--sl-radius-xl);
+    box-shadow: var(--sl-shadow-sm);
+    transition: transform var(--sl-transition-spring), box-shadow var(--sl-transition-spring);
+}
+
+.exercise-card:hover {
+    transform: translateY(-4px);
+    box-shadow: var(--sl-shadow-lg);
+}
+
+/* --- APPLE-STYLE HERO --- */
+.hero-text-small {
+    font-size: 1.5rem;
+    font-weight: 600;
+    color: var(--sl-text-secondary);
+    letter-spacing: -0.01em;
+}
+
+.hero-text-xl {
+    font-size: 5.5rem;
+    font-weight: 800;
+    color: var(--sl-text-main);
+    line-height: 1.05;
+    letter-spacing: -0.04em;
+    background: linear-gradient(180deg, #000000 0%, #333333 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+}
+
+.hero-text-md {
+    font-size: 3.5rem;
+    font-weight: 700;
+    color: var(--sl-text-main);
+    letter-spacing: -0.03em;
+}
+
+.hero-text-sm-bold {
+    font-size: 2rem;
+    font-weight: 700;
+    color: var(--sl-accent);
+    letter-spacing: -0.02em;
+}
+
+/* Apple Floating Icon */
+.book-icon-box {
+    background: var(--sl-bg-secondary);
+    border-radius: var(--sl-radius-xl);
+    width: 160px;
+    height: 160px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    box-shadow: inset 0 2px 4px rgba(255, 255, 255, 0.8), 0 20px 40px rgba(0, 0, 0, 0.05);
+    border: 1px solid var(--sl-border-light);
+    animation: slFloat 6s ease-in-out infinite;
+}
+
+@keyframes slFloat {
+    0%, 100% { transform: translateY(0px); }
+    50% { transform: translateY(-12px); }
+}
+
+/* --- UPLOAD ZONE --- */
+.upload-container {
+    background: var(--sl-bg-secondary);
+    border: 2px dashed var(--sl-border-medium);
+    border-radius: var(--sl-radius-xl);
+    padding: 4rem;
+    transition: var(--sl-transition-spring);
+    position: relative;
+    overflow: hidden;
+}
+
+.upload-container:hover {
+    border-color: var(--sl-accent);
+    background: var(--sl-bg-main);
+    box-shadow: var(--sl-shadow-glow);
+}
+
+.upload-icon-circle {
+    width: 80px;
+    height: 80px;
+    background: #FFFFFF;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin: 0 auto 1.5rem;
+    box-shadow: var(--sl-shadow-md);
+    color: var(--sl-text-main);
+    font-size: 2rem;
+    transition: var(--sl-transition-spring);
+}
+
+.upload-container:hover .upload-icon-circle {
+    transform: scale(1.1);
+    color: var(--sl-accent);
+}
+
+/* --- BUTTONS (Duolingo Bouncy Style) --- */
+.btn-primary {
+    background: var(--sl-primary);
+    color: #FFFFFF;
+    font-weight: 700;
+    border: none;
+    border-radius: 999px;
+    padding: 1rem 2rem;
+    font-size: 1.1rem;
+    cursor: pointer;
+    transition: var(--sl-transition-spring);
+    box-shadow: 0 4px 0 rgba(0, 0, 0, 0.2);
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.5rem;
+    text-align: center;
+}
+
+.btn-primary:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 6px 0 rgba(0, 0, 0, 0.2), 0 8px 16px rgba(0, 0, 0, 0.1);
+}
+
+.btn-primary:active {
+    transform: translateY(4px);
+    box-shadow: 0 0 0 rgba(0, 0, 0, 0.2);
+}
+
+.btn-accent {
+    background: var(--sl-accent);
+    color: #FFFFFF;
+    box-shadow: 0 4px 0 #1B66C9;
+}
+.btn-accent:hover {
+    box-shadow: 0 6px 0 #1B66C9, 0 8px 16px rgba(41, 151, 255, 0.2);
+}
+.btn-accent:active {
+    box-shadow: 0 0 0 #1B66C9;
+}
+
+/* --- MACOS TOGGLE SWITCH (Role Selection) --- */
+.role-toggle-bg {
+    background-color: var(--sl-bg-tertiary);
+    padding: 4px;
+    border-radius: 12px;
+    display: inline-flex;
+}
+
+.role-toggle-btn {
+    padding: 8px 24px;
+    border-radius: 8px;
+    font-weight: 600;
+    font-size: 0.95rem;
+    color: var(--sl-text-secondary);
+    transition: var(--sl-transition-fast);
+    cursor: pointer;
+    border: none;
+    background: transparent;
+}
+
+.role-toggle-btn.active {
+    background-color: #FFFFFF;
+    color: var(--sl-text-main);
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08), 0 1px 2px rgba(0, 0, 0, 0.04);
+}
+
+/* --- EXERCISE CHIPS (Notion Style) --- */
+.exercise-chip {
+    background: #FFFFFF;
+    border: 1px solid var(--sl-border-medium);
+    border-radius: var(--sl-radius-md);
+    padding: 1.25rem;
+    transition: var(--sl-transition-spring);
+    cursor: pointer;
+    box-shadow: var(--sl-shadow-sm);
+}
+
+.exercise-chip:hover {
+    border-color: var(--sl-text-tertiary);
+    transform: translateY(-2px);
+    box-shadow: var(--sl-shadow-md);
+}
+
+.exercise-chip.active {
+    background: var(--sl-primary-light);
+    border-color: var(--sl-primary);
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+}
+
+.exercise-chip.active i {
+    color: var(--sl-primary);
+}
+.exercise-chip.active span {
+    color: var(--sl-primary);
+    font-weight: 700;
+}
+
+/* --- READING VIEW (ChatGPT Style) --- */
+.prose-reading {
+    font-family: 'Plus Jakarta Sans', sans-serif;
+    color: var(--sl-text-main);
+    line-height: 1.8;
+    font-size: 1.15rem;
+    max-width: 800px;
+    margin: 0 auto;
+}
+
+.prose-reading h1 {
+    font-family: 'Outfit', sans-serif;
+    font-weight: 800;
+    font-size: 2.5rem;
+    margin-bottom: 2rem;
+    border-bottom: 2px solid var(--sl-border-light);
+    padding-bottom: 1rem;
+    letter-spacing: -0.02em;
+}
+
+.prose-reading h2 {
+    font-family: 'Outfit', sans-serif;
+    font-weight: 700;
+    font-size: 1.75rem;
+    margin-top: 2.5rem;
+    margin-bottom: 1rem;
+}
+
+.prose-reading p {
+    margin-bottom: 1.5rem;
+}
+
+/* --- MCQ & INTERACTIVE OPTIONS (Duolingo Style) --- */
+.option-button-sl {
+    background: #FFFFFF;
+    border: 2px solid var(--sl-border-medium);
+    border-radius: var(--sl-radius-md);
+    padding: 1.25rem 1.5rem;
+    font-weight: 600;
+    font-size: 1.05rem;
+    color: var(--sl-text-main);
+    transition: var(--sl-transition-spring);
+    cursor: pointer;
+    text-align: left;
+    width: 100%;
+    box-shadow: 0 4px 0 transparent; /* Prepared for bounce */
+}
+
+.option-button-sl:hover:not(:disabled) {
+    background: var(--sl-bg-secondary);
+    border-color: var(--sl-text-secondary);
+    transform: translateY(-2px);
+    box-shadow: 0 4px 0 var(--sl-border-medium);
+}
+
+.option-button-sl:active:not(:disabled) {
+    transform: translateY(2px);
+    box-shadow: 0 0 0 transparent;
+}
+
+/* Success / Error States */
+.option-button-sl.bg-green-500 {
+    background: var(--sl-success-light) !important;
+    border-color: var(--sl-success-border) !important;
+    color: var(--sl-success-border) !important;
+    box-shadow: 0 4px 0 var(--sl-success-border) !important;
+    transform: translateY(-2px);
+    animation: slBounce 0.4s ease;
+}
+
+.option-button-sl.bg-red-500 {
+    background: var(--sl-danger-light) !important;
+    border-color: var(--sl-danger-border) !important;
+    color: var(--sl-danger-border) !important;
+    box-shadow: 0 4px 0 var(--sl-danger-border) !important;
+    transform: translateY(-2px);
+    animation: slShake 0.4s ease;
+}
+
+.option-button-sl.bg-green-100 { /* The correct answer shown when user fails */
+    background: #FFFFFF !important;
+    border-color: var(--sl-success) !important;
+    color: var(--sl-success) !important;
+    border-width: 2px !important;
+    box-shadow: 0 4px 0 var(--sl-success) !important;
+}
+
+@keyframes slBounce {
+    0% { transform: scale(1) translateY(0); }
+    50% { transform: scale(1.02) translateY(-4px); }
+    100% { transform: scale(1) translateY(-2px); }
+}
+
+@keyframes slShake {
+    0%, 100% { transform: translateX(0) translateY(-2px); }
+    25% { transform: translateX(-5px) translateY(-2px); }
+    75% { transform: translateX(5px) translateY(-2px); }
+}
+
+/* --- DRAG & DROP PREMIUM (Apple/Duolingo) --- */
+.draggable {
+    background: var(--sl-bg-main);
+    border: 2px solid var(--sl-border-medium);
+    border-radius: var(--sl-radius-sm);
+    padding: 0.75rem 1.25rem;
+    font-weight: 700;
+    color: var(--sl-text-main);
+    box-shadow: 0 4px 0 var(--sl-border-medium);
+    cursor: grab;
+    transition: var(--sl-transition-fast);
+    user-select: none;
+}
+.draggable:active {
+    cursor: grabbing;
+    transform: translateY(4px);
+    box-shadow: 0 0 0 transparent;
+}
+
+.drop-zone-premium {
+    background: var(--sl-bg-secondary);
+    border: 2px dashed var(--sl-border-medium);
+    border-radius: var(--sl-radius-md);
+    transition: var(--sl-transition-fast);
+}
+
+.drop-zone-premium.dragover {
+    background: var(--sl-accent-glow);
+    border-color: var(--sl-accent);
+}
+
+/* --- MISTAKE IDENTIFICATION --- */
+.mistake-word {
+    cursor: pointer;
+    padding: 2px 4px;
+    border-radius: 4px;
+    transition: var(--sl-transition-fast);
+    font-weight: 500;
+}
+.mistake-word:hover {
+    background: var(--sl-bg-tertiary);
+}
+.mistake-word.found {
+    background: var(--sl-danger-light) !important;
+    color: var(--sl-danger-border) !important;
+    text-decoration: line-through;
+    font-weight: 700;
+    animation: slBounce 0.3s ease;
+}
+
+/* --- NOTION-STYLE DATA TABLES FOR TEACHERS --- */
+.notion-table-container {
+    overflow-x: auto;
+    border: 1px solid var(--sl-border-medium);
+    border-radius: var(--sl-radius-md);
+    background: #FFFFFF;
+}
+
+.notion-table {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 0.9rem;
+    font-family: 'Plus Jakarta Sans', sans-serif;
+}
+
+.notion-table th {
+    text-align: left;
+    padding: 12px 16px;
+    font-weight: 600;
+    color: var(--sl-text-secondary);
+    border-bottom: 1px solid var(--sl-border-medium);
+    background: rgba(245, 245, 247, 0.5); /* Very light Apple Silver */
+}
+
+.notion-table td {
+    padding: 14px 16px;
+    border-bottom: 1px solid var(--sl-border-light);
+    color: var(--sl-text-main);
+    vertical-align: middle;
+}
+
+.notion-table tr:hover td {
+    background: var(--sl-bg-secondary);
+}
+.notion-table tr:last-child td {
+    border-bottom: none;
+}
+
+/* Badges */
+.sl-badge {
+    display: inline-flex;
+    align-items: center;
+    padding: 4px 8px;
+    border-radius: 6px;
+    font-size: 0.75rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+}
+.sl-badge-gray { background: var(--sl-bg-tertiary); color: var(--sl-text-main); }
+.sl-badge-green { background: var(--sl-success-light); color: var(--sl-success-border); }
+.sl-badge-red { background: var(--sl-danger-light); color: var(--sl-danger-border); }
+.sl-badge-blue { background: var(--sl-accent-glow); color: var(--sl-accent-hover); }
+
+/* --- HIDDEN / UTILITY --- */
+.hidden-step {
+    display: none !important;
+}
+
+/* --- RESPONSIVE FIXES --- */
+@media (max-width: 768px) {
+    .hero-text-xl { font-size: 3rem; }
+    .hero-text-md { font-size: 2rem; }
+    .hero-text-small { font-size: 1.25rem; }
+    
+    .upload-container { padding: 2rem 1.5rem; }
+    .glass-card, .exercise-card { padding: 1.5rem !important; }
+}
+
+/* --- SKELETON LOADER (ChatGPT Style Pulse) --- */
+.skeleton-loader {
+    width: 100%;
+    height: 20px;
+    background: linear-gradient(90deg, var(--sl-bg-secondary) 25%, var(--sl-bg-tertiary) 50%, var(--sl-bg-secondary) 75%);
+    background-size: 200% 100%;
+    animation: loadingPulse 1.5s infinite;
+    border-radius: 4px;
+    margin-bottom: 10px;
+}
+@keyframes loadingPulse {
+    0% { background-position: 200% 0; }
+    100% { background-position: -200% 0; }
+}

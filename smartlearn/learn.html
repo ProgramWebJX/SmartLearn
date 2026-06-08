@@ -1,0 +1,3959 @@
+{% extends "base.html" %}
+
+{% block title %}MicroChat 1.0 | SmartLearn{% endblock %}
+
+{% block head %}
+<script src="https://cdn.tailwindcss.com"></script>
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/mobile-drag-drop@2.3.0-rc.2/default.css">
+<script src="https://cdn.jsdelivr.net/npm/mobile-drag-drop@2.3.0-rc.2/index.min.js"></script>
+<script>
+    document.addEventListener("DOMContentLoaded", function () {
+        if (typeof MobileDragDrop !== 'undefined') {
+            MobileDragDrop.polyfill({
+                dragImageTranslateOverride: MobileDragDrop.scrollBehaviourDragImageTranslateOverride
+            });
+        }
+    });
+</script>
+<style>
+    @import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&family=Fraunces:opsz,wght@9..144,400;9..144,500;9..144,600;9..144,700;9..144,800&display=swap');
+
+    /* ============================================================
+       SMARTLEARN — REDESIGN BASE (Modern Editorial)
+       Inspired by Coursera × Notion × Linear
+       ============================================================ */
+    body {
+        font-family: 'Plus Jakarta Sans', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+        background: #FAFAF7;
+        color: #18181B;
+        -webkit-font-smoothing: antialiased;
+        -moz-osx-font-smoothing: grayscale;
+    }
+
+    /* ---- HERO ---- */
+    .sl-hero {
+        max-width: 1200px;
+        margin: 0 auto;
+        padding: 3rem 1.5rem 2.5rem;
+        display: grid;
+        grid-template-columns: 1.4fr 1fr;
+        gap: 4rem;
+        align-items: center;
+    }
+    @media (max-width: 900px) {
+        .sl-hero { grid-template-columns: 1fr; gap: 2.5rem; padding: 2rem 1.25rem 1rem; text-align: left; }
+    }
+
+    .sl-eyebrow {
+        display: inline-flex; align-items: center; gap: .55rem;
+        padding: .45rem 1rem;
+        background: #FFFFFF;
+        border: 1px solid #EAEAE0;
+        border-radius: 999px;
+        font-size: .78rem; font-weight: 600;
+        color: #404049;
+        text-transform: uppercase;
+        letter-spacing: .08em;
+        margin-bottom: 1.5rem;
+        box-shadow: 0 1px 2px rgba(0,0,0,.03);
+    }
+    .sl-eyebrow .sl-pulse {
+        width: 8px; height: 8px;
+        background: #10B981; border-radius: 999px;
+        box-shadow: 0 0 0 4px rgba(16,185,129,.18);
+        animation: slPulse 2s ease-in-out infinite;
+    }
+    @keyframes slPulse {
+        0%,100% { box-shadow: 0 0 0 4px rgba(16,185,129,.18); }
+        50% { box-shadow: 0 0 0 7px rgba(16,185,129,.08); }
+    }
+
+    .sl-hero-h1 {
+        font-family: 'Fraunces', Georgia, serif;
+        font-size: clamp(2.4rem, 5.2vw, 4.4rem);
+        font-weight: 600;
+        line-height: 1.02;
+        color: #0A0A0F;
+        margin: 0 0 1.25rem;
+        letter-spacing: -0.025em;
+    }
+    .sl-hero-h1 em {
+        font-style: italic;
+        font-weight: 500;
+        color: #2563EB;
+    }
+
+    .sl-hero-sub {
+        font-size: 1.1rem;
+        line-height: 1.6;
+        color: #525258;
+        max-width: 540px;
+        margin-bottom: 2rem;
+    }
+
+    .sl-hero-stats {
+        display: flex; gap: 2.5rem; flex-wrap: wrap;
+        padding-top: 1.5rem;
+        border-top: 1px solid #ECECE5;
+    }
+    .sl-hero-stat .sl-num {
+        font-family: 'Fraunces', serif;
+        font-size: 1.8rem; font-weight: 600;
+        color: #0A0A0F; line-height: 1;
+        letter-spacing: -0.02em;
+    }
+    .sl-hero-stat .sl-lab {
+        font-size: .78rem; color: #71717A;
+        font-weight: 500; margin-top: .35rem;
+        text-transform: uppercase; letter-spacing: .06em;
+    }
+
+    /* Hero visual side */
+    .sl-hero-visual {
+        position: relative;
+        aspect-ratio: 1/1;
+        max-width: 420px;
+        margin-left: auto;
+    }
+    @media (max-width: 900px) { .sl-hero-visual { display: none; } }
+
+    .sl-hv-card {
+        position: absolute;
+        background: #FFF;
+        border: 1px solid #ECECE5;
+        border-radius: 22px;
+        box-shadow: 0 30px 60px -25px rgba(20,20,30,.18);
+        padding: 1.25rem;
+    }
+    .sl-hv-card.c1 {
+        top: 5%; left: 5%; width: 65%; height: 75%;
+        transform: rotate(-6deg);
+        background: linear-gradient(160deg, #FFF 0%, #F8FAFF 100%);
+    }
+    .sl-hv-card.c2 {
+        bottom: 8%; right: 5%; width: 55%;
+        transform: rotate(4deg);
+        padding: 1rem 1.25rem;
+    }
+    .sl-hv-page-lines { display:flex; flex-direction:column; gap:.6rem; margin-top:.75rem; }
+    .sl-hv-page-lines span {
+        display:block; height: 8px; background: #E8E8E0; border-radius: 4px;
+    }
+    .sl-hv-page-lines span:nth-child(1){ width: 90%; }
+    .sl-hv-page-lines span:nth-child(2){ width: 75%; }
+    .sl-hv-page-lines span:nth-child(3){ width: 85%; background: linear-gradient(90deg,#2563EB,#06B6D4); }
+    .sl-hv-page-lines span:nth-child(4){ width: 60%; }
+    .sl-hv-page-lines span:nth-child(5){ width: 80%; }
+    .sl-hv-page-lines span:nth-child(6){ width: 45%; }
+    .sl-hv-tag {
+        display: inline-flex; align-items: center; gap: .4rem;
+        background: #0F172A; color: #FFF;
+        padding: .4rem .75rem; border-radius: 999px;
+        font-size: .72rem; font-weight: 600;
+        text-transform: uppercase; letter-spacing: .06em;
+    }
+    .sl-hv-tag i { color: #FACC15; }
+    .sl-hv-mini-stat { display:flex; align-items:center; gap:.75rem; margin-top:.85rem; }
+    .sl-hv-mini-stat .sl-hv-ic {
+        width: 36px; height: 36px; border-radius: 10px;
+        background: #DBEAFE; color: #2563EB;
+        display:flex; align-items:center; justify-content:center;
+        font-size: .9rem;
+    }
+    .sl-hv-mini-stat strong { font-family: 'Fraunces',serif; font-weight: 600; font-size: 1.1rem; color: #0A0A0F; display:block; line-height:1;}
+    .sl-hv-mini-stat small { color: #71717A; font-size: .72rem; font-weight: 500; }
+
+    .sl-hv-blob {
+        position: absolute;
+        border-radius: 50%;
+        filter: blur(60px); opacity: .35;
+        pointer-events: none;
+    }
+    .sl-hv-blob.b1 { width: 280px; height: 280px; background: #BFDBFE; top: -40px; right: -40px; }
+    .sl-hv-blob.b2 { width: 220px; height: 220px; background: #FEF3C7; bottom: -30px; left: -30px; }
+
+    /* ---- UPLOAD CARD ---- */
+    .sl-section {
+        max-width: 880px;
+        margin: 0 auto;
+        padding: 0 1.5rem;
+    }
+
+    .sl-upload-shell {
+        background: #FFFFFF;
+        border: 1px solid #ECECE5;
+        border-radius: 28px;
+        padding: 2rem;
+        box-shadow: 0 1px 0 #F3F3EE inset, 0 30px 60px -25px rgba(20,20,30,.10);
+        position: relative;
+        overflow: hidden;
+    }
+    .sl-upload-shell::before {
+        content: '';
+        position: absolute; inset: 0 0 auto 0;
+        height: 4px;
+        background: linear-gradient(90deg, #2563EB 0%, #06B6D4 45%, #F59E0B 100%);
+    }
+
+    .sl-drop {
+        border: 2px dashed #D8D8CE;
+        background: #FAFAF6;
+        border-radius: 20px;
+        padding: 2.75rem 1.75rem;
+        text-align: center;
+        transition: all .25s ease;
+    }
+    .sl-drop:hover { border-color: #2563EB; background: #F4F7FE; }
+
+    .sl-drop-icon {
+        width: 76px; height: 76px;
+        margin: 0 auto 1.5rem;
+        background: #0F172A;
+        border-radius: 22px;
+        display:flex; align-items:center; justify-content:center;
+        color: #FFF; font-size: 1.85rem;
+        box-shadow: 0 18px 40px -10px rgba(15,23,42,.45);
+        transform: rotate(-5deg);
+        position: relative;
+    }
+    .sl-drop-icon::after {
+        content: ''; position: absolute; right: -8px; top: -8px;
+        width: 22px; height: 22px;
+        background: #FACC15; border-radius: 50%;
+        border: 3px solid #FAFAF6;
+    }
+
+    .sl-drop h3 {
+        font-family: 'Fraunces', serif;
+        font-size: 1.85rem;
+        font-weight: 600;
+        color: #0A0A0F;
+        margin: 0 0 .5rem;
+        letter-spacing: -0.02em;
+    }
+    .sl-drop p {
+        color: #6B7280;
+        font-size: 1rem;
+        margin: 0 auto 1.75rem;
+        max-width: 460px;
+        line-height: 1.55;
+    }
+
+    .sl-btn {
+        display: inline-flex; align-items: center; justify-content: center;
+        gap: .55rem;
+        padding: .95rem 1.7rem;
+        border-radius: 14px;
+        font-weight: 600;
+        font-size: 1rem;
+        font-family: inherit;
+        cursor: pointer;
+        transition: transform .15s ease, background .2s, box-shadow .2s, border-color .2s;
+        border: 0;
+        text-decoration: none;
+        line-height: 1;
+    }
+    .sl-btn-primary {
+        background: #0F172A; color: #FFFFFF;
+        box-shadow: 0 10px 22px -10px rgba(15,23,42,.55);
+    }
+    .sl-btn-primary:hover { transform: translateY(-1px); background: #1E293B; }
+    .sl-btn-outline {
+        background: #FFFFFF; color: #0F172A;
+        border: 1.5px solid #E5E5DA;
+    }
+    .sl-btn-outline:hover { border-color: #0F172A; transform: translateY(-1px); }
+    .sl-btn-block { width: 100%; }
+    .sl-btn-lg { padding: 1.15rem 1.85rem; font-size: 1.05rem; border-radius: 16px; }
+
+    .sl-cta-row {
+        display: flex; gap: .75rem;
+        justify-content: center;
+        flex-wrap: wrap;
+    }
+
+    .sl-trust {
+        display: flex; gap: .55rem; flex-wrap: wrap;
+        margin-top: 1.75rem;
+        justify-content: center;
+    }
+    .sl-chip {
+        display: inline-flex; align-items: center; gap: .45rem;
+        padding: .4rem .85rem;
+        background: #F4F4EE;
+        color: #525258;
+        border-radius: 999px;
+        font-size: .8rem; font-weight: 500;
+        border: 1px solid #ECECE5;
+    }
+    .sl-chip i { color: #2563EB; font-size: .68rem; }
+    .sl-chip.sl-chip-success i { color: #10B981; }
+    .sl-chip.sl-chip-warn i { color: #F59E0B; }
+
+    .sl-divider-or {
+        display:flex; align-items:center; gap: 1rem;
+        margin: 1.5rem 0 0;
+        color: #A1A1AA; font-size: .75rem; font-weight: 600;
+        text-transform: uppercase; letter-spacing: .08em;
+    }
+    .sl-divider-or::before, .sl-divider-or::after {
+        content:''; flex: 1; height: 1px; background: #ECECE5;
+    }
+
+    .sl-text-link {
+        background: none; border: 0; color: #2563EB;
+        font-family: inherit; font-weight: 600; font-size: .92rem;
+        cursor: pointer; padding: .25rem .5rem;
+        text-decoration: underline; text-underline-offset: 3px;
+    }
+    .sl-text-link:hover { color: #1D4ED8; }
+
+    /* ---- ROLE / CONFIG ---- */
+    .sl-config-card {
+        background: #FFFFFF;
+        border: 1px solid #ECECE5;
+        border-radius: 28px;
+        padding: 2rem;
+        box-shadow: 0 30px 60px -25px rgba(20,20,30,.08);
+    }
+    .sl-config-head {
+        display: flex; flex-wrap: wrap; gap: 1.25rem;
+        justify-content: space-between; align-items: flex-start;
+        margin-bottom: 2rem;
+    }
+    .sl-config-head h2 {
+        font-family: 'Fraunces', serif;
+        font-size: 2rem; font-weight: 600;
+        color: #0A0A0F; letter-spacing: -0.02em;
+        margin: 0 0 .35rem;
+    }
+    .sl-config-head p { color: #71717A; font-size: .98rem; margin: 0; }
+
+    .sl-role-seg {
+        display: inline-flex;
+        background: #F4F4EE;
+        padding: 4px;
+        border-radius: 14px;
+        border: 1px solid #ECECE5;
+    }
+    .sl-role-btn {
+        padding: .65rem 1.4rem;
+        border-radius: 10px;
+        font-weight: 600;
+        font-size: .92rem;
+        font-family: inherit;
+        border: 0; background: transparent;
+        color: #6B7280; cursor: pointer;
+        transition: all .2s; display:flex; align-items:center; gap:.45rem;
+    }
+    .sl-role-btn i { font-size: .85rem; }
+    .sl-role-btn.active {
+        background: #FFF; color: #0A0A0F;
+        box-shadow: 0 1px 3px rgba(0,0,0,.08), 0 0 0 1px #ECECE5;
+    }
+
+    .sl-section-label {
+        display: flex; align-items: center; justify-content: space-between;
+        margin-bottom: 1rem;
+    }
+    .sl-section-label h3 {
+        font-family: 'Fraunces', serif;
+        font-size: 1.25rem; font-weight: 600;
+        color: #0A0A0F; margin: 0;
+        letter-spacing: -0.01em;
+    }
+    .sl-counter-pill {
+        display:inline-flex; align-items:center; gap: .4rem;
+        background: #F4F4EE; color: #404049;
+        padding: .35rem .85rem;
+        border-radius: 999px;
+        font-size: .8rem; font-weight: 600;
+        border: 1px solid #ECECE5;
+    }
+    .sl-counter-pill strong { color: #2563EB; font-weight: 700; }
+
+    .sl-teacher-textarea {
+        width: 100%;
+        padding: 1.25rem;
+        background: #FAFAF6;
+        border: 1.5px solid #E5E5DA;
+        border-radius: 18px;
+        outline: none;
+        transition: all .2s;
+        font-family: inherit;
+        font-size: 1rem;
+        line-height: 1.6;
+        color: #18181B;
+        min-height: 180px;
+        resize: vertical;
+    }
+    .sl-teacher-textarea:focus {
+        border-color: #2563EB;
+        background: #FFFFFF;
+        box-shadow: 0 0 0 4px rgba(37,99,235,.1);
+    }
+
+    /* ---- HISTORY ---- */
+    .sl-history-head {
+        max-width: 1200px;
+        margin: 3rem auto 1.25rem;
+        padding: 0 1.5rem;
+        display: flex; align-items: baseline; justify-content: space-between; flex-wrap: wrap; gap: .5rem;
+    }
+    .sl-history-head h2 {
+        font-family: 'Fraunces', serif;
+        font-size: 2rem; font-weight: 600;
+        color: #0A0A0F; margin: 0;
+        letter-spacing: -0.02em;
+    }
+    .sl-history-head .sl-history-sub { color: #71717A; font-size: .95rem; }
+
+    .sl-history-wrap {
+        max-width: 1200px;
+        margin: 0 auto 3rem;
+        padding: 0 1.5rem;
+    }
+    .sl-history-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fill, minmax(290px,1fr));
+        gap: 1.25rem;
+    }
+    .sl-history-card {
+        background: #FFFFFF;
+        border: 1px solid #ECECE5;
+        border-radius: 22px;
+        padding: 1.5rem 1.5rem 1.25rem;
+        display: flex; flex-direction: column;
+        transition: all .25s ease;
+        position: relative; overflow: hidden;
+    }
+    .sl-history-card::before {
+        content:''; position: absolute; inset: 0 0 auto 0; height: 4px;
+        background: linear-gradient(90deg, #2563EB, #06B6D4);
+        opacity: .95;
+    }
+    .sl-history-card:nth-child(3n+2)::before { background: linear-gradient(90deg, #F59E0B, #EF4444); }
+    .sl-history-card:nth-child(3n+3)::before { background: linear-gradient(90deg, #10B981, #2563EB); }
+    .sl-history-card:hover {
+        transform: translateY(-4px);
+        box-shadow: 0 25px 50px -15px rgba(20,20,30,.14);
+        border-color: #D8D8CE;
+    }
+    .sl-history-card h3 {
+        font-family: 'Fraunces', serif;
+        font-size: 1.2rem;
+        font-weight: 600;
+        color: #0A0A0F;
+        line-height: 1.3;
+        margin: .85rem 0 1.5rem;
+        letter-spacing: -0.01em;
+        display: -webkit-box;
+        -webkit-line-clamp: 3;
+        -webkit-box-orient: vertical;
+        overflow: hidden;
+    }
+    .sl-h-meta {
+        display:inline-flex; align-items:center; gap: .4rem;
+        font-size: .7rem; font-weight: 600;
+        color: #71717A;
+        text-transform: uppercase; letter-spacing: .06em;
+    }
+    .sl-h-meta i { color: #2563EB; }
+    .sl-h-btn {
+        width: 100%; padding: .8rem 1rem;
+        background: #0F172A; color: #FFFFFF;
+        border: 0; border-radius: 12px;
+        font-weight: 600; font-size: .92rem;
+        font-family: inherit;
+        cursor: pointer; transition: all .2s;
+        display: flex; align-items: center; justify-content: center; gap: .5rem;
+    }
+    .sl-h-btn:hover { background: #1E293B; transform: translateY(-1px); }
+    .sl-h-mini {
+        display: flex; gap: .5rem; margin-top: .55rem;
+    }
+    .sl-h-mini button {
+        flex:1; padding: .55rem;
+        background: #F4F4EE; color: #525258;
+        border: 0; border-radius: 10px;
+        font-weight: 600; font-size: .78rem;
+        font-family: inherit;
+        cursor: pointer; transition: all .2s;
+        display: flex; align-items: center; justify-content: center; gap: .4rem;
+    }
+    .sl-h-mini button:hover { background: #ECECE5; color: #0A0A0F; }
+    .sl-h-mini button.sl-danger:hover { background: #FEF2F2; color: #DC2626; }
+
+    /* ---- Loader ---- */
+    #loader.sl-loader {
+        margin-top: 1.5rem; padding: 2rem;
+        background: #F4F7FE;
+        border: 1px solid #DBEAFE;
+        border-radius: 20px;
+        text-align: center;
+    }
+    .sl-spinner {
+        position: relative; width: 64px; height: 64px;
+        margin: 0 auto 1rem;
+    }
+    .sl-spinner::before, .sl-spinner::after {
+        content:''; position: absolute; inset: 0;
+        border-radius: 50%;
+    }
+    .sl-spinner::before { border: 4px solid #DBEAFE; }
+    .sl-spinner::after {
+        border: 4px solid transparent; border-top-color: #2563EB;
+        animation: slSpin .9s linear infinite;
+    }
+    @keyframes slSpin { to { transform: rotate(360deg);} }
+
+    /* ---- Preview Grid ---- */
+    .sl-preview-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fill, minmax(140px,1fr));
+        gap: .75rem;
+        margin-bottom: 1.5rem;
+    }
+    .sl-preview-grid img,
+    .sl-preview-grid > div {
+        border-radius: 14px;
+        border: 1px solid #ECECE5;
+    }
+
+    /* ============================================================
+       PRESERVED LEGACY STYLES (for exercise sections, modals, etc.)
+       ============================================================ */
+    .hero-text-small { font-size: 2.2rem; font-weight: 700; color: #111827; line-height: 1.1; }
+    .hero-text-xl { font-size: 6rem; font-weight: 900; color: #111827; line-height: 1; letter-spacing: -0.05em; }
+    .hero-text-md { font-size: 3rem; font-weight: 700; color: #111827; line-height: 1.1; }
+    .hero-text-sm-bold { font-size: 1.8rem; font-weight: 700; color: #111827; line-height: 1.1; }
+    .book-icon-box { background: white; border-radius: 2.5rem; width: 180px; height: 180px; display: flex; align-items: center; justify-content: center; box-shadow: 0 20px 40px rgba(0, 0, 0, 0.04); border: 1px solid rgba(226, 232, 240, 0.8); }
+    .upload-container { border: 1px solid #e2e8f0; border-radius: 2rem; padding: 3rem; background: white; box-shadow: 0 10px 30px rgba(0, 0, 0, 0.02); }
+    .plus-btn-circle { width: 60px; height: 60px; background: #4f46e5; border-radius: 50%; display: flex; align-items: center; justify-content: center; margin: 0 auto 1.5rem; box-shadow: 0 8px 20px rgba(79, 70, 229, 0.3); transition: transform 0.2s; }
+
+    .glass-card {
+        background: rgba(255, 255, 255, 0.95);
+        backdrop-filter: blur(12px);
+        border: 1px solid rgba(226, 232, 240, 0.8);
+        border-radius: 2rem;
+        box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05), 0 10px 15px -3px rgba(0, 0, 0, 0.1);
+    }
+    .exercise-card:hover {
+        transform: translateY(-5px);
+        box-shadow: 0 25px 50px rgba(0, 0, 0, 0.08);
+    }
+    .btn-primary {
+        background: linear-gradient(135deg, #4f46e5 0%, #3b82f6 100%);
+        transition: all 0.3s ease;
+    }
+    .btn-primary:hover {
+        opacity: 0.9;
+        transform: scale(1.02);
+        box-shadow: 0 10px 20px rgba(59, 130, 246, 0.3);
+    }
+
+
+    .mistake-word {
+        cursor: pointer;
+        padding: 2px 4px;
+        border-radius: 4px;
+        transition: all 0.2s;
+    }
+
+    .mistake-word:hover {
+        background-color: #fef3c7;
+        border-bottom: 2px solid #f59e0b;
+    }
+
+    .mistake-word.found {
+        background-color: #fee2e2;
+        color: #dc2626;
+        text-decoration: line-through;
+        border-bottom: 2px solid #dc2626;
+    }
+
+    .hidden-step {
+        display: none;
+    }
+
+    .progress-ring {
+        transition: stroke-dashoffset 0.35s;
+        transform: rotate(-90deg);
+        transform-origin: 50% 50%;
+    }
+
+    /* --- Responsive Fixes --- */
+    @media (max-width: 768px) {
+        .hero-text-xl {
+            font-size: 3.5rem;
+        }
+
+        .hero-text-md {
+            font-size: 2rem;
+        }
+
+        .hero-text-small {
+            font-size: 1.5rem;
+        }
+
+        .hero-text-sm-bold {
+            font-size: 1.3rem;
+        }
+
+        #hero-section {
+            text-align: center;
+            gap: 2rem;
+            margin-bottom: 3rem;
+        }
+
+        #hero-section .flex-1 {
+            text-align: center;
+        }
+
+        #hero-section .flex {
+            justify-content: center;
+        }
+
+        .book-icon-box {
+            width: 120px;
+            height: 120px;
+            margin: 0 auto;
+        }
+
+        .book-icon-box svg {
+            width: 60px;
+            height: 60px;
+        }
+
+        .upload-container {
+            padding: 1.5rem;
+            border-radius: 1.5rem;
+        }
+
+        #drop-area {
+            padding: 2.5rem 1.5rem;
+        }
+
+        .glass-card,
+        .exercise-card {
+            padding: 1.5rem !important;
+            border-radius: 1.5rem !important;
+        }
+
+        .exercise-card h3 {
+            font-size: 1.75rem !important;
+        }
+
+        #mistakeContentArea {
+            padding: 1.5rem;
+            font-size: 1.25rem;
+            line-height: 1.5;
+        }
+
+        .btn-primary {
+            padding: 1.25rem;
+            font-size: 1.25rem;
+        }
+
+        #timerDisplay {
+            font-size: 3.5rem;
+        }
+
+        .py-16 {
+            padding-top: 2rem;
+            padding-bottom: 2rem;
+        }
+    }
+</style>
+<link rel="stylesheet" href="{{ url_for('static', filename='css/settings_modal.css') }}">
+{% endblock %}
+
+{% block content %}
+
+<!-- Upgrade Modal (Preserved) -->
+<div id="upgradeModal"
+    class="fixed inset-0 bg-gray-900/60 backdrop-blur-sm z-[100] hidden flex items-center justify-center">
+    <div
+        class="bg-white rounded-3xl shadow-2xl p-8 max-w-sm w-full mx-4 text-center relative border border-gray-100 transform transition-all">
+        <button onclick="document.getElementById('upgradeModal').classList.add('hidden')"
+            class="absolute top-4 right-4 text-gray-400 hover:text-gray-600">
+            <i class="fas fa-times text-xl"></i>
+        </button>
+        <div
+            class="w-16 h-16 bg-gradient-to-br from-indigo-500 to-purple-600 rounded-2xl flex items-center justify-center text-white text-3xl mx-auto mb-6 shadow-lg shadow-indigo-200">
+            <i class="fas fa-rocket"></i>
+        </div>
+        <h3 class="text-2xl font-bold text-gray-900 mb-2">Kufiri Ditor</h3>
+        <p class="text-gray-600 mb-8 leading-relaxed" id="upgradeModalText">Ju keni arritur limitin falas për Smart
+            Learn. Upgrade për të vazhduar aksesin!</p>
+        <a href="/payment"
+            class="block w-full py-3.5 px-4 bg-gray-900 hover:bg-gray-800 text-white rounded-xl font-bold text-lg transition shadow-lg hover:shadow-xl">Upgrade
+            Tani</a>
+    </div>
+</div>
+
+<!-- Signup Modal (Preserved) -->
+<div id="signupModal"
+    class="fixed inset-0 bg-gray-900/60 backdrop-blur-sm z-[100] hidden flex items-center justify-center">
+    <div class="bg-white rounded-3xl shadow-2xl p-8 max-w-sm w-full mx-4 text-center relative border border-gray-100">
+        <button onclick="document.getElementById('signupModal').classList.add('hidden')"
+            class="absolute top-4 right-4 text-gray-400 hover:text-gray-600">
+            <i class="fas fa-times text-xl"></i>
+        </button>
+        <div
+            class="w-16 h-16 bg-blue-100 text-blue-600 rounded-2xl flex items-center justify-center text-3xl mx-auto mb-6">
+            <i class="fas fa-user-plus"></i>
+        </div>
+        <h3 class="text-2xl font-bold text-gray-900 mb-2">Ruani Progresin</h3>
+        <p class="text-gray-600 mb-8 leading-relaxed">Krijoni llogari falas për të ruajtur progresin dhe për të pasur më
+            shumë përdorim ditor.</p>
+        <a href="/intro"
+            class="block w-full py-3.5 px-4 bg-blue-600 hover:bg-blue-700 text-white rounded-xl font-bold text-lg transition shadow-lg hover:shadow-xl mb-3">Sign
+            Up Tani</a>
+    </div>
+</div>
+
+<!-- WELCOME MODAL FOR SMARTLEARN — Premium Carousel -->
+{% if open_welcome %}
+<style>
+    #sl-welcome-overlay {
+        position: fixed;
+        inset: 0;
+        background: rgba(15, 23, 42, 0.78);
+        backdrop-filter: blur(8px);
+        -webkit-backdrop-filter: blur(8px);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        z-index: 99999;
+        padding: 16px;
+        animation: slFadeIn .35s ease forwards;
+    }
+
+    @keyframes slFadeIn {
+        from {
+            opacity: 0
+        }
+
+        to {
+            opacity: 1
+        }
+    }
+
+    #sl-welcome-card {
+        background: #ffffff;
+        border-radius: 28px;
+        width: 100%;
+        max-width: 660px;
+        max-height: 92vh;
+        overflow: hidden;
+        display: flex;
+        flex-direction: column;
+        box-shadow: 0 40px 80px rgba(0, 0, 0, 0.35);
+        animation: slSlideUp .45s cubic-bezier(0.34, 1.56, 0.64, 1) forwards;
+    }
+
+    @keyframes slSlideUp {
+        from {
+            transform: translateY(40px);
+            opacity: 0
+        }
+
+        to {
+            transform: translateY(0);
+            opacity: 1
+        }
+    }
+
+    #sl-welcome-header {
+        background: linear-gradient(135deg, #4f46e5 0%, #7c3aed 60%, #a855f7 100%);
+        padding: 32px 32px 24px;
+        position: relative;
+        overflow: hidden;
+        flex-shrink: 0;
+    }
+
+    #sl-welcome-header::before {
+        content: '';
+        position: absolute;
+        top: -60px;
+        right: -60px;
+        width: 200px;
+        height: 200px;
+        background: rgba(255, 255, 255, 0.08);
+        border-radius: 50%;
+    }
+
+    #sl-welcome-header::after {
+        content: '';
+        position: absolute;
+        bottom: -50px;
+        left: 20px;
+        width: 130px;
+        height: 130px;
+        background: rgba(255, 255, 255, 0.05);
+        border-radius: 50%;
+    }
+
+    #sl-welcome-close {
+        position: absolute;
+        top: 14px;
+        right: 14px;
+        width: 32px;
+        height: 32px;
+        border-radius: 50%;
+        background: rgba(255, 255, 255, 0.2);
+        color: #fff;
+        border: none;
+        cursor: pointer;
+        font-size: 1.3rem;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        transition: background .2s, transform .2s;
+        z-index: 10;
+    }
+
+    #sl-welcome-close:hover {
+        background: rgba(255, 255, 255, 0.35);
+        transform: rotate(90deg);
+    }
+
+    .sl-badge {
+        display: inline-flex;
+        align-items: center;
+        gap: 6px;
+        background: rgba(255, 255, 255, 0.18);
+        color: #e0e7ff;
+        font-size: 0.75rem;
+        font-weight: 700;
+        letter-spacing: .08em;
+        text-transform: uppercase;
+        padding: 4px 12px;
+        border-radius: 100px;
+        margin-bottom: 12px;
+        border: 1px solid rgba(255, 255, 255, 0.2);
+    }
+
+    .sl-h-title {
+        font-size: clamp(1.5rem, 4vw, 2rem);
+        font-weight: 900;
+        color: #fff;
+        line-height: 1.15;
+        margin: 0 0 6px;
+        letter-spacing: -0.03em;
+        transition: all .3s;
+    }
+
+    .sl-h-sub {
+        font-size: 0.88rem;
+        color: rgba(255, 255, 255, 0.75);
+        margin: 0;
+        line-height: 1.5;
+        transition: all .3s;
+    }
+
+    .sl-dots {
+        display: flex;
+        gap: 7px;
+        margin-top: 18px;
+    }
+
+    .sl-dot {
+        width: 7px;
+        height: 7px;
+        border-radius: 100px;
+        background: rgba(255, 255, 255, 0.3);
+        transition: all .3s ease;
+        cursor: pointer;
+    }
+
+    .sl-dot.active {
+        background: #fff;
+        width: 26px;
+    }
+
+    #sl-welcome-body {
+        flex: 1;
+        overflow-y: auto;
+        min-height: 0;
+    }
+
+    .sl-step {
+        display: none;
+        flex-direction: column;
+        gap: 14px;
+        padding: 26px 32px 22px;
+        opacity: 0;
+        animation: slStepIn .3s ease forwards;
+    }
+
+    @keyframes slStepIn {
+        from {
+            opacity: 0;
+            transform: translateX(20px)
+        }
+
+        to {
+            opacity: 1;
+            transform: translateX(0)
+        }
+    }
+
+    .sl-step.active {
+        display: flex;
+        opacity: 1;
+    }
+
+    .sl-step.exit {
+        display: none;
+    }
+
+    .sl-step-heading {
+        margin: 0 0 2px;
+        font-size: 1.25rem;
+        font-weight: 800;
+        color: #0f172a;
+    }
+
+    .sl-step-sub {
+        margin: 0;
+        font-size: 0.85rem;
+        color: #64748b;
+    }
+
+    .sl-card {
+        display: flex;
+        align-items: flex-start;
+        gap: 14px;
+        background: #f8fafc;
+        border: 1px solid #e2e8f0;
+        border-radius: 16px;
+        padding: 16px 18px;
+        transition: transform .2s, box-shadow .2s, border-color .2s;
+    }
+
+    .sl-card:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 6px 20px rgba(79, 70, 229, 0.1);
+        border-color: #c7d2fe;
+    }
+
+    .sl-ic {
+        width: 44px;
+        height: 44px;
+        border-radius: 13px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 1.2rem;
+        flex-shrink: 0;
+    }
+
+    .ic-v {
+        background: #ede9fe;
+        color: #6d28d9;
+    }
+
+    .ic-b {
+        background: #dbeafe;
+        color: #2563eb;
+    }
+
+    .ic-g {
+        background: #d1fae5;
+        color: #059669;
+    }
+
+    .ic-a {
+        background: #fef3c7;
+        color: #d97706;
+    }
+
+    .ic-p {
+        background: #fce7f3;
+        color: #db2777;
+    }
+
+    .ic-i {
+        background: #e0e7ff;
+        color: #4338ca;
+    }
+
+    .sl-ci h4 {
+        font-size: 0.95rem;
+        font-weight: 700;
+        color: #0f172a;
+        margin: 0 0 3px;
+    }
+
+    .sl-ci p {
+        font-size: 0.82rem;
+        color: #64748b;
+        margin: 0;
+        line-height: 1.5;
+    }
+
+    #sl-welcome-footer {
+        border-top: 1px solid #f1f5f9;
+        padding: 16px 32px;
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        flex-shrink: 0;
+        background: #fff;
+    }
+
+    .sl-skip {
+        background: none;
+        border: none;
+        font-size: 0.85rem;
+        color: #94a3b8;
+        cursor: pointer;
+        padding: 8px;
+        transition: color .2s;
+    }
+
+    .sl-skip:hover {
+        color: #475569;
+    }
+
+    .sl-next {
+        display: inline-flex;
+        align-items: center;
+        gap: 8px;
+        background: linear-gradient(135deg, #4f46e5, #7c3aed);
+        color: #fff;
+        border: none;
+        padding: 11px 26px;
+        border-radius: 100px;
+        font-size: 0.9rem;
+        font-weight: 700;
+        cursor: pointer;
+        box-shadow: 0 4px 15px rgba(79, 70, 229, 0.35);
+        transition: all .25s;
+    }
+
+    .sl-next:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 8px 22px rgba(79, 70, 229, 0.45);
+    }
+
+    .sl-next.finish {
+        background: linear-gradient(135deg, #059669, #10b981);
+        box-shadow: 0 4px 15px rgba(5, 150, 105, 0.35);
+    }
+
+    .sl-next.finish:hover {
+        box-shadow: 0 8px 22px rgba(5, 150, 105, 0.45);
+    }
+
+    @media (max-width:600px) {
+        #sl-welcome-header {
+            padding: 22px 20px 18px;
+        }
+
+        .sl-step {
+            padding: 20px 18px 16px;
+        }
+
+        #sl-welcome-footer {
+            padding: 13px 18px;
+        }
+
+        .sl-card {
+            padding: 13px 14px;
+        }
+    }
+</style>
+
+<div id="sl-welcome-overlay">
+    <div id="sl-welcome-card">
+        <div id="sl-welcome-header">
+            <button id="sl-welcome-close" onclick="slClose()">&times;</button>
+            <div class="sl-badge"><i class="fas fa-graduation-cap"></i> SmartLearn</div>
+            <h1 class="sl-h-title" id="slHTitle">Mirësevini te SmartLearn!</h1>
+            <p class="sl-h-sub" id="slHSub">Platforma inteligjente për krijimin dhe ndarjen e mësimeve.</p>
+            <div class="sl-dots" id="slDots"></div>
+        </div>
+
+        <div id="sl-welcome-body">
+
+            <!-- Step 0 — Overview -->
+            <div class="sl-step active" data-title="Mirësevini te SmartLearn!"
+                data-sub="Platforma inteligjente për krijimin dhe ndarjen e mësimeve.">
+                <h2 class="sl-step-heading">Çfarë mund të bëni si Mësues?</h2>
+                <p class="sl-step-sub">Tre hapa — gjenero, edito, ndaj.</p>
+                <div class="sl-card">
+                    <div class="sl-ic ic-v"><i class="fas fa-camera"></i></div>
+                    <div class="sl-ci">
+                        <h4>Foto → Mësim</h4>
+                        <p>Ngarko foto të librit — AI gjeneron planin e plotë automatikisht në sekonda.</p>
+                    </div>
+                </div>
+                <div class="sl-card">
+                    <div class="sl-ic ic-g"><i class="fas fa-pen-to-square"></i></div>
+                    <div class="sl-ci">
+                        <h4>Edito si Word</h4>
+                        <p>Modifiko çdo detaj — titujt, pyetjet, shpjegimet — direkt në browser.</p>
+                    </div>
+                </div>
+                <div class="sl-card">
+                    <div class="sl-ic ic-b"><i class="fas fa-link"></i></div>
+                    <div class="sl-ci">
+                        <h4>Ndaj me Nxënësit</h4>
+                        <p>Gjenero link të veçantë, dërgo tek nxënësit — ti merr notat dhe përgjigjet!</p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Step 1 — Upload & Generate -->
+            <div class="sl-step" data-title="Gjenero Mësimin"
+                data-sub="Foto apo tekst — AI e kthen në plan mësimor në sekonda.">
+                <h2 class="sl-step-heading">Hap 1 — Ngarko &amp; Gjenero</h2>
+                <p class="sl-step-sub">Zgjidhni modalitetin <strong>Mësues</strong> dhe filloni me një temë ose foto.
+                </p>
+                <div class="sl-card">
+                    <div class="sl-ic ic-a"><i class="fas fa-image"></i></div>
+                    <div class="sl-ci">
+                        <h4>Ngarko fotografi</h4>
+                        <p>Klikoni ikonën <i class="fas fa-paperclip" style="color:#6366f1"></i> për të bashkangjitur
+                            foto të faqeve të librit. AI i lexon vetë.</p>
+                    </div>
+                </div>
+                <div class="sl-card">
+                    <div class="sl-ic ic-v"><i class="fas fa-wand-magic-sparkles"></i></div>
+                    <div class="sl-ci">
+                        <h4>Konfiguro &amp; Gjenero</h4>
+                        <p>Zgjidhni llojin e ushtrimeve, gjuhën dhe nivelin — pastaj klikoni <strong>Gjenero</strong>.
+                        </p>
+                    </div>
+                </div>
+                <div class="sl-card">
+                    <div class="sl-ic ic-i"><i class="fas fa-bolt"></i></div>
+                    <div class="sl-ci">
+                        <h4>Rezultat i menjëhershëm</h4>
+                        <p>Brenda 10-20 sekondave ni një mësim më kuize, drag&amp;drop, ese dhe shumë më tepër.</p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Step 2 — Edit -->
+            <div class="sl-step" data-title="Edito si Profesionist"
+                data-sub="Ndryshoni çdo gjë — njësoj si Word, por drejtpërdrejt në browser.">
+                <h2 class="sl-step-heading">Hap 2 — Edito Mësimin</h2>
+                <p class="sl-step-sub">Toolbar-i profesional shfaqet automatikisht lart ekranit pas gjenerimit.</p>
+                <div class="sl-card">
+                    <div class="sl-ic ic-b"><i class="fas fa-edit"></i></div>
+                    <div class="sl-ci">
+                        <h4>Edito pyetje &amp; shpjegime</h4>
+                        <p>Klikoni mbi çdo tekst për ta ndryshuar — titujt, opsionet — me një klik.</p>
+                    </div>
+                </div>
+                <div class="sl-card">
+                    <div class="sl-ic ic-g"><i class="fas fa-plus-circle"></i></div>
+                    <div class="sl-ci">
+                        <h4>Shto apo Fshij ushtrime</h4>
+                        <p>Shtoni ushtrime shtesë ose fshini — kontrolli total është tek ju.</p>
+                    </div>
+                </div>
+                <div class="sl-card">
+                    <div class="sl-ic ic-a"><i class="fas fa-floppy-disk"></i></div>
+                    <div class="sl-ci">
+                        <h4>Ruajtur automatikisht</h4>
+                        <p>Mësimet tuaja ruhen te historia (deri 24h) dhe mund t'i hapni sërish çdo herë.</p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Step 3 — Share & Results -->
+            <div class="sl-step" data-title="Ndaj &amp; Merr Rezultatet"
+                data-sub="Linku magjik që i lidh mësuesin me nxënësit — pa asnëjë llogari!">
+                <h2 class="sl-step-heading">Hap 3 — Ndaj me Nxënësit</h2>
+                <p class="sl-step-sub">Klikoni butonin <i class="fas fa-share-alt" style="color:#6366f1"></i>
+                    <strong>Shpërnda</strong> në Toolbar.
+                </p>
+                <div class="sl-card">
+                    <div class="sl-ic ic-p"><i class="fas fa-share-nodes"></i></div>
+                    <div class="sl-ci">
+                        <h4>Gjenero Link Unik</h4>
+                        <p>Krijohet një link i siguruëm 24-orësh. Kopjoni dhe dërgoni tek nxënësit.</p>
+                    </div>
+                </div>
+                <div class="sl-card">
+                    <div class="sl-ic ic-b"><i class="fas fa-user-group"></i></div>
+                    <div class="sl-ci">
+                        <h4>Nxënësit japin testet</h4>
+                        <p>Nxënësi hap linkun, shkruan emrin dhe fillon menjëherë. Sëkrëkohet llogari!</p>
+                    </div>
+                </div>
+                <div class="sl-card">
+                    <div class="sl-ic ic-g"><i class="fas fa-chart-bar"></i></div>
+                    <div class="sl-ci">
+                        <h4>Ti shikon notat</h4>
+                        <p>Nga paneli Submissions, shikoni rezultatin e çdo nxënësi dhe jepni komente.</p>
+                    </div>
+                </div>
+            </div>
+
+        </div><!-- /body -->
+
+        <div id="sl-welcome-footer">
+            <button class="sl-skip" onclick="slClose()">Kalo turin</button>
+            <button class="sl-next" id="slNextBtn" onclick="slNext()">
+                Vazhdo <i class="fas fa-arrow-right"></i>
+            </button>
+        </div>
+    </div>
+</div>
+
+<script>
+    (function () {
+        const steps = document.querySelectorAll('#sl-welcome-body .sl-step');
+        const dotsEl = document.getElementById('slDots');
+        const nextBtn = document.getElementById('slNextBtn');
+        const titleEl = document.getElementById('slHTitle');
+        const subEl = document.getElementById('slHSub');
+        let cur = 0;
+
+        steps.forEach((_, i) => {
+            const d = document.createElement('span');
+            d.className = 'sl-dot' + (i === 0 ? ' active' : '');
+            d.onclick = () => slGo(i);
+            dotsEl.appendChild(d);
+        });
+
+        function slGo(idx) {
+            if (idx === cur) return;
+            steps[cur].classList.remove('active'); steps[cur].classList.add('exit');
+            setTimeout(() => steps[cur].classList.remove('exit'), 340);
+            cur = idx; steps[cur].classList.add('active');
+            dotsEl.querySelectorAll('.sl-dot').forEach((d, i) => d.classList.toggle('active', i === cur));
+            titleEl.textContent = steps[cur].dataset.title;
+            subEl.innerHTML = steps[cur].dataset.sub;
+            const last = cur === steps.length - 1;
+            nextBtn.className = 'sl-next' + (last ? ' finish' : '');
+            nextBtn.innerHTML = last ? 'Fillo tani! <i class="fas fa-rocket"></i>' : 'Vazhdo <i class="fas fa-arrow-right"></i>';
+        }
+
+        window.slNext = function () {
+            if (cur < steps.length - 1) slGo(cur + 1); else slClose();
+        };
+        window.slClose = function () {
+            const ov = document.getElementById('sl-welcome-overlay');
+            ov.style.opacity = '0'; ov.style.transition = 'opacity .25s';
+            setTimeout(() => { ov.style.display = 'none'; }, 260);
+            window.history.pushState({}, '', ' /learn');
+        };
+    })();
+</script>
+{% endif %}
+
+<!-- ============================================================
+     REDESIGNED HERO + UPLOAD (Modern Editorial)
+     All IDs / JS hooks are preserved exactly as before.
+     ============================================================ -->
+<section class="sl-hero" id="hero-section">
+    <div class="sl-hero-copy">
+        <span class="sl-eyebrow"><span class="sl-pulse"></span> SmartLearn · AI Tutor</span>
+        <h1 class="sl-hero-h1">
+            Mëso çdo gjë, <br>
+            nga një foto. <em>Në sekonda.</em>
+        </h1>
+        <p class="sl-hero-sub">
+            Ngarko një faqe libri ose ngjit një tekst. Inteligjenca artificiale e
+            SmartLearn krijon mësimin, pyetjet dhe ushtrimet — të personalizuara
+            për ty ose klasën tënde.
+        </p>
+        <div class="sl-hero-stats">
+            <div class="sl-hero-stat">
+                <div class="sl-num">12+</div>
+                <div class="sl-lab">Lloje ushtrimesh</div>
+            </div>
+            <div class="sl-hero-stat">
+                <div class="sl-num">~15s</div>
+                <div class="sl-lab">Kohë gjenerimi</div>
+            </div>
+            <div class="sl-hero-stat">
+                <div class="sl-num">2</div>
+                <div class="sl-lab">Mode: Student / Mësues</div>
+            </div>
+        </div>
+    </div>
+
+    <div class="sl-hero-visual" aria-hidden="true">
+        <span class="sl-hv-blob b1"></span>
+        <span class="sl-hv-blob b2"></span>
+
+        <div class="sl-hv-card c1">
+            <span class="sl-hv-tag"><i class="fas fa-bolt"></i> Mësim i ri</span>
+            <div class="sl-hv-page-lines">
+                <span></span><span></span><span></span><span></span><span></span><span></span>
+            </div>
+        </div>
+
+        <div class="sl-hv-card c2">
+            <span class="sl-h-meta"><i class="fas fa-circle-check"></i> Gjeneruar</span>
+            <div class="sl-hv-mini-stat">
+                <div class="sl-hv-ic"><i class="fas fa-list-check"></i></div>
+                <div>
+                    <strong>7 ushtrime</strong>
+                    <small>Gati për t'u zgjidhur</small>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<div class="w-full pb-16">
+    <!-- Main Content Container (Centered) -->
+    <div class="max-w-6xl mx-auto px-4">
+        <!-- Step 1: Redesigned Upload Area -->
+        <section id="step-upload" class="sl-section animate-fade-in" style="animation-delay: 0.1s;">
+            <!-- Upload Box -->
+            <div id="step-upload-box" class="sl-upload-shell">
+
+                <input type="file" id="fileInput" class="hidden" accept="image/*" multiple>
+
+                <div id="upload-prompt" class="sl-drop">
+                    <div class="sl-drop-icon">
+                        <i class="fas fa-camera"></i>
+                    </div>
+                    <h3>Shkrep, ngarko, mëso.</h3>
+                    <p>
+                        Zgjidh një faqe nga libri yt ose bëj një foto. Ne kthejmë
+                        çdo tekst në një mësim interaktiv me pyetje dhe ushtrime.
+                    </p>
+
+                    <div class="sl-cta-row">
+                        <label for="fileInput" class="sl-btn sl-btn-primary">
+                            <i class="fas fa-image"></i> Zgjidh Fotot
+                        </label>
+                        <button id="cameraBtn" type="button" class="sl-btn sl-btn-outline">
+                            <i class="fas fa-camera"></i> Bëj një foto
+                        </button>
+                    </div>
+
+                    <div class="sl-trust">
+                        <span class="sl-chip sl-chip-success"><i class="fas fa-circle"></i> Privat &amp; i sigurt</span>
+                        <span class="sl-chip"><i class="fas fa-circle"></i> ~15 sekonda</span>
+                        <span class="sl-chip sl-chip-warn"><i class="fas fa-circle"></i> Pa regjistrim</span>
+                        <span class="sl-chip"><i class="fas fa-circle"></i> AI Gemini</span>
+                    </div>
+                </div>
+
+                <!-- Hidden image element used by JS for preview/session state -->
+                <img id="imgPreview" class="hidden" src="" alt="">
+
+                <div id="preview-container" class="hidden" style="margin-top:1.5rem;">
+                    <div id="image-grid-preview" class="sl-preview-grid">
+                        <!-- Preview images injected here by JS -->
+                    </div>
+                    <button id="analyzeBtn" data-tour="create-lesson"
+                        class="sl-btn sl-btn-primary sl-btn-block sl-btn-lg">
+                        Gjenero Mësimin <i class="fas fa-arrow-right"></i>
+                    </button>
+                </div>
+
+                <!-- Animated Loader -->
+                <div id="loader" class="hidden sl-loader">
+                    <div class="sl-spinner"></div>
+                    <div id="loadingPhrase" style="font-family:'Fraunces',serif; font-size:1.25rem; font-weight:600; color:#1E3A8A;">
+                        Po lexojmë tekstin...
+                    </div>
+                    <p style="color:#64748B; margin-top:.4rem; font-size:.85rem; font-weight:500;">
+                        Zakonisht zgjat 10–15 sekonda
+                    </p>
+                </div>
+            </div>
+        </section>
+
+        <!-- Camera Modal (same logic, restyled wrapper kept intact for JS) -->
+        <div id="cameraModal"
+            class="fixed inset-0 bg-black/90 z-[150] hidden flex flex-col items-center justify-center p-4">
+            <video id="video" class="max-w-full max-h-[70vh] rounded-2xl bg-black" autoplay playsinline></video>
+            <canvas id="canvas" class="hidden"></canvas>
+            <div class="flex gap-6 mt-8">
+                <button id="captureBtn"
+                    class="w-20 h-20 bg-white rounded-full flex items-center justify-center text-slate-900 text-3xl shadow-2xl hover:scale-110 transition-transform">
+                    <i class="fas fa-camera"></i>
+                </button>
+                <button id="closeCameraBtn"
+                    class="w-20 h-20 bg-red-500 rounded-full flex items-center justify-center text-white text-3xl shadow-2xl hover:scale-110 transition-transform">
+                    <i class="fas fa-times"></i>
+                </button>
+            </div>
+        </div>
+
+        <!-- New: Role & Exercise Selection Section -->
+        <section id="role-setup" class="sl-section animate-fade-in hidden" style="animation-delay: 0.1s; margin-top: 2rem;">
+            <div class="sl-config-card">
+                <div class="sl-config-head">
+                    <div>
+                        <h2>Konfiguro studimin</h2>
+                        <p>Zgjidh rolin tënd dhe llojet e ushtrimeve që dëshiron.</p>
+                    </div>
+                    <!-- Role Toggle -->
+                    <div class="sl-role-seg">
+                        <button onclick="setRole('student')" id="btn-role-student" type="button"
+                            class="sl-role-btn active">
+                            <i class="fas fa-user-graduate"></i> Student
+                        </button>
+                        <button onclick="setRole('teacher')" id="btn-role-teacher" data-tour="teacher-mode-toggle" type="button"
+                            class="sl-role-btn">
+                            <i class="fas fa-chalkboard-user"></i> Mësues
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Teacher Text Area (Hidden by default) -->
+                <div id="teacher-input-area" class="hidden animate-fade-in" style="margin-bottom: 2rem;">
+                    <div class="sl-section-label">
+                        <h3>Teksti i mësimit</h3>
+                        <span class="sl-counter-pill"><i class="fas fa-circle-info" style="color:#2563EB"></i> Opsionale me foto</span>
+                    </div>
+                    <textarea id="teacher-text" class="sl-teacher-textarea"
+                        placeholder="Ngjit këtu tekstin e mësimit, pikat kyçe ose shënimet tuaja..."></textarea>
+                    <div style="margin-top: 1.25rem;">
+                        <button onclick="startGeneration()" type="button"
+                            class="sl-btn sl-btn-primary sl-btn-block sl-btn-lg">
+                            Gjenero Mësimin nga Teksti <i class="fas fa-wand-magic-sparkles"></i>
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Exercise Grid -->
+                <div>
+                    <div class="sl-section-label">
+                        <h3>Llojet e ushtrimeve</h3>
+                        <div class="sl-counter-pill">
+                            Zgjedhur: <strong><span id="selected-count">5</span></strong> / <span id="max-selection">7</span>
+                        </div>
+                    </div>
+                    <div id="exercise-grid" class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-3">
+                        <!-- JS will populate these -->
+                    </div>
+                </div>
+
+                <!-- Final Generate Button (visible when configuration is shown) -->
+                <div id="final-generate-container" class="hidden" style="margin-top: 1.5rem;">
+                    <button onclick="startGeneration()" type="button"
+                        class="sl-btn sl-btn-primary sl-btn-block sl-btn-lg">
+                        Përfundo &amp; Gjenero Mësimin <i class="fas fa-wand-magic-sparkles"></i>
+                    </button>
+                </div>
+            </div>
+        </section>
+
+        <!-- History Section -->
+        {% if history %}
+        <div class="sl-history-head">
+            <div>
+                <h2>Mësimet e tua</h2>
+                <p class="sl-history-sub">Vazhdo aty ku e ke lënë ose shiko përgjigjet e nxënësve.</p>
+            </div>
+            <span class="sl-counter-pill"><i class="fas fa-clock-rotate-left" style="color:#2563EB"></i> Ruajtur deri 24h</span>
+        </div>
+        <section id="history-section" class="sl-history-wrap animate-fade-in">
+            <div class="sl-history-grid">
+                {% for item in history %}
+                <article class="sl-history-card">
+                    <span class="sl-h-meta"><i class="fas fa-book-open"></i> Mësim</span>
+                    <h3>{{ item.title }}</h3>
+                    <button onclick="viewSubmissions('{{ item.token }}')" type="button" class="sl-h-btn">
+                        <i class="fas fa-eye"></i> Shiko Përgjigjet
+                    </button>
+                    <div class="sl-h-mini">
+                        <button onclick="loadHistoryLesson('{{ item.token }}')" type="button">
+                            <i class="fas fa-rotate-left"></i> Rifillo
+                        </button>
+                        <button onclick="deleteHistoryLesson('{{ item.token }}')" type="button" class="sl-danger">
+                            <i class="fas fa-trash"></i> Fshij
+                        </button>
+                    </div>
+                </article>
+                {% endfor %}
+            </div>
+        </section>
+        {% endif %}
+
+                <!-- Active Study Mode Flex Container -->
+        <div class="max-w-6xl mx-auto w-full flex flex-col lg:flex-row gap-8 items-start">
+            <div class="flex-1 w-full space-y-12">
+                <!-- Fixed Teacher Toolbar - Mobile-first single scrollable row -->
+                <div id="teacher-fixed-toolbar"
+                    class="hidden font-sans bg-white/95 backdrop-blur-xl border border-slate-200/80 rounded-2xl px-2 py-1.5 shadow-md w-full sticky top-2 z-[100] transition-all">
+                    <!-- Row 1: Mode + scroll tools -->
+                    <div class="flex items-center gap-1 overflow-x-auto pb-0.5 scrollbar-hide"
+                        style="scrollbar-width:none; -ms-overflow-style:none;">
+
+                        <!-- EDIT MODE toggle -->
+                        <button id="editModeToggleBtn" onclick="toggleEditMode()"
+                            class="px-2.5 py-1 rounded-lg border border-green-200 bg-green-50 text-green-700 font-bold text-[10px] uppercase tracking-wide flex items-center gap-1.5 hover:bg-green-100 transition shrink-0">
+                            <span id="editModeIndicator">🟢</span><span id="editModeText" class="whitespace-nowrap">EDIT
+                                OFF</span>
+                        </button>
+
+                        <div class="h-5 w-px bg-slate-200 mx-0.5 shrink-0"></div>
+
+                        <!-- Undo / Redo -->
+                        <button onmousedown="event.preventDefault()" ontouchstart="event.preventDefault()"
+                            onclick="formatDoc('undo')"
+                            class="w-7 h-7 flex items-center justify-center text-slate-500 hover:bg-slate-100 rounded-lg transition shrink-0"
+                            title="Undo"><i class="fas fa-reply text-xs"></i></button>
+                        <button onmousedown="event.preventDefault()" ontouchstart="event.preventDefault()"
+                            onclick="formatDoc('redo')"
+                            class="w-7 h-7 flex items-center justify-center text-slate-500 hover:bg-slate-100 rounded-lg transition shrink-0"
+                            title="Redo"><i class="fas fa-share text-xs"></i></button>
+
+                        <div class="h-5 w-px bg-slate-200 mx-0.5 shrink-0"></div>
+
+                        <!-- Font Family -->
+                        <select onmousedown="event.stopPropagation()" ontouchstart="event.stopPropagation()"
+                            onchange="formatDoc('fontName', this.value)"
+                            class="h-7 px-1 border border-slate-200 outline-none rounded-lg text-[11px] font-bold text-slate-600 bg-white cursor-pointer shrink-0 max-w-[90px]">
+                            <option value="Calibri">Calibri</option>
+                            <option value="Arial">Arial</option>
+                            <option value="Times New Roman">Times NR</option>
+                            <option value="Georgia">Georgia</option>
+                        </select>
+
+                        <!-- Font Size -->
+                        <select onmousedown="event.stopPropagation()" ontouchstart="event.stopPropagation()"
+                            onchange="formatDoc('fontSize', this.value)"
+                            class="h-7 px-1 border border-slate-200 outline-none rounded-lg text-[11px] font-bold text-slate-600 bg-white cursor-pointer shrink-0 w-14">
+                            <option value="12">12px</option>
+                            <option value="14">14px</option>
+                            <option value="16" selected>16px</option>
+                            <option value="18">18px</option>
+                            <option value="20">20px</option>
+                            <option value="24">24px</option>
+                            <option value="30">30px</option>
+                            <option value="36">36px</option>
+                        </select>
+
+                        <div class="h-5 w-px bg-slate-200 mx-0.5 shrink-0"></div>
+
+                        <!-- Bold / Italic / Underline / Strike -->
+                        <button id="btn-bold" onmousedown="event.preventDefault()" ontouchstart="event.preventDefault()"
+                            onclick="formatDoc('bold')"
+                            class="w-7 h-7 flex items-center justify-center text-slate-700 hover:bg-slate-100 rounded-lg transition font-serif font-black shrink-0">B</button>
+                        <button id="btn-italic" onmousedown="event.preventDefault()"
+                            ontouchstart="event.preventDefault()" onclick="formatDoc('italic')"
+                            class="w-7 h-7 flex items-center justify-center text-slate-700 hover:bg-slate-100 rounded-lg transition font-serif italic font-bold shrink-0">I</button>
+                        <button id="btn-underline" onmousedown="event.preventDefault()"
+                            ontouchstart="event.preventDefault()" onclick="formatDoc('underline')"
+                            class="w-7 h-7 flex items-center justify-center text-slate-700 hover:bg-slate-100 rounded-lg transition font-serif underline font-bold shrink-0">U</button>
+                        <button id="btn-strike" onmousedown="event.preventDefault()"
+                            ontouchstart="event.preventDefault()" onclick="formatDoc('strikeThrough')"
+                            class="w-7 h-7 flex items-center justify-center text-slate-700 hover:bg-slate-100 rounded-lg transition font-serif line-through shrink-0">S</button>
+
+                        <div class="h-5 w-px bg-slate-200 mx-0.5 shrink-0"></div>
+
+
+
+                        <!-- Annotations -->
+                        <button onmousedown="event.preventDefault()" ontouchstart="event.preventDefault()"
+                            onclick="applyAnnotation('pencil')"
+                            class="w-7 h-7 flex items-center justify-center text-slate-500 hover:text-rose-500 hover:bg-rose-50 rounded-lg transition shrink-0"
+                            title="Wavy Underline"><i class="fas fa-pen text-xs"></i></button>
+                        <button onmousedown="event.preventDefault()" ontouchstart="event.preventDefault()"
+                            onclick="applyAnnotation('circle')"
+                            class="w-7 h-7 flex items-center justify-center text-slate-500 hover:text-indigo-500 hover:bg-indigo-50 rounded-lg transition shrink-0"
+                            title="Circle"><i class="far fa-circle text-xs"></i></button>
+                        <button onmousedown="event.preventDefault()" ontouchstart="event.preventDefault()"
+                            onclick="formatDoc('removeFormat')"
+                            class="w-7 h-7 flex items-center justify-center text-slate-500 hover:text-red-500 hover:bg-red-50 rounded-lg transition shrink-0"
+                            title="Clear Formatting"><i class="fas fa-eraser text-xs text-red-400"></i></button>
+
+                        <div class="h-5 w-px bg-slate-200 mx-0.5 shrink-0"></div>
+
+                        <!-- Share Tools toggle -->
+                        <button onmousedown="event.preventDefault()" ontouchstart="event.preventDefault()"
+                            onclick="toggleTeacherTools()"
+                            class="px-2 py-1 flex items-center gap-1.5 text-indigo-600 bg-indigo-50 hover:bg-indigo-100 border border-indigo-200 rounded-lg transition text-[11px] font-bold shrink-0"
+                            title="Mjetet e Shpërndarjes">
+                            <i class="fas fa-share-alt text-indigo-500"></i><span
+                                class="whitespace-nowrap">Shpërnda</span>
+                        </button>
+
+                        <div class="h-5 w-px bg-slate-200 mx-0.5 shrink-0"></div>
+
+                        <!-- Exit Lesson Button -->
+                        <button onclick="if(confirm('Jeni i sigurt që doni të dilni nga mësimi?')) { window.location.href='/learn'; }"
+                            class="px-2 py-1 flex items-center gap-1.5 text-red-600 bg-red-50 hover:bg-red-100 border border-red-200 rounded-lg transition text-[11px] font-bold shrink-0"
+                            title="Dil nga mësimi">
+                            <i class="fas fa-door-open text-red-500"></i><span class="whitespace-nowrap">Dil</span>
+                        </button>
+                    </div>
+                </div>
+                <!-- Step 2: Reading (Preserved) -->
+                <section id="step-reading" class="hidden-step space-y-6">
+                    <div class="glass-card p-10">
+                        <div id="lessonContent" class="prose prose-indigo max-w-none prose-lg"></div>
+                    </div>
+                </section>
+
+                <!-- Step 3: Exercises (Preserved) -->
+                <section id="step-exercises" class="hidden-step space-y-12 pb-24">
+                    <!-- MCQ -->
+                    <div id="section-mcq" class="glass-card p-12 exercise-card hidden-step">
+                        <div class="flex items-center gap-5 mb-10">
+                            <span
+                                class="w-12 h-12 bg-blue-100 text-blue-600 rounded-2xl flex items-center justify-center font-black text-xl shadow-sm">1</span>
+                            <h3 class="text-3xl font-extrabold text-gray-900">Testi me Alternativa</h3>
+                        </div>
+                        <div id="mcqContainer" class="grid grid-cols-1 md:grid-cols-2 gap-8"></div>
+                    </div>
+
+                    <!-- Drag & Drop -->
+                    <div id="section-dragDrop" class="glass-card p-12 exercise-card hidden-step">
+                        <div class="flex items-center gap-5 mb-10">
+                            <span
+                                class="w-12 h-12 bg-purple-100 text-purple-600 rounded-2xl flex items-center justify-center font-black text-xl shadow-sm">2</span>
+                            <h3 class="text-3xl font-extrabold text-gray-900">Lidhja e Termave</h3>
+                        </div>
+                        <div class="flex flex-col lg:flex-row gap-12">
+                            <div id="dragSource" class="flex flex-wrap gap-4 md:w-1/3 content-start"></div>
+                            <div id="dropTargets" class="flex-1 space-y-6"></div>
+                        </div>
+                    </div>
+
+                    <!-- Open Questions -->
+                    <div id="section-openQuestions" class="glass-card p-12 exercise-card hidden-step">
+                        <div class="flex items-center gap-5 mb-10">
+                            <span
+                                class="w-12 h-12 bg-rose-100 text-rose-600 rounded-2xl flex items-center justify-center font-black text-xl shadow-sm">3</span>
+                            <h3 class="text-3xl font-extrabold text-gray-900">Shtjellim i Pyetjeve</h3>
+                        </div>
+                        <div id="openQuestionsContainer" class="space-y-10"></div>
+                    </div>
+
+                    <!-- Find Mistakes -->
+                    <div id="section-mistakeText"
+                        class="glass-card p-12 exercise-card border-2 border-amber-200 bg-amber-50/10 hidden-step">
+                        <div class="flex flex-col md:flex-row justify-between items-start md:items-center gap-6 mb-10">
+                            <div class="flex items-center gap-5">
+                                <span
+                                    class="w-12 h-12 bg-amber-100 text-amber-600 rounded-2xl flex items-center justify-center font-black text-xl shadow-sm">4</span>
+                                <h3 class="text-3xl font-extrabold text-gray-900">Gjej 5 Gabimet në Tekst</h3>
+                            </div>
+                            <div
+                                class="bg-white border-2 border-amber-200 px-6 py-3 rounded-2xl text-amber-700 font-black text-xl shadow-sm">
+                                Gjetur: <span id="mistakesFoundCount" class="text-amber-600">0</span>/5
+                            </div>
+                        </div>
+                        <p class="text-gray-600 mb-8 text-lg font-medium italic">Kliko mbi fjalët që mendon se janë të
+                            pasakta sipas
+                            mësimit që lexove.</p>
+                        <div id="mistakeContentArea"
+                            class="p-10 bg-white rounded-3xl text-2xl leading-[1.6] text-gray-800 select-none border border-amber-100 shadow-inner">
+                            <!-- Words injected here -->
+                        </div>
+                    </div>
+
+                    <!-- True/False (New) -->
+                    <div id="section-trueFalse" class="glass-card p-12 exercise-card hidden-step">
+                        <div class="flex items-center gap-5 mb-10">
+                            <span
+                                class="w-12 h-12 bg-green-100 text-green-600 rounded-2xl flex items-center justify-center font-black text-xl shadow-sm"><i
+                                    class="fas fa-check-circle"></i></span>
+                            <h3 class="text-3xl font-extrabold text-gray-900">Vërtetë apo Gabim</h3>
+                        </div>
+                        <div id="trueFalseContainer" class="space-y-6"></div>
+                    </div>
+
+                    <!-- Fill Blanks (New) -->
+                    <div id="section-fillBlanks" class="glass-card p-12 exercise-card hidden-step">
+                        <div class="flex items-center gap-5 mb-10">
+                            <span
+                                class="w-12 h-12 bg-sky-100 text-sky-600 rounded-2xl flex items-center justify-center font-black text-xl shadow-sm"><i
+                                    class="fas fa-pen-nib"></i></span>
+                            <h3 class="text-3xl font-extrabold text-gray-900">Mbush Hapësirat</h3>
+                        </div>
+                        <div id="fillBlanksContainer"
+                            class="p-8 bg-gray-50 rounded-3xl text-xl leading-relaxed text-gray-800 border border-gray-100 italic">
+                        </div>
+                    </div>
+
+                    <!-- Summary (New) -->
+                    <div id="section-summary"
+                        class="glass-card p-12 exercise-card hidden-step border-l-8 border-indigo-500">
+                        <div class="flex items-center gap-5 mb-6">
+                            <span
+                                class="w-12 h-12 bg-indigo-100 text-indigo-600 rounded-2xl flex items-center justify-center font-black text-xl shadow-sm"><i
+                                    class="fas fa-align-left"></i></span>
+                            <h3 class="text-3xl font-extrabold text-gray-900">Përmbledhja Kyçe</h3>
+                        </div>
+                        <div id="summaryContainer" class="text-lg text-gray-700 leading-relaxed font-medium"></div>
+                    </div>
+
+                    <!-- Critical Thinking (New) -->
+                    <div id="section-criticalThinking"
+                        class="glass-card p-12 exercise-card hidden-step bg-purple-50/20">
+                        <div class="flex items-center gap-5 mb-10">
+                            <span
+                                class="w-12 h-12 bg-purple-100 text-purple-600 rounded-2xl flex items-center justify-center font-black text-xl shadow-sm"><i
+                                    class="fas fa-brain"></i></span>
+                            <h3 class="text-3xl font-extrabold text-gray-900">Mendim Kritik</h3>
+                        </div>
+                        <div id="criticalThinkingContainer" class="space-y-8"></div>
+                    </div>
+
+                    <!-- Vocabulary (New) -->
+                    <div id="section-vocabulary" class="glass-card p-12 exercise-card hidden-step">
+                        <div class="flex items-center gap-5 mb-10">
+                            <span
+                                class="w-12 h-12 bg-emerald-100 text-emerald-600 rounded-2xl flex items-center justify-center font-black text-xl shadow-sm"><i
+                                    class="fas fa-book"></i></span>
+                            <h3 class="text-3xl font-extrabold text-gray-900">Fjalor & Terma</h3>
+                        </div>
+                        <div id="vocabularyContainer" class="grid grid-cols-1 md:grid-cols-2 gap-6"></div>
+                    </div>
+
+                    <!-- Analogies (New) -->
+                    <div id="section-analogies" class="glass-card p-12 exercise-card hidden-step">
+                        <div class="flex items-center gap-5 mb-10">
+                            <span
+                                class="w-12 h-12 bg-orange-100 text-orange-600 rounded-2xl flex items-center justify-center font-black text-xl shadow-sm"><i
+                                    class="fas fa-balance-scale"></i></span>
+                            <h3 class="text-3xl font-extrabold text-gray-900">Analoji Konceptuale</h3>
+                        </div>
+                        <div id="analogiesContainer" class="space-y-6"></div>
+                    </div>
+
+                    <!-- Ordering (New) -->
+                    <div id="section-ordering" class="glass-card p-12 exercise-card hidden-step">
+                        <div class="flex items-center gap-5 mb-10">
+                            <span
+                                class="w-12 h-12 bg-blue-100 text-blue-600 rounded-2xl flex items-center justify-center font-black text-xl shadow-sm"><i
+                                    class="fas fa-sort-numeric-down"></i></span>
+                            <h3 class="text-3xl font-extrabold text-gray-900">Renditja Logjike</h3>
+                        </div>
+                        <div id="orderingContainer" class="space-y-4"></div>
+                    </div>
+
+                    <!-- Concept Map (New) -->
+                    <div id="section-conceptMap" class="glass-card p-12 exercise-card hidden-step">
+                        <div class="flex items-center gap-5 mb-10">
+                            <span
+                                class="w-12 h-12 bg-cyan-100 text-cyan-600 rounded-2xl flex items-center justify-center font-black text-xl shadow-sm"><i
+                                    class="fas fa-project-diagram"></i></span>
+                            <h3 class="text-3xl font-extrabold text-gray-900">Harta e Koncepteve</h3>
+                        </div>
+                        <div id="conceptMapContainer"
+                            class="prose prose-blue max-w-none bg-blue-50/30 p-8 rounded-3xl border border-blue-100">
+                        </div>
+                    </div>
+
+                    <!-- Pros & Cons (New) -->
+                    <div id="section-prosCons" class="glass-card p-12 exercise-card hidden-step bg-gray-50/50">
+                        <div class="flex items-center gap-5 mb-10">
+                            <span
+                                class="w-12 h-12 bg-indigo-100 text-indigo-600 rounded-2xl flex items-center justify-center font-black text-xl shadow-sm"><i
+                                    class="fas fa-exchange-alt"></i></span>
+                            <h3 class="text-3xl font-extrabold text-gray-900">Pro & Kundër (Debat)</h3>
+                        </div>
+                        <div id="prosConsContainer" class="grid grid-cols-1 md:grid-cols-2 gap-10"></div>
+                    </div>
+
+                    <!-- Real World (New) -->
+                    <div id="section-realWorld"
+                        class="glass-card p-12 exercise-card hidden-step border-2 border-dashed border-indigo-200">
+                        <div class="flex items-center gap-5 mb-8">
+                            <span
+                                class="w-12 h-12 bg-indigo-600 text-white rounded-2xl flex items-center justify-center font-black text-xl shadow-lg"><i
+                                    class="fas fa-globe"></i></span>
+                            <h3 class="text-3xl font-extrabold text-gray-900">Aplikimi në Jetën Reale</h3>
+                        </div>
+                        <div id="realWorldContainer"
+                            class="text-xl font-medium text-gray-800 leading-relaxed bg-white p-8 rounded-3xl shadow-sm">
+                        </div>
+                    </div>
+
+                    <button id="startQuizBtn"
+                        class="btn-primary w-full py-8 rounded-[2rem] text-white font-black text-3xl shadow-xl shadow-indigo-200">Koha
+                        për Kuizin Final!</button>
+                </section>
+
+                <!-- Step 4: Final Speed Quiz (Preserved) -->
+                <section id="step-quiz" class="hidden-step glass-card p-16 text-center max-w-3xl mx-auto">
+                    <div class="mb-12 relative inline-block">
+                        <svg width="140" height="140">
+                            <circle stroke="#e2e8f0" stroke-width="10" fill="transparent" r="60" cx="70" cy="70" />
+                            <circle id="quizProgressCircle" stroke="#4f46e5" stroke-width="10" stroke-dasharray="377"
+                                stroke-dashoffset="0" fill="transparent" r="60" cx="70" cy="70" class="progress-ring" />
+                        </svg>
+                        <div id="quizTimerText"
+                            class="absolute inset-0 flex items-center justify-center text-4xl font-black text-indigo-600">
+                            3</div>
+                    </div>
+
+                    <h2 id="quizQuestion" class="text-4xl font-bold mb-12 text-gray-900 leading-tight"></h2>
+                    <div id="quizOptions" class="grid grid-cols-1 gap-5"></div>
+
+                    <div id="quizNavigation" class="hidden items-center justify-center gap-6 mt-10">
+                        <button onclick="navigateQuiz(-1)"
+                            class="w-12 h-12 flex items-center justify-center bg-gray-100 hover:bg-amber-100 hover:text-amber-600 text-gray-400 rounded-full font-black text-xl transition-all shadow-sm"><i
+                                class="fas fa-chevron-left"></i></button>
+                        <div id="quizCounter"
+                            class="text-gray-500 font-bold font-mono tracking-widest bg-gray-50 px-4 py-2 rounded-xl">1
+                            / 5</div>
+                        <button onclick="navigateQuiz(1)"
+                            class="w-12 h-12 flex items-center justify-center bg-gray-100 hover:bg-amber-100 hover:text-amber-600 text-gray-400 rounded-full font-black text-xl transition-all shadow-sm"><i
+                                class="fas fa-chevron-right"></i></button>
+                    </div>
+
+                    <div id="quizResultArea" class="hidden">
+                        <div class="text-8xl mb-8">🏆</div>
+                        <h2 class="text-4xl font-black mb-4">Përfundove Saktë!</h2>
+                        <div id="finalScoreDisplay" class="text-6xl font-black text-indigo-600 mb-10"></div>
+                        <button onclick="sessionStorage.removeItem('mc_learn_state'); location.reload();"
+                            class="btn-primary px-12 py-5 text-white rounded-2xl font-black text-xl shadow-lg">Studimi i
+                            Ri</button>
+                    </div>
+                </section>
+
+            </div>
+
+            <!-- Sticky Sidebar on the right -->
+            <div id="sticky-sidebar" class="hidden w-full lg:w-80 space-y-6 lg:sticky lg:top-24 shrink-0">
+                <!-- Timer Card -->
+                <div id="timer-card" class="glass-card p-8 text-center shadow-lg border border-white">
+                    <p class="text-sm font-bold text-gray-400 uppercase tracking-widest mb-3">Koha e mbetur</p>
+                    <div id="timerDisplay" class="text-5xl font-black text-indigo-600 mb-8 font-mono">25:00</div>
+
+                    <div class="space-y-3">
+                        <p class="text-xs font-bold text-gray-500 uppercase tracking-wider">Shto minuta</p>
+                        <div class="grid grid-cols-2 gap-3">
+                            <button onclick="addTime(2)"
+                                class="p-3 bg-white border border-gray-100 rounded-xl hover:bg-gray-50 font-bold text-sm shadow-sm">+2'</button>
+                            <button onclick="addTime(5)"
+                                class="p-3 bg-white border border-gray-100 rounded-xl hover:bg-gray-50 font-bold text-sm shadow-sm">+5'</button>
+                            <button onclick="addTime(8)"
+                                class="p-3 bg-white border border-gray-100 rounded-xl hover:bg-gray-50 font-bold text-sm shadow-sm">+8'</button>
+                            <button onclick="addTime(10)"
+                                class="p-3 bg-white border border-gray-100 rounded-xl hover:bg-gray-50 font-bold text-sm shadow-sm">+10'</button>
+                        </div>
+                    </div>
+
+                    <button id="goToExercises"
+                        class="btn-primary w-full mt-10 text-white py-5 rounded-2xl font-extrabold text-lg shadow-md">Vazhdo
+                        te Ushtrimet</button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Floating Teacher Tools (Visible only for teachers) -->
+        <div id="teacher-tools-card"
+            class="fixed top-32 right-6 lg:right-12 z-[99] glass-card p-6 shadow-2xl border border-white/60 hidden max-w-xs animate-fade-in"
+            style="touch-action: none; transition: box-shadow 0.2s;">
+            <div id="teacher-tools-header"
+                class="cursor-move pb-3 mb-3 border-b border-gray-100/50 flex items-center justify-center hover:bg-gray-50/50 rounded-t-xl -mt-2 -mx-2 pt-2 transition relative">
+                <i class="fas fa-grip-lines text-indigo-300 mr-2"></i>
+                <p class="text-xs font-black text-indigo-600 uppercase tracking-widest text-center m-0 select-none">
+                    Mjetet e Shpërndarjes</p>
+                <button onclick="toggleTeacherTools()"
+                    class="absolute right-2 top-1.5 w-6 h-6 flex items-center justify-center text-slate-400 hover:text-red-500 hover:bg-red-50 rounded-full transition"><i
+                        class="fas fa-times"></i></button>
+            </div>
+
+            <div id="share-initial">
+                <button onclick="shareLesson()"
+                    class="w-full py-3 px-4 bg-indigo-600 text-white rounded-2xl font-black text-sm hover:bg-indigo-700 transition shadow-md flex items-center justify-center gap-2">
+                    <i class="fas fa-share-alt"></i> Shpërndaj
+                </button>
+            </div>
+
+            <div id="share-active" class="hidden space-y-3">
+                <div class="p-2.5 bg-slate-50/80 rounded-xl border border-slate-100 break-all text-[10px] font-mono text-slate-500"
+                    id="share-link-display"></div>
+                <div class="grid grid-cols-2 gap-2">
+                    <button onclick="copyShareLink()"
+                        class="py-2.5 px-3 bg-white border border-slate-200 rounded-xl font-bold text-xs hover:bg-slate-50 transition flex items-center justify-center gap-1">
+                        <i class="fas fa-copy text-slate-400"></i> Kopjo
+                    </button>
+                    <button onclick="viewSubmissions()"
+                        class="py-2.5 px-3 bg-green-50 text-green-700 border border-green-100 rounded-xl font-bold text-xs hover:bg-green-100 transition flex items-center justify-center gap-1">
+                        <i class="fas fa-eye text-green-500"></i> Shoh
+                    </button>
+                </div>
+                <button id="renew-link-btn" onclick="shareLesson()"
+                    class="hidden w-full py-2 px-3 bg-indigo-50 border border-indigo-100 text-indigo-600 rounded-xl font-bold text-xs hover:bg-indigo-100 transition flex items-center justify-center gap-2">
+                    <i class="fas fa-sync-alt"></i> Ripërtëri Linkun
+                </button>
+            </div>
+        </div>
+
+        <script>
+            window.toggleTeacherTools = () => {
+                const card = document.getElementById('teacher-tools-card');
+                if (card) {
+                    card.classList.toggle('hidden');
+                }
+            };
+
+            // Make teacher tools draggable
+            document.addEventListener('DOMContentLoaded', () => {
+                const toolsCard = document.getElementById('teacher-tools-card');
+                const toolsHeader = document.getElementById('teacher-tools-header');
+
+                let isDragging = false;
+                let startX, startY;
+
+                toolsHeader.addEventListener('mousedown', dragStart);
+                toolsHeader.addEventListener('touchstart', dragStart, { passive: false });
+
+                function dragStart(e) {
+                    if (e.target.tagName.toLowerCase() === 'button' || e.target.closest('button')) return;
+                    isDragging = true;
+
+                    const clientX = e.type.includes('mouse') ? e.clientX : e.touches[0].clientX;
+                    const clientY = e.type.includes('mouse') ? e.clientY : e.touches[0].clientY;
+
+                    const rect = toolsCard.getBoundingClientRect();
+
+                    startX = clientX - rect.left;
+                    startY = clientY - rect.top;
+
+                    // Remove right/top classes so they don't override inline styles
+                    toolsCard.classList.remove('right-6', 'lg:right-12', 'top-32');
+
+                    toolsCard.style.right = 'auto';
+                    toolsCard.style.bottom = 'auto';
+                    toolsCard.style.left = rect.left + 'px';
+                    toolsCard.style.top = rect.top + 'px';
+
+                    toolsCard.style.boxShadow = '0 25px 50px -12px rgba(0, 0, 0, 0.25)';
+
+                    if (e.type.includes('mouse')) {
+                        document.addEventListener('mousemove', drag);
+                        document.addEventListener('mouseup', dragEnd);
+                    } else {
+                        document.addEventListener('touchmove', drag, { passive: false });
+                        document.addEventListener('touchend', dragEnd);
+                    }
+                }
+
+                function drag(e) {
+                    if (!isDragging) return;
+                    e.preventDefault();
+
+                    const clientX = e.type.includes('mouse') ? e.clientX : e.touches[0].clientX;
+                    const clientY = e.type.includes('mouse') ? e.clientY : e.touches[0].clientY;
+
+                    let newX = clientX - startX;
+                    let newY = clientY - startY;
+
+                    newX = Math.max(0, Math.min(newX, window.innerWidth - toolsCard.offsetWidth));
+                    newY = Math.max(0, Math.min(newY, window.innerHeight - toolsCard.offsetHeight));
+
+                    toolsCard.style.left = newX + 'px';
+                    toolsCard.style.top = newY + 'px';
+                }
+
+                function dragEnd(e) {
+                    isDragging = false;
+                    toolsCard.style.boxShadow = '';
+                    document.removeEventListener('mousemove', drag);
+                    document.removeEventListener('mouseup', dragEnd);
+                    document.removeEventListener('touchmove', drag);
+                    document.removeEventListener('touchend', dragEnd);
+                }
+            });
+        </script>
+
+        <!-- Submissions Modal -->
+        <div id="submissionsModal"
+            class="fixed inset-0 bg-black/60 backdrop-blur-sm z-[200] hidden flex items-center justify-center p-4">
+            <div
+                class="bg-white rounded-[2.5rem] w-full max-w-4xl max-h-[85vh] overflow-hidden flex flex-col shadow-2xl">
+                <div class="p-8 border-b border-gray-100 flex justify-between items-center bg-gray-50/50">
+                    <div>
+                        <h2 class="text-3xl font-black text-gray-900">Përgjigjet e Studentëve</h2>
+                        <p class="text-gray-500 font-medium">Lista e dorëzimeve për këtë mësim.</p>
+                    </div>
+                    <button onclick="document.getElementById('submissionsModal').classList.add('hidden')"
+                        class="w-12 h-12 rounded-full hover:bg-gray-200 flex items-center justify-center transition">
+                        <i class="fas fa-times text-xl text-gray-400"></i>
+                    </button>
+                </div>
+
+                <div id="submissionsList" class="flex-1 overflow-y-auto p-8 space-y-6">
+                    <!-- Submissions will be injected here -->
+                    <div class="text-center py-20">
+                        <div
+                            class="animate-spin w-10 h-10 border-4 border-indigo-600 border-t-transparent rounded-full mx-auto mb-4">
+                        </div>
+                        <p class="text-gray-400 font-bold">Duke ngarkuar përgjigjet...</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<input type="hidden" id="app-data-json" value='{{ {
+        "isUser": (user is not none),
+        "username": (user.username if user else "Guest"),
+        "plan": plan,
+        "usage": (usage_data if usage_data else {}),
+        "limits": (limits if limits else {})
+    } | tojson | safe }}'>
+{% endblock %}
+
+{% block scripts %}
+<script>
+    const appDataEl = document.getElementById('app-data-json');
+    const APP_DATA = appDataEl ? JSON.parse(appDataEl.value) : {};
+
+    class QuotaManager {
+        constructor(appData) {
+            this.isUser = appData.isUser;
+            this.limits = appData.limits;
+            this.serverUsage = appData.usage;
+            this.today = new Date().toISOString().split('T')[0];
+            this.storageKey = `mc_usage_${this.today}`;
+            this.initLocalUsage();
+        }
+        initLocalUsage() {
+            const raw = localStorage.getItem(this.storageKey);
+            if (raw) {
+                this.localUsage = JSON.parse(raw);
+            } else {
+                this.localUsage = { count: 0, image_chat: 0, image_learn: 0 };
+            }
+            if (this.isUser) {
+                this.localUsage.count = Math.max(this.localUsage.count, this.serverUsage.count);
+                this.localUsage.image_chat = Math.max(this.localUsage.image_chat, this.serverUsage.image_chat);
+                this.localUsage.image_learn = Math.max(this.localUsage.image_learn, this.serverUsage.image_learn);
+            }
+            this.save();
+        }
+        save() { localStorage.setItem(this.storageKey, JSON.stringify(this.localUsage)); }
+        canSend(type) { return this.localUsage[type] < this.limits[type]; }
+        increment(type) { this.localUsage[type]++; this.save(); }
+        getLimitMessage(type) {
+            const limit = this.limits[type];
+            return `Limiti ditor prej ${limit} fotosh u arrit. Bëni upgrade!`;
+        }
+    }
+    const quota = new QuotaManager(APP_DATA);
+</script>
+<script type="module">
+    const apiKey = "{{ gemini_api_key }}";
+
+    let state = {
+        role: 'student',
+        selectedExercises: ['mcq', 'dragDrop', 'openQuestions', 'mistakeText', 'finalQuiz'], // Defaults
+        currentTime: 25 * 60,
+        timerInterval: null,
+        lessonData: null,
+        currentQuizIdx: 0,
+        quizScore: 0,
+        quizTimer: null,
+        mistakesFound: 0,
+        currentStep: 'step-upload',
+        shareUrl: null,
+        shareToken: null
+    };
+
+    const EXERCISE_TYPES = [
+        { id: 'mcq', label: 'Alternativa', icon: 'list-ul', default: true },
+        { id: 'dragDrop', label: 'Lidh Terma', icon: 'unite', default: true },
+        { id: 'openQuestions', label: 'Diskutim', icon: 'comments', default: true },
+        { id: 'mistakeText', label: 'Gjej Gabime', icon: 'search', default: true },
+        { id: 'finalQuiz', label: 'Kuiz Final', icon: 'trophy', default: true },
+        { id: 'trueFalse', label: 'Vërtetë/Gabim', icon: 'check-circle', default: false },
+        { id: 'fillBlanks', label: 'Mbush Hapësirat', icon: 'pen-nib', default: false },
+        { id: 'summary', label: 'Përmbledhje', icon: 'align-left', default: false },
+        { id: 'criticalThinking', label: 'Kritikë', icon: 'brain', default: false },
+        { id: 'vocabulary', label: 'Fjalor', icon: 'book', default: false },
+        { id: 'analogies', label: 'Analoji', icon: 'balance-scale', default: false },
+        { id: 'ordering', label: 'Renditje', icon: 'sort-numeric-down', default: false },
+        { id: 'conceptMap', label: 'Mapa Konceptit', icon: 'project-diagram', default: false },
+        { id: 'prosCons', label: 'Pro & Kundër', icon: 'exchange-alt', default: false },
+        { id: 'realWorld', label: 'Aplikim Real', icon: 'globe', default: false }
+    ];
+
+    function initExerciseGrid() {
+        const grid = document.getElementById('exercise-grid');
+        const max = getPlanLimit();
+        document.getElementById('max-selection').innerText = max === 99 ? 'Të Gjitha' : max;
+
+        grid.innerHTML = EXERCISE_TYPES.map(ex => `
+            <div onclick="toggleExercise('${ex.id}')" id="ex-${ex.id}" class="exercise-chip flex flex-col items-center justify-center p-4 rounded-2xl border-2 transition-all cursor-pointer ${state.selectedExercises.includes(ex.id) ? 'bg-indigo-50 border-indigo-500 text-indigo-700' : 'bg-white border-gray-100 text-gray-400 hover:border-gray-200'}">
+                <i class="fas fa-${ex.icon} text-lg mb-2"></i>
+                <span class="text-xs font-bold text-center">${ex.label}</span>
+            </div>
+        `).join('');
+        updateSelectedCount();
+    }
+
+    function getPlanLimit() {
+        const plan = APP_DATA.plan ? APP_DATA.plan.toLowerCase() : 'free';
+        if (plan === 'ultimate' || plan === 'pro') return 99;
+        if (plan === 'basic') return 12;
+        return 7;
+    }
+
+    window.toggleExercise = (id) => {
+        const idx = state.selectedExercises.indexOf(id);
+        const max = getPlanLimit();
+
+        if (idx > -1) {
+            if (state.selectedExercises.length > 1) {
+                state.selectedExercises.splice(idx, 1);
+            } else {
+                showToast("Zgjidhni të paktën një ushtrim!", "info");
+            }
+        } else {
+            if (state.selectedExercises.length < max) {
+                state.selectedExercises.push(id);
+            } else {
+                showToast(`Plani juaj lejon deri në ${max} lloje ushtrimesh.`, "upgrade");
+                return;
+            }
+        }
+
+        // UI Update
+        const el = document.getElementById(`ex-${id}`);
+        if (state.selectedExercises.includes(id)) {
+            el.classList.add('bg-indigo-50', 'border-indigo-500', 'text-indigo-700');
+            el.classList.remove('bg-white', 'border-gray-100', 'text-gray-400');
+        } else {
+            el.classList.remove('bg-indigo-50', 'border-indigo-500', 'text-indigo-700');
+            el.classList.add('bg-white', 'border-gray-100', 'text-gray-400');
+        }
+        updateSelectedCount();
+        saveStateToSession();
+    };
+
+    function updateSelectedCount() {
+        document.getElementById('selected-count').innerText = state.selectedExercises.length;
+    }
+
+    window.setRole = (role) => {
+        state.role = role;
+        const btnStudent = document.getElementById('btn-role-student');
+        const btnTeacher = document.getElementById('btn-role-teacher');
+        const teacherInput = document.getElementById('teacher-input-area');
+
+        if (role === 'student') {
+            btnStudent.classList.add('bg-white', 'shadow-sm', 'text-indigo-600');
+            btnStudent.classList.remove('text-gray-500');
+            btnTeacher.classList.remove('bg-white', 'shadow-sm', 'text-indigo-600');
+            btnTeacher.classList.add('text-gray-500');
+            teacherInput.classList.add('hidden');
+        } else {
+            btnTeacher.classList.add('bg-white', 'shadow-sm', 'text-indigo-600');
+            btnTeacher.classList.remove('text-gray-500');
+            btnStudent.classList.remove('bg-white', 'shadow-sm', 'text-indigo-600');
+            btnStudent.classList.add('text-gray-500');
+            teacherInput.classList.remove('hidden');
+        }
+        saveStateToSession();
+    };
+
+    const HISTORY_DATA = {};
+    {% if history %}
+    {% for item in history %}
+    HISTORY_DATA["{{ item.token }}"] = {
+        token: "{{ item.token }}",
+        share_url: "{{ item.share_url }}",
+        expires_at: "{{ item.expires_at }}",
+        lessonData: {{ item.lessonData | tojson }}
+            };
+    {% endfor %}
+    {% endif %}
+
+    window.deleteHistoryLesson = async (token) => {
+        if (!confirm("Jeni i sigurt që doni ta fshini këtë mësim nga historia? Ky veprim nuk mund të zhbëhet.")) return;
+
+        try {
+            const res = await fetch(`/api/teacher/delete_lesson/${token}`, {
+                method: 'DELETE'
+            });
+            const data = await res.json();
+
+            if (res.ok) {
+                showToast(data.message || "Mësimi u fshi.", "success");
+                setTimeout(() => window.location.reload(), 1000);
+            } else {
+                showToast(data.error || "Ndodhi një gabim.", "error");
+            }
+        } catch (e) {
+            showToast("Gabim lidhjeje.", "error");
+        }
+    };
+
+    window.loadHistoryLesson = (token) => {
+        const item = HISTORY_DATA[token];
+        if (!item) return;
+
+        state.role = 'teacher';
+        state.lessonData = item.lessonData;
+        state.shareToken = item.token;
+        state.shareUrl = item.share_url;
+        state.expiresAt = item.expires_at;
+        state.currentStep = 'step-reading';
+
+        saveStateToSession();
+        showReadingStep();
+    };
+
+    window.copyHistoryLink = (url) => {
+        navigator.clipboard.writeText(url).then(() => {
+            showToast("Linku i shpërndarjes u kopjua!", "success");
+        }).catch(err => {
+            showToast("Dështoi kopjimi i linkut.", "error");
+        });
+    };
+
+    const SESSION_KEY = 'mc_learn_state';
+
+    function updateTimerCardVisibility() {
+        const timerCard = document.getElementById('timer-card');
+        const sidebar = document.getElementById('sticky-sidebar');
+        if (!timerCard || !sidebar) return;
+        if (state.currentStep === 'step-reading') {
+            timerCard.classList.remove('hidden');
+            sidebar.classList.remove('hidden');
+        } else {
+            timerCard.classList.add('hidden');
+            sidebar.classList.add('hidden');
+        }
+    }
+
+    function saveStateToSession() {
+        updateTimerCardVisibility();
+        const stateToSave = { ...state };
+        delete stateToSave.timerInterval;
+        delete stateToSave.quizTimer;
+
+        const imgEl = document.getElementById('imgPreview');
+        const data = {
+            state: stateToSave,
+            imgPreview: imgEl ? imgEl.src : '',
+            timestamp: Date.now()
+        };
+        sessionStorage.setItem(SESSION_KEY, JSON.stringify(data));
+    }
+
+    function loadStateFromSession() {
+        const saved = sessionStorage.getItem(SESSION_KEY);
+        if (!saved) return;
+
+        try {
+            const data = JSON.parse(saved);
+            const savedState = data.state;
+
+            // If it's too old (e.g. > 4 hours), don't restore
+            if (Date.now() - data.timestamp > 4 * 60 * 60 * 1000) {
+                sessionStorage.removeItem(SESSION_KEY);
+                return;
+            }
+
+            state = { ...state, ...savedState };
+
+            if (data.imgPreview && data.imgPreview.startsWith('data:image')) {
+                document.getElementById('imgPreview').src = data.imgPreview;
+                document.getElementById('preview-container').classList.remove('hidden');
+            }
+
+            if (state.lessonData) {
+                if (state.currentStep === 'step-reading') {
+                    showReadingStep(true);
+                } else if (state.currentStep === 'step-exercises') {
+                    showReadingStep(true);
+                    state.currentStep = 'step-exercises';
+                    document.getElementById('step-reading').classList.add('hidden-step');
+                    document.getElementById('step-exercises').classList.remove('hidden-step');
+                    document.getElementById('goToExercises').classList.add('hidden');
+                    renderExercises();
+                } else if (state.currentStep === 'step-quiz') {
+                    showReadingStep(true);
+                    state.currentStep = 'step-quiz';
+                    document.getElementById('step-reading').classList.add('hidden-step');
+                    document.getElementById('step-quiz').classList.remove('hidden-step');
+                    document.getElementById('goToExercises').classList.add('hidden');
+                    loadQuizQuestion();
+                }
+            }
+            updateTimerCardVisibility();
+        } catch (e) {
+            console.error("Error restoring state:", e);
+        }
+    }
+
+    const reminders = [
+        { text: "Clodhu pak! 👀", icon: "👀" },
+        { text: "Pi ujë! 💧", icon: "💧" },
+        { text: "Merr frymë thellë! 🧘", icon: "🧘" },
+        { text: "Drejto shpinën! 📏", icon: "📏" }
+    ];
+
+    // Camera Logic
+    const cameraBtn = document.getElementById('cameraBtn');
+    const cameraModal = document.getElementById('cameraModal');
+    const video = document.getElementById('video');
+    const canvas = document.getElementById('canvas');
+    const captureBtn = document.getElementById('captureBtn');
+    const closeCameraBtn = document.getElementById('closeCameraBtn');
+    let stream = null;
+
+    cameraBtn.addEventListener('click', async () => {
+        try {
+            stream = await navigator.mediaDevices.getUserMedia({ video: { facingMode: 'environment' } });
+            video.srcObject = stream;
+            cameraModal.classList.remove('hidden');
+        } catch (err) {
+            showToast("Nuk mund të hapet kamera.", "error");
+        }
+    });
+
+    closeCameraBtn.addEventListener('click', () => {
+        if (stream) stream.getTracks().forEach(track => track.stop());
+        cameraModal.classList.add('hidden');
+    });
+
+    captureBtn.addEventListener('click', () => {
+        const context = canvas.getContext('2d');
+        canvas.width = video.videoWidth;
+        canvas.height = video.videoHeight;
+        context.drawImage(video, 0, 0, canvas.width, canvas.height);
+
+        const dataUrl = canvas.toDataURL('image/jpeg');
+        document.getElementById('imgPreview').src = dataUrl;
+
+        // Show captured photo in the grid
+        const grid = document.getElementById('image-grid-preview');
+        grid.innerHTML = '';
+        const wrapper = document.createElement('div');
+        wrapper.className = 'relative rounded-2xl overflow-hidden border-2 border-indigo-100 shadow-md aspect-square';
+        const img = document.createElement('img');
+        img.src = dataUrl;
+        img.alt = 'Foto e kapur';
+        img.className = 'w-full h-full object-cover';
+        wrapper.appendChild(img);
+        grid.appendChild(wrapper);
+
+        document.getElementById('preview-container').style.display = 'block';
+        
+        // Reset configuration flow on capture
+        const analyzeBtnTemp = document.getElementById('analyzeBtn');
+        if (analyzeBtnTemp) {
+            analyzeBtnTemp.innerHTML = 'Gjenero Mësimin <i class="fas fa-magic ml-2"></i>';
+            analyzeBtnTemp.classList.add('animate-bounce');
+        }
+        const roleSetupTemp = document.getElementById('role-setup');
+        if (roleSetupTemp) roleSetupTemp.classList.add('hidden');
+        const finalGenTemp = document.getElementById('final-generate-container');
+        if (finalGenTemp) finalGenTemp.classList.add('hidden');
+
+        if (stream) stream.getTracks().forEach(track => track.stop());
+        cameraModal.classList.add('hidden');
+        saveStateToSession();
+    });
+
+    // API Call via backend to enforce quotas
+    async function callGemini(prompt, base64Image = null) {
+        // Helper to trigger modals
+        const showLimitModal = (msg) => {
+            document.getElementById('loader').classList.add('hidden');
+            document.getElementById('analyzeBtn').classList.remove('hidden');
+            if (APP_DATA.isUser) {
+                document.getElementById('upgradeModalText').innerText = msg || "Ju keni arritur limitin falas. Upgrade për të vazhduar!";
+                document.getElementById('upgradeModal').classList.remove('hidden');
+            } else {
+                document.getElementById('signupModal').classList.remove('hidden');
+            }
+        };
+
+        // --- PRE-FLIGHT QUOTA CHECK ---
+        if (!quota.canSend('count')) {
+            showLimitModal("Limiti ditor i mesazheve u arrit. Bëni upgrade!");
+            throw new Error("Quota Exceeded");
+        }
+        if (base64Image && !quota.canSend('image_learn')) {
+            showLimitModal("Limiti ditor i fotove në SmartLearn u arrit. Bëni upgrade!");
+            throw new Error("Quota Exceeded");
+        }
+
+        const response = await fetch('/api/learn', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({
+                prompt: prompt,
+                image: base64Image
+            })
+        });
+
+        const data = await response.json();
+
+        if (response.status === 403) {
+            quota.localUsage.image_learn = quota.limits.image_learn || 0;
+            quota.localUsage.count = quota.limits.count || 0;
+            quota.save();
+            showLimitModal(data.error);
+            throw new Error("Quota Exceeded");
+        }
+
+        if (!response.ok) {
+            showToast(data.error || "Ndodhi një gabim në server.", 'error');
+            throw new Error(data.error);
+        }
+
+        // Increment local usage on success
+        quota.increment('count');
+        if (base64Image) quota.increment('image_learn');
+
+        // Robust JSON Parsing: Handle Gemini's markdown wrapper
+        try {
+            let rawText = "";
+            if (data.candidates && data.candidates[0].content.parts[0].text) {
+                rawText = data.candidates[0].content.parts[0].text;
+            } else {
+                return data; // Fallback if already parsed
+            }
+
+            // Clean markdown if present: ```json ... ```
+            rawText = rawText.replace(/^```json/i, '').replace(/```$/i, '').trim();
+
+            return JSON.parse(rawText);
+        } catch (e) {
+            console.error("Parsed JSON error:", e);
+            console.error("Data received:", data);
+            throw new Error("Përgjigja nga AI nuk mund të analizohej me sukses. Provoni ta shkrepni foton përsëri.");
+        }
+    }
+
+    // DOM Events
+    document.getElementById('fileInput').addEventListener('change', (e) => {
+        const files = Array.from(e.target.files);
+        if (files.length === 0) return;
+
+        const grid = document.getElementById('image-grid-preview');
+        grid.innerHTML = ''; // clear old previews
+
+        // Use first file as main image for AI
+        const primaryReader = new FileReader();
+        primaryReader.onload = (re) => {
+            document.getElementById('imgPreview').src = re.target.result;
+            saveStateToSession();
+        };
+        primaryReader.readAsDataURL(files[0]);
+
+        // Render ALL selected images as visible thumbnails
+        files.forEach((file, idx) => {
+            const reader = new FileReader();
+            reader.onload = (re) => {
+                const wrapper = document.createElement('div');
+                wrapper.className = 'relative rounded-2xl overflow-hidden border-2 border-indigo-100 shadow-md aspect-square';
+                const img = document.createElement('img');
+                img.src = re.target.result;
+                img.alt = `Foto ${idx + 1}`;
+                img.className = 'w-full h-full object-cover';
+                wrapper.appendChild(img);
+                grid.appendChild(wrapper);
+            };
+            reader.readAsDataURL(file);
+        });
+
+        // Hide upload prompt (use style directly to avoid Tailwind specificity issues)
+        document.getElementById('preview-container').style.display = 'block';
+
+        // Reset configuration flow on file upload
+        const analyzeBtnTemp = document.getElementById('analyzeBtn');
+        if (analyzeBtnTemp) {
+            analyzeBtnTemp.innerHTML = 'Gjenero Mësimin <i class="fas fa-magic ml-2"></i>';
+            analyzeBtnTemp.classList.add('animate-bounce');
+        }
+        const roleSetupTemp = document.getElementById('role-setup');
+        if (roleSetupTemp) roleSetupTemp.classList.add('hidden');
+        const finalGenTemp = document.getElementById('final-generate-container');
+        if (finalGenTemp) finalGenTemp.classList.add('hidden');
+    });
+
+    const motivationalPhrases = [
+        "Po lexojmë tekstin...",
+        "Po përgatisim pyetjet...",
+        "Po analizojmë konceptet kyçe...",
+        "Gati për një sfidë të re?",
+        "Të mësuarit po bëhet lojë...",
+        "Gati përfunduam!"
+    ];
+
+    document.getElementById('analyzeBtn').addEventListener('click', () => {
+        const roleSetup = document.getElementById('role-setup');
+        if (roleSetup.classList.contains('hidden')) {
+            // First click: show config panel with teacher mode active
+            roleSetup.classList.remove('hidden');
+            document.getElementById('final-generate-container').classList.remove('hidden');
+            setRole('teacher');
+            roleSetup.scrollIntoView({ behavior: 'smooth', block: 'start' });
+            const btn = document.getElementById('analyzeBtn');
+            btn.innerHTML = 'Konfiguro më poshtë <i class="fas fa-arrow-down ml-2"></i>';
+            btn.classList.remove('animate-bounce');
+        } else {
+            startGeneration();
+        }
+    });
+
+    window.startGeneration = async () => {
+        const base64 = document.getElementById('imgPreview').src.includes('data:image') ? document.getElementById('imgPreview').src.split(',')[1] : null;
+        const teacherText = document.getElementById('teacher-text').value.trim();
+
+        if (!base64 && !teacherText) {
+            showToast("Ju lutem ngarkoni një foto ose shkruani tekstin e mësimit.", "info");
+            return;
+        }
+
+        document.getElementById('loader').classList.remove('hidden');
+        document.getElementById('analyzeBtn').classList.add('hidden');
+        document.getElementById('final-generate-container').classList.add('hidden');
+
+        // Scroll back up to the upload/loader area so user sees processing
+        const uploadBox = document.getElementById('step-upload-box');
+        if (uploadBox) {
+            uploadBox.scrollIntoView({ behavior: 'smooth', block: 'center' });
+        }
+        // Also hide the text area button during loading
+        const teacherInputArea = document.getElementById('teacher-input-area');
+        if (teacherInputArea && state.role === 'teacher') {
+            // Hide the button container specifically
+            teacherInputArea.querySelector('button').classList.add('hidden');
+        }
+
+        const phraseEl = document.getElementById('loadingPhrase');
+        let phraseIdx = 0;
+        const phraseInterval = setInterval(() => {
+            phraseEl.style.opacity = 0;
+            setTimeout(() => {
+                phraseIdx = (phraseIdx + 1) % motivationalPhrases.length;
+                phraseEl.innerText = motivationalPhrases[phraseIdx];
+                phraseEl.style.opacity = 1;
+            }, 300);
+        }, 2500);
+
+        // Build dynamic prompt focusing on content analysis
+        const exercisesList = state.selectedExercises.map(id => {
+            const ex = EXERCISE_TYPES.find(e => e.id === id);
+            return ex ? ex.label : id;
+        }).join(', ');
+
+        const prompt = `Analizo këtë ${state.role === 'teacher' ? 'material mësimor' : 'imazh mësimi'} dhe gjenero një material edukativ në Shqip. 
+            Detyra jote është të krijosh titullin, një përmbledhje të detajuar në format HTML, dhe këto ushtrime: ${exercisesList}.
+            Përgjigju VETËM me kodin JSON sipas skemës së kërkuar. Sigurohu që fusha 'finalQuiz' të ketë saktësisht 5 pyetje me nga 4 opsione secila.`;
+
+        try {
+            // Helper to trigger modals
+            const showLimitModal = (msg) => {
+                document.getElementById('loader').classList.add('hidden');
+                document.getElementById('analyzeBtn').classList.remove('hidden');
+                document.getElementById('final-generate-container').classList.remove('hidden');
+                if (teacherInputArea && state.role === 'teacher') {
+                    teacherInputArea.querySelector('button').classList.remove('hidden');
+                }
+                if (APP_DATA.isUser) {
+                    document.getElementById('upgradeModalText').innerText = msg || "Ju keni arritur limitin falas. Upgrade për të vazhduar!";
+                    document.getElementById('upgradeModal').classList.remove('hidden');
+                } else {
+                    document.getElementById('signupModal').classList.remove('hidden');
+                }
+            };
+
+            // --- PRE-FLIGHT QUOTA CHECK ---
+            if (!quota.canSend('count')) {
+                showLimitModal("Limiti ditor i mesazheve u arrit. Bëni upgrade!");
+                return;
+            }
+            if (base64 && !quota.canSend('image_learn')) {
+                showLimitModal("Limiti ditor i fotove në SmartLearn u arrit. Bëni upgrade!");
+                return;
+            }
+
+            const apiPayload = {
+                prompt: prompt,
+                image: base64,
+                text: teacherText,
+                requested_exercises: state.selectedExercises
+            };
+
+            const result = await fetch('/api/learn', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify(apiPayload)
+            });
+
+            const data = await result.json();
+
+            if (result.status === 403) {
+                quota.localUsage.image_learn = quota.limits.image_learn || 0;
+                quota.localUsage.count = quota.limits.count || 0;
+                quota.save();
+                showLimitModal(data.error);
+                return;
+            }
+
+            if (!result.ok) throw new Error(data.error);
+
+            // Increment local usage on success
+            quota.increment('count');
+            if (base64) quota.increment('image_learn');
+
+            // Handle markdown wrapper from Gemini if it persists
+            let parsedData = data;
+            if (data.candidates) {
+                let rawText = data.candidates[0].content.parts[0].text;
+                rawText = rawText.replace(/^```json/i, '').replace(/```$/i, '').trim();
+                parsedData = JSON.parse(rawText);
+            }
+
+            clearInterval(phraseInterval);
+            state.lessonData = parsedData;
+            state.shareToken = data.token;
+            state.shareUrl = data.share_url;
+            state.expiresAt = data.expires_at;
+            state.currentStep = 'step-reading';
+            saveStateToSession();
+            showReadingStep();
+        } catch (err) {
+            clearInterval(phraseInterval);
+            showToast("Ndodhi një gabim: " + err.message, 'error');
+            document.getElementById('loader').classList.add('hidden');
+            document.getElementById('analyzeBtn').classList.remove('hidden');
+            document.getElementById('final-generate-container').classList.remove('hidden');
+            if (teacherInputArea && state.role === 'teacher') {
+                teacherInputArea.querySelector('button').classList.remove('hidden');
+            }
+            phraseEl.innerText = motivationalPhrases[0];
+        }
+    };
+
+    function showReadingStep(isRestoring = false) {
+
+        document.getElementById('step-upload').classList.add('hidden-step');
+        const roleSetup = document.getElementById('role-setup');
+        if (roleSetup) roleSetup.classList.add('hidden');
+
+        // Hide history section too!
+        const historySection = document.getElementById('history-section');
+        if (historySection) historySection.classList.add('hidden');
+
+        document.getElementById('step-reading').classList.remove('hidden-step');
+        state.currentStep = 'step-reading';
+
+        // Unhide sticky sidebar and configure button
+        document.getElementById('sticky-sidebar').classList.remove('hidden');
+        document.getElementById('goToExercises').classList.remove('hidden');
+
+        updateTimerCardVisibility();
+
+        // Show teacher tools if role is teacher
+        const teacherTools = document.getElementById('teacher-tools-card');
+        if (state.role === 'teacher') {
+            teacherTools.classList.remove('hidden');
+            if (state.shareUrl) {
+                document.getElementById('share-initial').classList.add('hidden');
+                document.getElementById('share-active').classList.remove('hidden');
+                document.getElementById('share-link-display').innerText = state.shareUrl;
+            } else {
+                document.getElementById('share-initial').classList.remove('hidden');
+                document.getElementById('share-active').classList.add('hidden');
+            }
+        } else {
+            teacherTools.classList.add('hidden');
+        }
+
+        const fixedToolbar = document.getElementById('teacher-fixed-toolbar');
+        if (state.role === 'teacher') {
+            if (fixedToolbar) fixedToolbar.classList.remove('hidden');
+        } else {
+            if (fixedToolbar) fixedToolbar.classList.add('hidden');
+        }
+
+        const isEditable = state.role === 'teacher' ? 'contenteditable="true" spellcheck="false"' : '';
+        const titleClass = state.role === 'teacher' ? 'outline-none focus:ring-2 focus:ring-indigo-100 rounded-lg transition-all' : '';
+        const bodyClass = state.role === 'teacher' ? 'outline-none focus:ring-2 focus:ring-indigo-100 rounded-lg transition-all p-2' : '';
+
+        document.getElementById('lessonContent').innerHTML = `
+            <div class="space-y-6" id="editable-lesson-container" data-path="root">
+                <h1 class="text-4xl font-black mb-6 text-gray-900 border-b-4 border-indigo-100 pb-4 ${titleClass}" ${isEditable} data-path="titulli">${state.lessonData.titulli || 'Titull i panjohur'}</h1>
+                <div class="text-lg leading-relaxed text-gray-700 ${bodyClass}" ${isEditable} data-path="permbledhja">${state.lessonData.permbledhja || ''}</div>
+            </div>
+        `;
+
+        if (state.role === 'teacher') {
+            if (typeof attachTeacherEditorListeners === 'function') {
+                attachTeacherEditorListeners();
+            }
+        }
+
+        startMainTimer();
+        startReminders();
+        if (!isRestoring) saveStateToSession();
+    }
+
+    function startMainTimer() {
+        if (state.timerInterval) clearInterval(state.timerInterval);
+        state.timerInterval = setInterval(() => {
+            state.currentTime--;
+            const mins = Math.floor(state.currentTime / 60);
+            const secs = state.currentTime % 60;
+            document.getElementById('timerDisplay').innerText = `${mins}:${secs < 10 ? '0' : ''}${secs}`;
+            if (state.currentTime <= 0) clearInterval(state.timerInterval);
+        }, 1000);
+    }
+
+    window.addTime = (mins) => {
+        state.currentTime += mins * 60;
+        showToast(`U shtuan ${mins} minuta studim!`, "⏳");
+        saveStateToSession();
+    };
+
+    document.getElementById('goToExercises').addEventListener('click', () => {
+        clearInterval(state.timerInterval);
+        document.getElementById('step-reading').classList.add('hidden-step');
+        document.getElementById('step-exercises').classList.remove('hidden-step');
+        state.currentStep = 'step-exercises';
+        saveStateToSession();
+        renderExercises();
+        window.scrollTo({ top: 0, behavior: 'smooth' });
+    });
+
+    function renderExercises() {
+        const data = state.lessonData;
+        const isEdit = state.role === 'teacher' && state.isEditMode;
+
+        // First, hide all possible exercise sections
+        EXERCISE_TYPES.forEach(ex => {
+            const section = document.getElementById(`section-${ex.id}`);
+            if (section) section.classList.add('hidden-step');
+        });
+
+        // Loop through the data keys and show relevant sections
+        Object.keys(data).forEach(key => {
+            const section = document.getElementById(`section-${key}`);
+            if (!section) return;
+
+            section.classList.remove('hidden-step');
+
+            switch (key) {
+                case 'mcq':
+                    document.getElementById('mcqContainer').innerHTML = data.mcq.map((q, i) => `
+                        <div class="p-6 bg-white rounded-2xl border ${isEdit ? 'border-amber-200 ring-2 ring-amber-100' : 'border-gray-100'} shadow-sm">
+                            <p class="font-bold text-gray-800 mb-4" ${isEdit ? `contenteditable="true" data-path="mcq.${i}.q" class="outline-none focus:bg-amber-50 rounded p-1"` : ''}>${i + 1}. ${q.q}</p>
+                            <div class="space-y-2">
+                                ${q.options.map((opt, oi) => isEdit ?
+                        `<div contenteditable="true" data-path="mcq.${i}.options.${oi}" class="w-full text-left p-3 rounded-xl border border-amber-200 bg-amber-50 font-medium outline-none focus:ring-2 focus:ring-amber-400 cursor-text">${opt}</div>` :
+                        `<button onclick="checkMCQ(this, ${i}, ${oi})" class="w-full text-left p-3 rounded-xl border border-gray-100 hover:border-indigo-300 hover:bg-indigo-50 transition font-medium">${opt}</button>`
+                    ).join('')}
+                            </div>
+                        </div>
+                    `).join('');
+                    break;
+                case 'dragDrop':
+                    const terms = [...data.dragDrop].sort(() => Math.random() - 0.5);
+                    const defs = [...data.dragDrop].sort(() => Math.random() - 0.5);
+                    document.getElementById('dragSource').innerHTML = terms.map((t, i) => `
+                        <div ${isEdit ? `contenteditable="true" data-path="dragDrop.${i}.term" class="px-4 py-2 bg-amber-500 text-white rounded-xl shadow-md font-bold outline-none ring-2 ring-amber-200"` : `draggable="true" ondragstart="onDragStart(event)" class="draggable px-4 py-2 bg-indigo-600 text-white rounded-xl shadow-md cursor-grab active:cursor-grabbing font-bold"`} id="term-${t.term}">${t.term}</div>
+                    `).join('');
+                    document.getElementById('dropTargets').innerHTML = defs.map((d, i) => `
+                        <div ${!isEdit ? `ondragover="onDragOver(event)" ondrop="onDrop(event, '${d.term}')"` : ''} class="p-4 bg-gray-50 border-2 ${isEdit ? 'border-amber-300 bg-amber-50' : 'border-dashed border-gray-200'} rounded-2xl flex flex-col gap-2 transition-all">
+                            <p class="text-gray-600 italic text-sm">Përshkrimi:</p>
+                            <p class="font-semibold text-gray-800" ${isEdit ? `contenteditable="true" data-path="dragDrop.${i}.definition" class="outline-none focus:bg-white rounded p-1"` : ''}>${d.definition}</p>
+                            ${!isEdit ? `<div class="drop-zone-area h-10 mt-2 flex items-center justify-center rounded-lg bg-white/50 border border-gray-100"></div>` : ''}
+                        </div>
+                    `).join('');
+                    break;
+                case 'openQuestions':
+                    document.getElementById('openQuestionsContainer').innerHTML = data.openQuestions.map((q, i) => `
+                        <div class="space-y-3 ${isEdit ? 'p-4 border border-amber-200 rounded-xl bg-amber-50' : ''}">
+                            <p class="text-xl font-bold text-gray-800 flex items-start gap-2">
+                                <span>${i + 1}.</span> 
+                                <span class="flex-1" ${isEdit ? `contenteditable="true" data-path="openQuestions.${i}" class="outline-none focus:bg-white rounded p-1"` : ''}>${q}</span>
+                            </p>
+                            ${!isEdit ? `<textarea class="w-full p-5 rounded-2xl border border-gray-200 focus:ring-4 focus:ring-indigo-100 focus:border-indigo-400 outline-none transition" rows="3" placeholder="Shkruaj përgjigjen tënde këtu..."></textarea>` : ''}
+                        </div>
+                    `).join('');
+                    break;
+                case 'mistakeText':
+                    if (isEdit) {
+                        document.getElementById('mistakeContentArea').innerHTML = `<div contenteditable="true" data-path="mistakeText" class="w-full p-4 border border-amber-200 rounded-xl bg-amber-50 outline-none focus:bg-white leading-loose">${data.mistakeText}</div>
+                        <div class="mt-4 p-4 bg-white border border-slate-200 rounded-xl">
+                            <h4 class="font-bold text-sm text-slate-500 mb-2">Fjalët e gabuara (të ndara me presje):</h4>
+                            <div contenteditable="true" data-path="mistakeWords_RAW" class="p-2 border border-slate-200 rounded outline-none focus:border-amber-400">${data.mistakeWords.join(', ')}</div>
+                        </div>`;
+                    } else {
+                        const words = data.mistakeText.split(' ');
+                        document.getElementById('mistakeContentArea').innerHTML = words.map(word => {
+                            const cleanWord = word.replace(/[.,\/#!$%\^&\*;:{}=\-_\`~()]/g, "").toLowerCase();
+                            const isMistake = data.mistakeWords.some(mw => mw.toLowerCase() === cleanWord);
+                            return `<span class="mistake-word" onclick="handleMistakeClick(this, ${isMistake})">${word}</span>`;
+                        }).join(' ');
+                        document.getElementById('mistakesFoundCount').innerText = 0;
+                        state.mistakesFound = 0;
+                    }
+                    break;
+                case 'trueFalse':
+                    document.getElementById('trueFalseContainer').innerHTML = data.trueFalse.map((q, i) => `
+                        <div class="p-6 bg-white rounded-2xl border ${isEdit ? 'border-amber-200 bg-amber-50' : 'border-gray-100'} shadow-sm flex items-center justify-between">
+                            <p class="font-bold text-gray-800 flex-1 pr-4" ${isEdit ? `contenteditable="true" data-path="trueFalse.${i}.q" class="outline-none focus:bg-white rounded p-1"` : ''}>${i + 1}. ${q.q}</p>
+                            <div class="flex gap-4">
+                                ${isEdit ? `
+                                    <div class="px-4 py-2 text-xs font-bold bg-white border border-amber-200 rounded-lg text-amber-600">IS: ${q.a ? 'Vërtetë' : 'Gabim'} (Edit logic not implemented inline yet)</div>
+                                ` : `
+                                <button onclick="checkTF(this, ${i}, true)" class="px-6 py-2 rounded-xl border border-gray-100 font-bold hover:bg-green-50 hover:border-green-300">Vërtetë</button>
+                                <button onclick="checkTF(this, ${i}, false)" class="px-6 py-2 rounded-xl border border-gray-100 font-bold hover:bg-red-50 hover:border-red-300">Gabim</button>
+                                `}
+                            </div>
+                        </div>
+                    `).join('');
+                    break;
+                case 'fillBlanks':
+                    if (isEdit) {
+                        document.getElementById('fillBlanksContainer').innerHTML = `<div contenteditable="true" data-path="fillBlanks.text" class="w-full p-4 border border-amber-200 rounded-xl bg-amber-50 outline-none focus:bg-white leading-loose">${data.fillBlanks.text}</div>
+                        <div class="mt-4 p-4 bg-white border border-slate-200 rounded-xl">
+                            <h4 class="font-bold text-sm text-slate-500 mb-2">Përgjigjet e sakta të fshehura [blank] (të ndara me presje):</h4>
+                            <div contenteditable="true" data-path="fillBlanks_blanks_RAW" class="p-2 border border-slate-200 rounded outline-none focus:border-amber-400">${data.fillBlanks.blanks.join(', ')}</div>
+                        </div>`;
+                    } else {
+                        let blankIdx = 0;
+                        const filledText = data.fillBlanks.text.replace(/\[blank\]/g, () => `
+                            <input type="text" onchange="checkBlank(this, '${data.fillBlanks.blanks[blankIdx++]}')" class="w-32 mx-1 px-3 py-1 border-b-2 border-gray-300 bg-transparent focus:border-indigo-500 outline-none text-indigo-600 font-bold text-center transition-all">
+                        `);
+                        document.getElementById('fillBlanksContainer').innerHTML = filledText;
+                    }
+                    break;
+                case 'summary':
+                    document.getElementById('summaryContainer').innerHTML = `<div ${isEdit ? 'contenteditable="true" data-path="summary" class="p-4 border border-amber-200 bg-amber-50 rounded-xl outline-none focus:bg-white"' : ''}>${data.summary}</div>`;
+                    break;
+                case 'criticalThinking':
+                    document.getElementById('criticalThinkingContainer').innerHTML = data.criticalThinking.map((q, i) => `
+                        <div class="p-8 ${isEdit ? 'bg-amber-50 border-amber-200' : 'bg-purple-50 border-purple-100'} rounded-[2rem] border relative">
+                            <i class="fas fa-lightbulb absolute -top-4 -left-4 w-10 h-10 ${isEdit ? 'bg-amber-600' : 'bg-purple-600'} text-white rounded-full flex items-center justify-center shadow-lg"></i>
+                            <p class="font-bold text-gray-800 mb-4" ${isEdit ? `contenteditable="true" data-path="criticalThinking.${i}" class="outline-none focus:bg-white rounded p-1"` : ''}>${q}</p>
+                            ${!isEdit ? `<textarea class="w-full p-4 rounded-xl border-none shadow-inner outline-none focus:ring-2 focus:ring-purple-300" placeholder="Si do të vepronit ju?"></textarea>` : ''}
+                        </div>
+                    `).join('');
+                    break;
+                case 'vocabulary':
+                    document.getElementById('vocabularyContainer').innerHTML = data.vocabulary.map(v => `
+                        <div class="p-5 bg-white rounded-2xl border border-gray-100 shadow-sm">
+                            <p class="text-indigo-600 font-black text-lg mb-1">${v.word}</p>
+                            <p class="text-gray-600 text-sm font-medium">${v.definition}</p>
+                        </div>
+                    `).join('');
+                    break;
+                case 'analogies':
+                    document.getElementById('analogiesContainer').innerHTML = data.analogies.map(a => `
+                        <div class="p-6 bg-orange-50/30 rounded-2xl border border-orange-100 flex items-center justify-center gap-4 text-xl font-bold">
+                            <span class="text-orange-600">${a.a}</span> : <span>${a.b}</span> :: <span class="text-orange-600">${a.c}</span> : <span>${a.d}</span>
+                        </div>
+                    `).join('');
+                    break;
+                case 'ordering':
+                    const shuffledOrder = [...data.ordering].sort(() => Math.random() - 0.5);
+                    document.getElementById('orderingContainer').innerHTML = shuffledOrder.map((item, i) => `
+                        <div class="p-4 bg-white rounded-xl border border-gray-100 shadow-sm flex items-center gap-4">
+                            <input type="number" onchange="checkOrder(this, ${item.order})" class="w-12 p-2 rounded-lg bg-gray-50 border border-gray-200 text-center font-bold" min="0">
+                            <p class="text-gray-700 font-medium">${item.item}</p>
+                        </div>
+                    `).join('');
+                    break;
+                case 'conceptMap':
+                    const lines = data.conceptMap.split('\n').map(l => l.trim()).filter(l => l);
+                    document.getElementById('conceptMapContainer').innerHTML = lines.map(line => `<p class="mb-2 font-bold text-gray-800"><i class="fas fa-chevron-right text-cyan-500 mr-2 text-xs"></i> ${line}</p>`).join('');
+                    break;
+                case 'prosCons':
+                    document.getElementById('prosConsContainer').innerHTML = `
+                        <div class="space-y-4">
+                            <h4 class="text-green-600 font-black flex items-center gap-2"><i class="fas fa-plus-circle"></i> Avantazhet</h4>
+                            ${data.prosCons.pros.map(p => `<p class="p-4 bg-green-50 rounded-xl text-green-800 font-medium shadow-sm">${p}</p>`).join('')}
+                        </div>
+                        <div class="space-y-4">
+                            <h4 class="text-red-600 font-black flex items-center gap-2"><i class="fas fa-minus-circle"></i> Disavantazhet</h4>
+                            ${data.prosCons.cons.map(c => `<p class="p-4 bg-red-50 rounded-xl text-red-800 font-medium shadow-sm">${c}</p>`).join('')}
+                        </div>
+                    `;
+                    break;
+                case 'realWorld':
+                    document.getElementById('realWorldContainer').innerHTML = data.realWorld;
+                    break;
+            }
+        });
+
+        // Show startQuizBtn if finalQuiz was generated (now always mandatory)
+        const quizBtn = document.getElementById('startQuizBtn');
+        if (quizBtn) {
+            if (data.finalQuiz && data.finalQuiz.length > 0) {
+                quizBtn.classList.remove('hidden');
+                quizBtn.innerText = "Koha për Kuizin Final!";
+                quizBtn.onclick = null;
+            } else {
+                quizBtn.classList.remove('hidden');
+                quizBtn.innerText = "Përfundo Studimin";
+                quizBtn.style.background = "#6366f1";
+                quizBtn.onclick = () => {
+                    sessionStorage.removeItem(SESSION_KEY);
+                    location.reload();
+                };
+            }
+        }
+    }
+
+    window.checkTF = (btn, qIdx, userAns) => {
+        if (state.isEditMode) return;
+        const correct = state.lessonData.trueFalse[qIdx].answer;
+        const container = btn.parentElement;
+        container.querySelectorAll('button').forEach(b => b.disabled = true);
+
+        if (userAns === correct) {
+            btn.classList.add('bg-green-500', 'text-white', 'border-green-500');
+            showToast("Saktë!", "✅");
+        } else {
+            btn.classList.add('bg-red-500', 'text-white', 'border-red-500');
+            showToast("Jo e saktë.", "❌");
+        }
+    };
+
+    window.checkBlank = (input, correct) => {
+        if (input.value.trim().toLowerCase() === correct.toLowerCase()) {
+            input.classList.add('border-green-500', 'text-green-600');
+            input.classList.remove('border-gray-300', 'text-indigo-600');
+            input.disabled = true;
+        } else {
+            input.classList.add('border-red-500', 'text-red-600');
+            setTimeout(() => {
+                input.classList.remove('border-red-500', 'text-red-600');
+            }, 1000);
+        }
+    };
+
+    window.checkOrder = (input, correctOrder) => {
+        if (parseInt(input.value) === correctOrder) {
+            input.classList.add('bg-green-100', 'border-green-500', 'text-green-700');
+            input.disabled = true;
+        } else {
+            input.classList.add('bg-red-100', 'border-red-500', 'text-red-700');
+            setTimeout(() => input.classList.remove('bg-red-100', 'border-red-500', 'text-red-700'), 1000);
+        }
+    };
+
+    // Logic for Mistake Finding
+    window.handleMistakeClick = (el, isMistake) => {
+        if (state.isEditMode) return;
+        if (el.classList.contains('found')) return;
+
+        if (isMistake) {
+            el.classList.add('found');
+            state.mistakesFound++;
+            document.getElementById('mistakesFoundCount').innerText = state.mistakesFound;
+            showToast("Bravo! Gjete një gabim.", "🎯");
+            if (state.mistakesFound >= 5) {
+                showToast("I gjete të gjitha gabimet! Saktësi maksimale.", "🌟");
+            }
+        } else {
+            el.style.backgroundColor = '#fee2e2';
+            setTimeout(() => el.style.backgroundColor = 'transparent', 500);
+        }
+    };
+
+    // Drag Drop Logic
+    window.onDragStart = (e) => {
+        if (state.isEditMode) { e.preventDefault(); return; }
+        e.dataTransfer.setData('text', e.target.id);
+    };
+    window.onDragOver = (e) => e.preventDefault();
+    window.onDrop = (e, correctTerm) => {
+        e.preventDefault();
+        const id = e.dataTransfer.getData('text');
+        const term = id.replace('term-', '');
+        const dropArea = e.target.closest('[ondrop]').querySelector('.drop-zone-area');
+
+        if (term === correctTerm) {
+            dropArea.innerHTML = `<span class="text-green-600 font-bold flex items-center gap-2">✅ ${term}</span>`;
+            dropArea.parentElement.classList.remove('border-gray-200');
+            dropArea.parentElement.classList.add('border-green-400', 'bg-green-50');
+            const dragEl = document.getElementById(id);
+            if (dragEl) {
+                dragEl.style.opacity = '0.3';
+                dragEl.draggable = false;
+            }
+        } else {
+            showToast("Jo e saktë, provo një tjetër!", "❌");
+        }
+    };
+
+    window.checkMCQ = (btn, qIdx, optIdx) => {
+        // Block if edit mode is ON (teacher is editing, not interacting)
+        if (state.isEditMode) return;
+        const correct = state.lessonData.mcq[qIdx].correct;
+        const container = btn.parentElement;
+        container.querySelectorAll('button').forEach(b => {
+            b.disabled = true;
+            b.classList.remove('hover:bg-indigo-50', 'hover:border-indigo-300');
+        });
+
+        if (optIdx === correct) {
+            btn.classList.add('bg-green-500', 'text-white', 'border-green-500');
+        } else {
+            btn.classList.add('bg-red-500', 'text-white', 'border-red-500');
+            container.querySelectorAll('button')[correct].classList.add('bg-green-100', 'border-green-300', 'text-green-700');
+        }
+    };
+
+    // Final Quiz Logic
+    document.getElementById('startQuizBtn').addEventListener('click', () => {
+        document.getElementById('step-exercises').classList.add('hidden-step');
+        document.getElementById('step-quiz').classList.remove('hidden-step');
+        state.currentStep = 'step-quiz';
+        saveStateToSession();
+        loadQuizQuestion();
+        window.scrollTo({ top: 0, behavior: 'smooth' });
+    });
+
+    window.toggleEditMode = () => {
+        state.isEditMode = !state.isEditMode;
+        const btnText = document.getElementById('editModeText');
+        const indicator = document.getElementById('editModeIndicator');
+        const toggleBtn = document.getElementById('editModeToggleBtn');
+
+        if (state.isEditMode) {
+            if (btnText) btnText.innerText = "EDIT MODE: ON";
+            if (indicator) indicator.innerText = "🔴";
+            if (toggleBtn) {
+                toggleBtn.classList.remove('bg-green-50', 'text-green-700', 'border-green-200');
+                toggleBtn.classList.add('bg-red-50', 'text-red-600', 'border-red-200');
+            }
+        } else {
+            if (btnText) btnText.innerText = "EDIT MODE: OFF";
+            if (indicator) indicator.innerText = "🟢";
+            if (toggleBtn) {
+                toggleBtn.classList.remove('bg-red-50', 'text-red-600', 'border-red-200');
+                toggleBtn.classList.add('bg-green-50', 'text-green-700', 'border-green-200');
+            }
+        }
+
+        // Re-render currently viewed steps to inject/remove contenteditable
+        if (state.currentStep === 'step-exercises') {
+            renderExercises();
+        } else if (state.currentStep === 'step-quiz') {
+            loadQuizQuestion();
+        } else if (state.currentStep === 'step-reading' || !state.currentStep) {
+            // we probably don't need to re-render the whole reading step since it's fully editable always for teachers
+            // but just to be safe, showReadingStep() will wipe user unsaved HTML state outside JSON.
+            // showReadingStep(false); 
+        }
+    };
+
+    function loadQuizQuestion() {
+        if (!state.lessonData.finalQuiz) {
+            showToast("Kuizi nuk u gjenerua.", "error");
+            document.getElementById('step-quiz').classList.add('hidden-step');
+            document.getElementById('step-exercises').classList.remove('hidden-step');
+            return;
+        }
+        if (state.currentQuizIdx >= state.lessonData.finalQuiz.length) {
+            showQuizResult();
+            return;
+        }
+
+        const isEdit = state.role === 'teacher' && state.isEditMode;
+        const q = state.lessonData.finalQuiz[state.currentQuizIdx];
+
+        const quizQuestionEl = document.getElementById('quizQuestion');
+        if (isEdit) {
+            quizQuestionEl.innerHTML = `<span contenteditable="true" data-path="finalQuiz.${state.currentQuizIdx}.q" class="outline-none focus:bg-amber-50 p-1 border border-transparent focus:border-amber-200 rounded">${q.q}</span>`;
+        } else {
+            quizQuestionEl.innerText = q.q;
+        }
+
+        document.getElementById('quizOptions').innerHTML = q.options.map((opt, i) => {
+            if (isEdit) {
+                return `<div contenteditable="true" data-path="finalQuiz.${state.currentQuizIdx}.options.${i}" class="w-full text-left p-5 bg-amber-50 border-2 border-amber-200 rounded-2xl outline-none focus:ring-4 focus:ring-amber-400 font-bold text-lg text-amber-900 cursor-text">${opt}</div>`;
+            }
+            return `<button onclick="handleQuizAnswer(${i})" class="w-full p-5 bg-white border-2 border-gray-100 rounded-2xl hover:border-indigo-500 hover:bg-indigo-50 transition-all font-bold text-lg text-gray-700">${opt}</button>`;
+        }).join('');
+
+        const navBlock = document.getElementById('quizNavigation');
+        if (isEdit) {
+            if (navBlock) {
+                navBlock.classList.remove('hidden');
+                navBlock.classList.add('flex');
+            }
+            const counter = document.getElementById('quizCounter');
+            if (counter) counter.innerText = `${state.currentQuizIdx + 1} / ${state.lessonData.finalQuiz.length}`;
+        } else {
+            if (navBlock) {
+                navBlock.classList.add('hidden');
+                navBlock.classList.remove('flex');
+            }
+        }
+
+        if (!isEdit) startQuizTimer(); // Don't start timer in edit mode
+    }
+
+    window.navigateQuiz = (dir) => {
+        state.currentQuizIdx += dir;
+        if (state.currentQuizIdx < 0) state.currentQuizIdx = 0;
+        if (state.currentQuizIdx >= state.lessonData.finalQuiz.length) {
+            state.currentQuizIdx = state.lessonData.finalQuiz.length - 1;
+        }
+        loadQuizQuestion();
+    };
+
+    function startQuizTimer() {
+        let timeLeft = 3000;
+        const circle = document.getElementById('quizProgressCircle');
+        const text = document.getElementById('quizTimerText');
+
+        if (state.quizTimer) clearInterval(state.quizTimer);
+
+        state.quizTimer = setInterval(() => {
+            timeLeft -= 50;
+            const offset = 314.159 - (timeLeft / 3000) * 314.159;
+            circle.style.strokeDashoffset = offset;
+            text.innerText = Math.ceil(timeLeft / 1000);
+
+            if (timeLeft <= 0) {
+                clearInterval(state.quizTimer);
+                handleQuizAnswer(-1);
+            }
+        }, 50);
+    }
+
+    window.handleQuizAnswer = (idx) => {
+        clearInterval(state.quizTimer);
+        const correct = state.lessonData.finalQuiz[state.currentQuizIdx].correct;
+        if (idx === correct) state.quizScore++;
+
+        state.currentQuizIdx++;
+        loadQuizQuestion();
+    };
+
+    function showQuizResult() {
+        document.getElementById('quizQuestion').classList.add('hidden');
+        document.getElementById('quizOptions').classList.add('hidden');
+        document.querySelector('.progress-ring').parentElement.parentElement.classList.add('hidden');
+
+        const resultArea = document.getElementById('quizResultArea');
+        resultArea.classList.remove('hidden');
+        document.getElementById('finalScoreDisplay').innerText = `${state.quizScore} / ${state.lessonData.finalQuiz.length}`;
+    }
+
+
+    function startReminders() {
+        setInterval(() => {
+            const reminder = reminders[Math.floor(Math.random() * reminders.length)];
+            showToast(reminder.text, reminder.icon);
+        }, 4 * 60 * 1000);
+    }
+
+    // --- Teacher Sharing Functions ---
+    window.shareLesson = async () => {
+        if (!state.lessonData) return;
+
+        const btn = document.querySelector('#share-initial button');
+        btn.disabled = true;
+        btn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Duke krijuar linkun...';
+
+        try {
+            const res = await fetch('/api/share', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ lessonData: state.lessonData })
+            });
+            const data = await res.json();
+
+            if (res.ok) {
+                state.shareUrl = data.share_url;
+                state.shareToken = data.token;
+                state.expiresAt = data.expires_at;
+
+                document.getElementById('share-initial').classList.add('hidden');
+                document.getElementById('share-active').classList.remove('hidden');
+                document.getElementById('share-link-display').innerText = data.share_url;
+
+                saveStateToSession();
+                showToast("Linku i shpërndarjes u krijua!", "success");
+            } else {
+                showToast(data.error || "Dështoi krijimi i linkut.", "error");
+            }
+        } catch (e) {
+            showToast("Gabim në server.", "error");
+        } finally {
+            btn.disabled = false;
+            btn.innerHTML = '<i class="fas fa-share-alt"></i> Shpërndaj me Studentët';
+        }
+    };
+
+    window.copyShareLink = () => {
+        if (!state.shareUrl) return;
+        navigator.clipboard.writeText(state.shareUrl);
+        showToast("Linku u kopjua në clipboard!", "check");
+    };
+
+    window.viewSubmissions = async (token = null) => {
+        const targetToken = token || state.shareToken;
+        if (!targetToken) return;
+
+        const modal = document.getElementById('submissionsModal');
+        const list = document.getElementById('submissionsList');
+        modal.classList.remove('hidden');
+        list.innerHTML = `
+            <div class="text-center py-20">
+                <div class="animate-spin w-10 h-10 border-4 border-indigo-600 border-t-transparent rounded-full mx-auto mb-4"></div>
+                <p class="text-gray-400 font-bold">Duke ngarkuar përgjigjet...</p>
+            </div>
+        `;
+
+        try {
+            const res = await fetch(`/api/teacher/submissions/${targetToken}`);
+            const data = await res.json();
+
+            if (res.ok) {
+                if (data.length === 0) {
+                    list.innerHTML = `
+                        <div class="text-center py-20">
+                            <i class="fas fa-users-slash text-5xl text-gray-200 mb-4"></i>
+                            <p class="text-gray-400 font-bold">Ende nuk ka përgjigje nga studentët.</p>
+                        </div>
+                    `;
+                    return;
+                }
+
+                list.innerHTML = data.map(sub => {
+                    const mcqCorrect = sub.answers.mcq ? sub.answers.mcq.filter(a => a && a.correct).length : 0;
+                    const mcqTotal = sub.answers.mcq ? sub.answers.mcq.filter(a => a).length : 0;
+                    const quizCorrect = sub.answers.quiz ? sub.answers.quiz.filter(a => a && a.correct).length : 0;
+                    const quizTotal = sub.answers.quiz ? sub.answers.quiz.filter(a => a).length : 0;
+                    const timeStr = sub.answers.time_spent_seconds !== undefined
+                        ? Math.floor(sub.answers.time_spent_seconds / 60) + 'm ' + (sub.answers.time_spent_seconds % 60) + 's'
+                        : '--';
+                    const accuracy = sub.answers.accuracy_percent !== undefined ? sub.answers.accuracy_percent : '--';
+
+                    return `
+                    <div class="p-6 bg-gray-50 rounded-2xl border border-gray-100 shadow-sm space-y-4">
+                        <div class="flex justify-between items-center">
+                            <div>
+                                <h4 class="text-xl font-black text-gray-900">${sub.student_name}</h4>
+                                <span class="text-xs font-bold text-gray-400">${new Date(sub.submitted_at).toLocaleString('sq-AL')}</span>
+                            </div>
+                            <div class="flex items-center gap-2">
+                                <span class="px-3 py-1 rounded-xl bg-amber-100 text-amber-700 font-black text-sm">⏱ ${timeStr}</span>
+                                <span class="px-3 py-1 rounded-xl bg-indigo-100 text-indigo-700 font-black text-sm">✓ ${accuracy}%</span>
+                            </div>
+                        </div>
+                        
+                        <!-- Score chips -->
+                        <div class="flex flex-wrap gap-2">
+                            ${mcqTotal > 0 ? `<span class="px-3 py-1.5 rounded-xl text-xs font-black border ${mcqCorrect === mcqTotal ? 'bg-green-50 border-green-200 text-green-700' : 'bg-orange-50 border-orange-200 text-orange-700'}">Alternativa: ${mcqCorrect}/${mcqTotal}</span>` : ''}
+                            ${quizTotal > 0 ? `<span class="px-3 py-1.5 rounded-xl text-xs font-black border ${quizCorrect === quizTotal ? 'bg-green-50 border-green-200 text-green-700' : 'bg-purple-50 border-purple-200 text-purple-700'}">Kuiz: ${quizCorrect}/${quizTotal}</span>` : ''}
+                            ${sub.answers.openQuestions && sub.answers.openQuestions.filter(q => q && q.answer).length > 0 ? `<span class="px-3 py-1.5 rounded-xl text-xs font-black bg-blue-50 border border-blue-200 text-blue-700">Diskutim: ${sub.answers.openQuestions.filter(q => q && q.answer).length} përgjigje</span>` : ''}
+                        </div>
+
+                        <!-- Action buttons -->
+                        <div class="flex gap-2">
+                            <button onclick="showAnswerDetails(${sub.id})" class="flex-1 py-2 bg-indigo-600 text-white rounded-xl font-black text-xs hover:bg-indigo-700 transition shadow-sm flex items-center justify-center gap-2">
+                                <i class="fas fa-th-list"></i> Shih Detajet e Përgjigjes
+                            </button>
+                        </div>
+
+                        <!-- Grading Section -->
+                        <div class="bg-indigo-50/50 p-4 rounded-2xl border border-indigo-100/50 space-y-3">
+                            <div class="flex gap-2">
+                                <input type="text" placeholder="Nota (p.sh. 10)" value="${sub.grade || ''}" class="grade-input w-24 p-2 rounded-xl border border-indigo-200 text-sm font-bold outline-none focus:border-indigo-500">
+                                <textarea placeholder="Shto një koment për nxënësin..." class="comment-input flex-1 p-2 rounded-xl border border-indigo-200 text-sm outline-none focus:border-indigo-500 min-h-[40px]">${sub.teacher_comment || ''}</textarea>
+                            </div>
+                            <button onclick="submitGrade(${sub.id}, this)" class="w-full py-2 bg-indigo-600 text-white rounded-xl font-black text-xs hover:bg-indigo-700 transition shadow-md flex items-center justify-center gap-2">
+                                <i class="fas fa-save"></i> Ruaj Vlerësimin
+                            </button>
+                        </div>
+                    </div>`;
+                }).join('');
+
+                // Store submissions data for details modal
+                window._submissionsData = data;
+
+            } else {
+                list.innerHTML = `<p class="text-red-500 font-bold text-center p-10">${data.error || "Dështoi ngarkimi."}</p>`;
+            }
+        } catch (e) {
+            list.innerHTML = `<p class="text-red-500 font-bold text-center p-10">Gabim në server.</p>`;
+        }
+    };
+
+    window.showAnswerDetails = (subId) => {
+        const sub = window._submissionsData && window._submissionsData.find(s => s.id === subId);
+        if (!sub) return;
+
+        // Build the details HTML
+        let detailsHtml = `<div class="space-y-6">`;
+
+        // MCQ details
+        if (sub.answers.mcq && sub.answers.mcq.filter(a => a).length > 0) {
+            detailsHtml += `
+                <div>
+                    <h4 class="font-black text-slate-700 mb-3 flex items-center gap-2">
+                        <span class="w-7 h-7 rounded-lg bg-blue-600 text-white text-xs flex items-center justify-center"><i class="fas fa-list-ul"></i></span>
+                        Zgjedhje e Shumëfishtë
+                    </h4>
+                    <div class="space-y-3">
+                        ${sub.answers.mcq.filter(a => a).map((a, i) => `
+                            <div class="p-4 rounded-xl border ${a.correct ? 'bg-green-50 border-green-200' : 'bg-red-50 border-red-200'}">
+                                <p class="font-bold text-sm text-slate-700 mb-2">${i + 1}. ${a.question}</p>
+                                <div class="flex items-center gap-2">
+                                    <span class="text-xs font-black ${a.correct ? 'text-green-700' : 'text-red-700'}">
+                                        <i class="fas fa-${a.correct ? 'check-circle' : 'times-circle'} mr-1"></i>
+                                        Zgjedhur: "${a.selected}"
+                                    </span>
+                                    ${!a.correct ? `<span class="text-xs text-slate-400">· E saktë: "${a.correct_answer || '?'}"</span>` : ''}
+                                </div>
+                            </div>
+                        `).join('')}
+                    </div>
+                </div>`;
+        }
+
+        // Quiz details
+        if (sub.answers.quiz && sub.answers.quiz.filter(a => a).length > 0) {
+            const qCorrect = sub.answers.quiz.filter(a => a && a.correct).length;
+            const qTotal = sub.answers.quiz.filter(a => a).length;
+            detailsHtml += `
+                <div>
+                    <h4 class="font-black text-slate-700 mb-3 flex items-center gap-2">
+                        <span class="w-7 h-7 rounded-lg bg-indigo-600 text-white text-xs flex items-center justify-center"><i class="fas fa-trophy"></i></span>
+                        Kuiz Final <span class="ml-2 px-2 py-0.5 rounded-lg text-xs font-black ${qCorrect === qTotal ? 'bg-green-100 text-green-700' : 'bg-orange-100 text-orange-700'}">${qCorrect}/${qTotal}</span>
+                    </h4>
+                    <div class="space-y-3">
+                        ${sub.answers.quiz.filter(a => a).map((a, i) => `
+                            <div class="p-4 rounded-xl border ${a.correct ? 'bg-green-50 border-green-200' : 'bg-red-50 border-red-200'}">
+                                <p class="font-bold text-sm text-slate-700 mb-2">${i + 1}. ${a.question}</p>
+                                <span class="text-xs font-black ${a.correct ? 'text-green-700' : 'text-red-700'}">
+                                    <i class="fas fa-${a.correct ? 'check-circle' : 'times-circle'} mr-1"></i>
+                                    Zgjedhur: "${a.selected}"
+                                </span>
+                            </div>
+                        `).join('')}
+                    </div>
+                </div>`;
+        }
+
+        // Open Questions
+        if (sub.answers.openQuestions && sub.answers.openQuestions.filter(q => q && q.answer).length > 0) {
+            detailsHtml += `
+                <div>
+                    <h4 class="font-black text-slate-700 mb-3 flex items-center gap-2">
+                        <span class="w-7 h-7 rounded-lg bg-blue-400 text-white text-xs flex items-center justify-center"><i class="fas fa-comments"></i></span>
+                        Pyetje Diskutimi
+                    </h4>
+                    <div class="space-y-3">
+                        ${sub.answers.openQuestions.filter(q => q).map((q, i) => `
+                            <div class="p-4 bg-white rounded-xl border border-gray-200">
+                                <p class="font-bold text-sm text-slate-700 mb-2">${i + 1}. ${q.question}</p>
+                                <p class="text-slate-500 text-sm italic bg-slate-50 p-3 rounded-lg">${q.answer || '<span class="text-slate-300">Pa përgjigje</span>'}</p>
+                            </div>
+                        `).join('')}
+                    </div>
+                </div>`;
+        }
+
+        // True/False
+        if (sub.answers.trueFalse && sub.answers.trueFalse.filter(a => a).length > 0) {
+            detailsHtml += `
+                <div>
+                    <h4 class="font-black text-slate-700 mb-3 flex items-center gap-2">
+                        <span class="w-7 h-7 rounded-lg bg-teal-500 text-white text-xs flex items-center justify-center"><i class="fas fa-check-double"></i></span>
+                        E Vërtetë / E Gabuar
+                    </h4>
+                    <div class="space-y-3">
+                        ${sub.answers.trueFalse.filter(a => a).map((a, i) => `
+                            <div class="p-4 rounded-xl border ${a.correct ? 'bg-green-50 border-green-200' : 'bg-red-50 border-red-200'}">
+                                <p class="font-bold text-sm text-slate-700 mb-2">${i + 1}. ${a.question}</p>
+                                <span class="text-xs font-black ${a.correct ? 'text-green-700' : 'text-red-700'}">
+                                    <i class="fas fa-${a.correct ? 'check-circle' : 'times-circle'} mr-1"></i>
+                                    Zgjedhur: ${a.selected ? 'Vërtetë' : 'Gabim'}
+                                </span>
+                            </div>
+                        `).join('')}
+                    </div>
+                </div>`;
+        }
+
+        // Fill in the Blanks
+        if (sub.answers.fillBlanks && sub.answers.fillBlanks.filter(a => a).length > 0) {
+            detailsHtml += `
+                <div>
+                    <h4 class="font-black text-slate-700 mb-3 flex items-center gap-2">
+                        <span class="w-7 h-7 rounded-lg bg-sky-500 text-white text-xs flex items-center justify-center"><i class="fas fa-edit"></i></span>
+                        Hapësirat Boshe
+                    </h4>
+                    <div class="space-y-2">
+                        ${sub.answers.fillBlanks.filter(a => a).map((a, i) => `
+                            <div class="p-3 bg-white border border-gray-100 rounded-xl flex items-center justify-between">
+                                <span class="text-sm font-bold text-slate-600">Hapësira ${i + 1}</span>
+                                <div class="flex flex-col text-right">
+                                    <span class="text-sm font-black ${a.is_correct ? 'text-green-600' : 'text-red-500'}">Zgjedhur: ${a.user_word || '-'}</span>
+                                    ${!a.is_correct ? `<span class="text-xs text-slate-400">Saktë: ${a.correct_word}</span>` : ''}
+                                </div>
+                            </div>
+                        `).join('')}
+                    </div>
+                </div>`;
+        }
+
+        // Ordering
+        if (sub.answers.ordering && sub.answers.ordering.length > 0) {
+            detailsHtml += `
+                <div>
+                    <h4 class="font-black text-slate-700 mb-3 flex items-center gap-2">
+                        <span class="w-7 h-7 rounded-lg bg-orange-500 text-white text-xs flex items-center justify-center"><i class="fas fa-sort-numeric-down"></i></span>
+                        Renditja Logjike
+                    </h4>
+                    <div class="space-y-2">
+                        ${sub.answers.ordering.map((a, i) => `
+                            <div class="p-3 bg-white border border-gray-100 rounded-xl flex justify-between items-center">
+                                <span class="text-sm font-bold text-slate-700">${a.item}</span>
+                                <span class="text-xs font-black ${a.user_order === a.correct_order ? 'text-green-600' : 'text-red-500'}">Vendosur: ${a.user_order} (Saktë: ${a.correct_order})</span>
+                            </div>
+                        `).join('')}
+                    </div>
+                </div>`;
+        }
+
+        // Critical Thinking
+        if (sub.answers.criticalThinking && sub.answers.criticalThinking.filter(q => q && q.answer).length > 0) {
+            detailsHtml += `
+                <div>
+                    <h4 class="font-black text-slate-700 mb-3 flex items-center gap-2">
+                        <span class="w-7 h-7 rounded-lg bg-purple-500 text-white text-xs flex items-center justify-center"><i class="fas fa-lightbulb"></i></span>
+                        Mendimi Kritik
+                    </h4>
+                    <div class="space-y-3">
+                        ${sub.answers.criticalThinking.filter(q => q).map((q, i) => `
+                            <div class="p-4 bg-purple-50 rounded-xl border border-purple-100">
+                                <p class="font-bold text-sm text-purple-900 mb-2">${q.question}</p>
+                                <p class="text-purple-700 text-sm italic bg-white p-3 rounded-lg shadow-sm">${q.answer || '<span class="text-slate-300">Pa përgjigje</span>'}</p>
+                            </div>
+                        `).join('')}
+                    </div>
+                </div>`;
+        }
+
+        // Mistake Text & Drag Drop summaries
+        let activitySummaries = "";
+        if (sub.answers.mistakeText && sub.answers.mistakeText.total > 0) {
+            activitySummaries += `<div class="p-4 bg-amber-50 rounded-xl border border-amber-200 text-amber-800 font-bold flex justify-between items-center"><span class="flex items-center gap-2"><i class="fas fa-search"></i> Gjetja e Gabimeve:</span> <span>${sub.answers.mistakeText.found} / ${sub.answers.mistakeText.total} gabime</span></div>`;
+        }
+        if (sub.answers.dragDrop && sub.answers.dragDrop.total > 0) {
+            activitySummaries += `<div class="p-4 bg-indigo-50 rounded-xl border border-indigo-200 text-indigo-800 font-bold flex justify-between items-center"><span class="flex items-center gap-2"><i class="fas fa-hand-pointer"></i> Lidhja e Termave:</span> <span>${sub.answers.dragDrop.correct} / ${sub.answers.dragDrop.total} të sakta</span></div>`;
+        }
+
+        if (activitySummaries) {
+            detailsHtml += `
+            <div>
+                <h4 class="font-black text-slate-700 mb-3 flex items-center gap-2">
+                    <span class="w-7 h-7 rounded-lg bg-gray-500 text-white text-xs flex items-center justify-center"><i class="fas fa-shapes"></i></span>
+                    Aktivitete Ndërvepruese
+                </h4>
+                <div class="space-y-3">${activitySummaries}</div>
+            </div>`;
+        }
+
+        detailsHtml += `</div>`;
+
+        // Create/reuse details modal
+        let dm = document.getElementById('answerDetailsModal');
+        if (!dm) {
+            dm = document.createElement('div');
+            dm.id = 'answerDetailsModal';
+            dm.className = 'fixed inset-0 z-[200] flex items-center justify-center p-4 bg-black/50 backdrop-blur-sm hidden';
+            dm.innerHTML = `
+                <div class="bg-white rounded-[2rem] shadow-2xl w-full max-w-2xl max-h-[90vh] flex flex-col overflow-hidden">
+                    <div class="flex items-center justify-between p-6 border-b border-gray-100">
+                        <h3 class="text-xl font-black text-gray-900 flex items-center gap-2">
+                            <i class="fas fa-th-list text-indigo-500"></i>
+                            <span id="detailsModalTitle">Detajet e Përgjigjes</span>
+                        </h3>
+                        <button onclick="document.getElementById('answerDetailsModal').classList.add('hidden')" class="w-9 h-9 flex items-center justify-center text-gray-400 hover:text-red-500 hover:bg-red-50 rounded-xl transition">
+                            <i class="fas fa-times"></i>
+                        </button>
+                    </div>
+                    <div id="detailsModalBody" class="flex-1 overflow-y-auto p-6"></div>
+                </div>`;
+            document.body.appendChild(dm);
+        }
+
+        document.getElementById('detailsModalTitle').textContent = `${sub.student_name} — Detajet e Përgjigjes`;
+        document.getElementById('detailsModalBody').innerHTML = detailsHtml;
+        dm.classList.remove('hidden');
+    };
+
+
+    window.submitGrade = async (subId, btn) => {
+        const container = btn.parentElement;
+        const grade = container.querySelector('.grade-input').value;
+        const comment = container.querySelector('.comment-input').value;
+
+        const originalContent = btn.innerHTML;
+        btn.disabled = true;
+        btn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Duke ruajtur...';
+
+        try {
+            const res = await fetch(`/api/teacher/grade/${subId}`, {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ grade: grade, teacher_comment: comment })
+            });
+            const data = await res.json();
+
+            if (res.ok) {
+                showToast("Vlerësimi u ruajt me sukses!", "success");
+                btn.classList.replace('bg-indigo-600', 'bg-green-600');
+                setTimeout(() => {
+                    btn.classList.replace('bg-green-600', 'bg-indigo-600');
+                    btn.innerHTML = originalContent;
+                    btn.disabled = false;
+                }, 2000);
+            } else {
+                showToast(data.error || "Dështoi ruajtja.", "error");
+                btn.innerHTML = originalContent;
+                btn.disabled = false;
+            }
+        } catch (e) {
+            showToast("Gabim në server.", "error");
+            btn.innerHTML = originalContent;
+            btn.disabled = false;
+        }
+    };
+
+    window.toggleDetails = (btn) => {
+        const details = btn.parentElement.nextElementSibling;
+        details.classList.toggle('hidden');
+        btn.innerText = details.classList.contains('hidden') ? 'Detajet' : 'Mbyll';
+    };
+
+    // --- TEACHER EDITING TOOLS LOGIC ---
+
+    const updateToolbarState = () => {
+        if (!state.isEditMode || state.role !== 'teacher') return;
+        // Typography highlights removed as per font scale changes
+    };
+
+    let lastSavedRange = null;
+
+    document.addEventListener('selectionchange', () => {
+        updateToolbarState();
+        const sel = window.getSelection();
+        if (sel.rangeCount > 0) {
+            let node = sel.getRangeAt(0).commonAncestorContainer;
+            let isEditable = false;
+            while (node && node !== document.body) {
+                if (node.nodeType === 1 && node.getAttribute('contenteditable') === 'true') {
+                    isEditable = true;
+                    break;
+                }
+                node = node.parentNode;
+            }
+            if (isEditable) {
+                lastSavedRange = sel.getRangeAt(0).cloneRange();
+            }
+        }
+    });
+
+    window.formatDoc = (cmd, value = null) => {
+        const sel = window.getSelection();
+        let needsRestore = false;
+        if (sel.rangeCount > 0) {
+            let node = sel.getRangeAt(0).commonAncestorContainer;
+            let isEditable = false;
+            while (node && node !== document.body) {
+                if (node.nodeType === 1 && node.getAttribute('contenteditable') === 'true') {
+                    isEditable = true;
+                    break;
+                }
+                node = node.parentNode;
+            }
+            if (!isEditable) needsRestore = true;
+        } else {
+            needsRestore = true;
+        }
+
+        if (needsRestore && lastSavedRange) {
+            sel.removeAllRanges();
+            sel.addRange(lastSavedRange);
+        }
+
+        // Force inline CSS for colors so Tailwind doesn't override it via specificity
+        try { document.execCommand('styleWithCSS', false, true); } catch (e) { }
+
+        if (cmd === 'fontName' || cmd === 'fontSize') {
+            const marker = 'MARKER' + Date.now();
+            document.execCommand('fontName', false, marker);
+
+            const editable = document.getElementById('editable-lesson-container');
+            if (editable) {
+                // Fix <font> elements
+                const fonts = editable.querySelectorAll(`font[face="${marker}"]`);
+                fonts.forEach(f => {
+                    const span = document.createElement('span');
+                    span.innerHTML = f.innerHTML;
+                    if (cmd === 'fontSize') span.style.fontSize = value + 'px';
+                    if (cmd === 'fontName') span.style.fontFamily = value;
+                    f.replaceWith(span);
+                });
+                // Fix <span> elements with exactly this marker
+                const spans = editable.querySelectorAll('span');
+                spans.forEach(s => {
+                    if (s.style && s.style.fontFamily && s.style.fontFamily.includes(marker)) {
+                        if (cmd === 'fontSize') {
+                            s.style.fontSize = value + 'px';
+                            s.style.fontFamily = ''; // remove marker
+                        }
+                        if (cmd === 'fontName') {
+                            s.style.fontFamily = value;
+                        }
+                    }
+                });
+            }
+            updateToolbarState();
+            triggerAutoSave();
+            return;
+        }
+
+        if (cmd === 'removeFormat') {
+            // First native remove format
+            document.execCommand('removeFormat');
+
+            // Clean up custom annotation classes
+            const sel = window.getSelection();
+            if (sel.rangeCount > 0 && !sel.isCollapsed) {
+                const range = sel.getRangeAt(0);
+                const container = range.commonAncestorContainer;
+                const element = container.nodeType === 1 ? container : container.parentElement;
+
+                // Clear inline styles from selected nodes to remove highlighters/colors fully
+                if (element.querySelectorAll) {
+                    element.querySelectorAll('*').forEach(n => {
+                        if (sel.containsNode(n, true)) n.style = '';
+                    });
+
+                    // Unwrap annotation spans
+                    element.querySelectorAll('span').forEach(span => {
+                        if (sel.containsNode(span, true) && span.className && span.className.includes('anno-')) {
+                            const parent = span.parentNode;
+                            while (span.firstChild) parent.insertBefore(span.firstChild, span);
+                            parent.removeChild(span);
+                        }
+                    });
+                }
+
+                // Unroll parent span if selection was fully inside an annotation
+                let node = element;
+                while (node && node.nodeType === 1 && node.getAttribute('contenteditable') !== 'true') {
+                    if (node.className && typeof node.className === 'string' && node.className.includes('anno-')) {
+                        const parent = node.parentNode;
+                        while (node.firstChild) parent.insertBefore(node.firstChild, node);
+                        parent.removeChild(node);
+                        break;
+                    }
+                    node = node.parentNode;
+                }
+            }
+        } else {
+            // Some browsers require H1, H2, H3 to be wrapped in < >
+            if (cmd === 'formatBlock' && (value === 'H1' || value === 'H2' || value === 'H3')) {
+                const formatValue = document.queryCommandValue('formatBlock');
+                if (formatValue && formatValue.toUpperCase() === value) {
+                    document.execCommand(cmd, false, '<DIV>');
+                } else {
+                    document.execCommand(cmd, false, `<${value}>`);
+                }
+            } else {
+                document.execCommand(cmd, false, value);
+            }
+        }
+        updateToolbarState();
+        triggerAutoSave();
+    };
+
+    window.applyAnnotation = (type) => {
+        const sel = window.getSelection();
+        if (!sel.rangeCount || sel.isCollapsed) return;
+
+        try { document.execCommand('styleWithCSS', false, true); } catch (e) { }
+
+        const span = document.createElement("span");
+        span.className = `anno-${type}`;
+        // Add inline style hints just in case CSS fails to load or specificity fights
+        if (type === 'pencil') span.style.textDecoration = 'underline wavy #f43f5e';
+        if (type === 'circle') { span.style.border = '2px solid #6366f1'; span.style.borderRadius = '50%'; }
+        if (type === 'note' || type === 'sticky') span.style.backgroundColor = '#fbbf24';
+
+        const range = sel.getRangeAt(0);
+        try {
+            // Surround is safest, works if selection is in same block
+            range.surroundContents(span);
+        } catch (e) {
+            // Fallback for cross-boundary
+            span.appendChild(range.extractContents());
+            range.insertNode(span);
+        }
+
+        // Clear selection after applying
+        sel.removeAllRanges();
+        triggerAutoSave();
+    };
+
+    window.addTeacherNote = () => applyAnnotation('note');
+    window.addTeacherSticky = () => applyAnnotation('sticky');
+
+    // Floating Toolbar Logic
+    const positionFloatingToolbar = () => {
+        const toolbar = document.getElementById('floating-toolbar');
+        if (!toolbar) return;
+
+        if (state.role !== 'teacher') {
+            toolbar.classList.add('hidden');
+            return;
+        }
+
+        const sel = window.getSelection();
+        if (!sel.rangeCount || sel.isCollapsed) {
+            toolbar.classList.add('hidden');
+            toolbar.style.opacity = '0';
+            toolbar.style.pointerEvents = 'none';
+            toolbar.style.transform = 'scale(0.95)';
+            return;
+        }
+
+        const range = sel.getRangeAt(0);
+        const rect = range.getBoundingClientRect();
+
+        let node = range.commonAncestorContainer;
+        let isEditable = false;
+        while (node && node !== document.body) {
+            if (node.nodeType === 1 && node.getAttribute('contenteditable') === 'true') {
+                isEditable = true;
+                break;
+            }
+            node = node.parentNode;
+        }
+
+        if (!isEditable) {
+            toolbar.classList.add('hidden');
+            toolbar.style.opacity = '0';
+            toolbar.style.pointerEvents = 'none';
+            toolbar.style.transform = 'scale(0.95)';
+            return;
+        }
+
+        toolbar.classList.remove('hidden');
+
+        // Position it exactly exactly 1 line above the selection visually
+        // Rect values are already viewport-relative! No scrollY needed for "fixed" elements!
+        const top = rect.top - toolbar.offsetHeight - 10;
+        const left = rect.left + (rect.width / 2) - (toolbar.offsetWidth / 2);
+
+        // Prevent going off-screen at the top or edges
+        toolbar.style.top = `${Math.max(10, top)}px`;
+        toolbar.style.left = `${Math.max(10, left)}px`;
+
+        toolbar.style.opacity = '1';
+        toolbar.style.pointerEvents = 'auto';
+        toolbar.style.transform = 'scale(1)';
+    };
+
+    // Debounced Auto-save
+    let saveTimeout = null;
+    window.triggerAutoSave = () => {
+        if (state.role !== 'teacher') return;
+
+        if (saveTimeout) clearTimeout(saveTimeout);
+
+        saveTimeout = setTimeout(() => {
+            saveTeacherEdits();
+        }, 2000);
+    };
+
+    const updateObjectByPath = (obj, path, value) => {
+        const keys = path.split('.');
+        let target = obj;
+        for (let i = 0; i < keys.length - 1; i++) {
+            const key = keys[i];
+            if (!(key in target)) target[key] = isNaN(keys[i + 1]) ? {} : [];
+            target = target[key];
+        }
+        const lastKey = keys[keys.length - 1];
+        if (lastKey.endsWith('_RAW')) {
+            const realKey = lastKey.replace('_RAW', '');
+            target[realKey] = value.split(',').map(s => s.trim()).filter(Boolean);
+        } else {
+            target[lastKey] = value;
+        }
+    };
+
+    window.saveTeacherEdits = async () => {
+        if (!state.shareToken) return;
+
+        // Scrape ALL data-path nodes from the entire document
+        const editableNodes = document.querySelectorAll('[data-path]');
+        editableNodes.forEach(node => {
+            const path = node.getAttribute('data-path');
+            if (!path) return;
+
+            // For simple fields like titulli, we might want innerText, but for summary we want innerHTML
+            // The safest generic is innerHTML for divs/spans, but we clean it up if it's plain text requested
+            let val = node.innerHTML;
+            if (path.includes('.q') || path.includes('.options.') || path.includes('.term') || path.includes('.definition') || path === 'titulli' || path.endsWith('_RAW')) {
+                val = node.innerText; // safer for plain fields
+            }
+            updateObjectByPath(state.lessonData, path, val);
+        });
+
+        // We should visually indicate saving
+        let saveIcon = document.getElementById('save-indicator');
+        if (!saveIcon) {
+            saveIcon = document.createElement('div');
+            saveIcon.id = 'save-indicator';
+            saveIcon.className = 'fixed bottom-5 right-5 bg-white text-slate-600 px-4 py-2 rounded-xl shadow-lg border border-slate-100 font-bold text-xs flex items-center gap-2 z-50 transition-all';
+            document.body.appendChild(saveIcon);
+        }
+        saveIcon.innerHTML = '<i class="fas fa-spinner fa-spin text-indigo-500"></i> Saving...';
+        saveIcon.style.opacity = '1';
+
+        try {
+            const res = await fetch('/api/teacher/save_generation', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ token: state.shareToken, lessonData: state.lessonData })
+            });
+
+            if (res.ok) {
+                saveIcon.innerHTML = '<i class="fas fa-check-circle text-emerald-500"></i> Saved';
+                setTimeout(() => { saveIcon.style.opacity = '0'; }, 3000);
+            } else {
+                saveIcon.innerHTML = '<i class="fas fa-exclamation-circle text-red-500"></i> Error';
+            }
+        } catch (e) {
+            saveIcon.innerHTML = '<i class="fas fa-exclamation-circle text-red-500"></i> Error';
+        }
+    };
+
+    window.attachTeacherEditorListeners = () => {
+        document.addEventListener('selectionchange', positionFloatingToolbar);
+        document.addEventListener('touchend', () => setTimeout(positionFloatingToolbar, 100));
+        document.addEventListener('keyup', positionFloatingToolbar);
+
+        const editableElements = document.querySelectorAll('[contenteditable="true"]');
+        editableElements.forEach(el => {
+            el.addEventListener('input', () => {
+                triggerAutoSave();
+            });
+        });
+    };
+
+    // Global guard: block contenteditable interaction when edit mode is OFF
+    document.addEventListener('focusin', (e) => {
+        const el = e.target;
+        if (el && el.getAttribute('contenteditable') === 'true') {
+            if (!state.isEditMode) {
+                el.blur();
+                showToast('⚠️ Duhet të aktivizosh Edit Mode për të redaktuar!', 'info');
+                // Visually flash the edit mode button
+                const editBtn = document.getElementById('editModeToggleBtn');
+                if (editBtn) {
+                    editBtn.classList.add('ring-4', 'ring-amber-400', 'scale-110');
+                    setTimeout(() => editBtn.classList.remove('ring-4', 'ring-amber-400', 'scale-110'), 1500);
+                }
+            }
+        }
+    }, true);
+
+    // Also block keyboard for safety 
+    document.addEventListener('keydown', (e) => {
+        const el = e.target;
+        if (el && el.getAttribute('contenteditable') === 'true' && !state.isEditMode) {
+            e.preventDefault();
+        }
+    }, true);
+
+    // Initialize state from session if available
+    loadStateFromSession();
+    initExerciseGrid();
+    setRole('teacher');
+
+</script>
+
+<!-- Floating Contextual Toolbar -->
+<div id="floating-toolbar"
+    class="fixed z-[100] hidden bg-gray-900/95 backdrop-blur-md rounded-2xl shadow-2xl border border-gray-700/50 p-1.5 flex items-center gap-1 text-white transition-all transform scale-95 opacity-0 pointer-events-none">
+    <button onmousedown="event.preventDefault()" onclick="formatDoc('bold')"
+        class="w-8 h-8 flex items-center justify-center hover:bg-white/10 rounded-xl transition-all font-serif font-black text-sm"
+        title="Bold">B</button>
+    <button onmousedown="event.preventDefault()" onclick="formatDoc('italic')"
+        class="w-8 h-8 flex items-center justify-center hover:bg-white/10 rounded-xl transition-all font-serif italic text-sm font-bold"
+        title="Italic">I</button>
+    <button onmousedown="event.preventDefault()" onclick="formatDoc('underline')"
+        class="w-8 h-8 flex items-center justify-center hover:bg-white/10 rounded-xl transition-all font-serif underline text-sm font-bold"
+        title="Underline">U</button>
+
+    <div class="h-4 w-px bg-white/20 mx-1"></div>
+
+
+
+    <button onmousedown="event.preventDefault()" onclick="applyAnnotation('circle')"
+        class="w-8 h-8 flex items-center justify-center hover:bg-white/10 rounded-xl transition-all text-amber-400"
+        title="Circle"><i class="far fa-circle text-[10px]"></i></button>
+
+    <div class="h-4 w-px bg-white/20 mx-1"></div>
+
+    <button onmousedown="event.preventDefault()" onclick="addTeacherNote()"
+        class="w-8 h-8 flex items-center justify-center hover:bg-white/10 rounded-xl transition-all" title="Add Note"><i
+            class="far fa-comment-dots text-xs"></i></button>
+    <button onmousedown="event.preventDefault()" onclick="document.execCommand('copy')"
+        class="w-8 h-8 flex items-center justify-center hover:bg-white/10 rounded-xl transition-all text-slate-300"
+        title="Copy"><i class="far fa-copy text-xs"></i></button>
+    <button onmousedown="event.preventDefault()" onclick="formatDoc('removeFormat')"
+        class="w-8 h-8 flex items-center justify-center hover:bg-white/10 rounded-xl transition-all text-red-400"
+        title="Clear Formatting"><i class="fas fa-eraser text-[11px]"></i></button>
+</div>
+
+<style>
+    /* Annotation Classes */
+    .anno-pencil {
+        text-decoration: underline;
+        text-decoration-color: #ef4444;
+        text-decoration-style: wavy;
+        text-underline-offset: 4px;
+    }
+
+    .anno-circle {
+        border: 2px solid #3b82f6;
+        border-radius: 50%;
+        padding: 2px 4px;
+        margin: -2px -4px;
+        display: inline-block;
+    }
+
+    /* Editing UI states */
+    [contenteditable="true"] {
+        outline: none;
+        transition: background-color 0.2s;
+        border-radius: 4px;
+    }
+
+    [contenteditable="true"]:hover {
+        box-shadow: 0 0 0 4px rgba(241, 245, 249, 0.5);
+        background-color: rgba(241, 245, 249, 0.5);
+    }
+
+    [contenteditable="true"]:focus {
+        box-shadow: 0 0 0 4px rgba(226, 232, 240, 0.8);
+        background-color: rgba(248, 250, 252, 0.8);
+    }
+</style>
+
+{% endblock %}
